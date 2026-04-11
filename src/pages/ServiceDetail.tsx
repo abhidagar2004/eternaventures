@@ -1,0 +1,316 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { supabase } from '../lib/supabase';
+import { motion, AnimatePresence } from 'motion/react';
+import { Loader2, Plus, Minus, ArrowRight } from 'lucide-react';
+
+export default function ServiceDetail() {
+  const { slug } = useParams();
+  const [service, setService] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [activeFeature, setActiveFeature] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    fetchService();
+  }, [slug]);
+
+  const fetchService = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('services')
+        .select('*')
+        .eq('slug', slug)
+        .single();
+
+      if (error) throw error;
+      setService(data);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center pt-20">
+        <Loader2 className="w-12 h-12 animate-spin text-blue-600" />
+      </div>
+    );
+  }
+
+  if (error || !service) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center pt-20 text-center px-6">
+        <h1 className="text-4xl font-display font-bold mb-4">Service Not Found</h1>
+        <p className="text-gray-400 mb-8">The service you are looking for might have been moved or doesn't exist.</p>
+        <Link to="/services" className="bg-blue-600 px-6 py-3 rounded-full font-bold">
+          Back to Services
+        </Link>
+      </div>
+    );
+  }
+
+  const features = service.features || [];
+  const faqs = service.faqs || [];
+
+  return (
+    <div className="bg-black text-white">
+      {/* Banner */}
+      <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src={service.image_url || 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2426'} 
+            className="w-full h-full object-cover opacity-40 blur-[2px] scale-110"
+            alt=""
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+        </div>
+        
+        <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <span className="font-bold uppercase tracking-widest text-sm mb-6 block" style={{ color: service.subtitle_color || '#c2ff00' }}>
+              {service.subtitle || 'Service Expertise'}
+            </span>
+            <h1 className="text-6xl md:text-9xl font-display font-black leading-[0.8] tracking-tighter mb-10 max-w-5xl mx-auto" style={{ color: service.title_color || '#ffffff' }}>
+              {service.detail_heading || service.title}
+            </h1>
+            <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed font-medium">
+              {service.detail_subheading || service.description}
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Sticky Features Section */}
+      {features.length > 0 && (
+        <section 
+          className="py-32 relative" 
+          ref={containerRef}
+          style={{ backgroundColor: service.features_bg_color || '#000000' }}
+        >
+          <div className="max-w-7xl mx-auto px-6 lg:px-12">
+            <div className="flex flex-col lg:flex-row gap-20">
+              
+              {/* Left Side: Content Scroller with Layered Stacking */}
+              <div className="lg:w-1/2 relative">
+                {features.map((feature: any, idx: number) => (
+                  <ScrollSection 
+                    key={idx} 
+                    idx={idx} 
+                    feature={feature} 
+                    setActiveFeature={setActiveFeature} 
+                    contentColor={service.features_content_color}
+                    numberColor={service.features_number_color}
+                    lineColor={service.features_line_color}
+                    bgColor={service.features_bg_color}
+                  />
+                ))}
+              </div>
+
+              {/* Right Side: Sticky Image */}
+              <div className="hidden lg:block lg:w-1/2 h-[80vh] sticky top-[10vh]">
+                <div className="relative w-full h-full rounded-[3rem] overflow-hidden shadow-2xl bg-gray-900 border border-gray-800 group">
+                  <AnimatePresence mode="wait">
+                    {features.map((feature: any, idx: number) => (
+                      activeFeature === idx && (
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0, scale: 1.1 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.95 }}
+                          transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
+                          className="absolute inset-0"
+                        >
+                          <img 
+                            src={feature.image_url || 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=2070'} 
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                            alt={feature.title}
+                            referrerPolicy="no-referrer"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                          <div className="absolute bottom-12 left-12 right-12 flex items-center justify-between">
+                            <div className="h-1 flex-grow bg-white/20 rounded-full overflow-hidden mr-6" style={{ backgroundColor: `${service.features_line_color}33` }}>
+                              <motion.div 
+                                initial={{ width: "0%" }}
+                                animate={{ width: "100%" }}
+                                transition={{ duration: 0.6 }}
+                                className="h-full"
+                                style={{ backgroundColor: service.subtitle_color || '#c2ff00' }}
+                              />
+                            </div>
+                            <span className="font-black text-2xl tracking-tighter opacity-50" style={{ color: service.features_number_color || '#ffffff' }}>
+                              0{idx + 1}
+                            </span>
+                          </div>
+                        </motion.div>
+                      )
+                    ))}
+                  </AnimatePresence>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* FAQ Section */}
+      {faqs.length > 0 && (
+        <section className="py-32 bg-[#0a0a0a] border-y border-gray-900">
+          <div className="max-w-4xl mx-auto px-6">
+            <div className="text-center mb-20 text-balance">
+              <h2 className="text-5xl md:text-7xl font-display font-black text-white mb-6 tracking-tighter">COMMON QUESTIONS</h2>
+              <p className="text-gray-400 text-lg">Everything you need to know about our {service.title} process.</p>
+            </div>
+            <div className="space-y-4">
+              {faqs.map((faq: any, idx: number) => (
+                <FAQItem key={idx} faq={faq} hoverColor={service.faq_hover_color || '#c2ff00'} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Footer CTA */}
+      <section 
+        className="py-40 text-center relative overflow-hidden"
+        style={{ backgroundColor: service.cta_bg_color || '#000000' }}
+      >
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/10 rounded-full blur-[120px] -z-10"></div>
+        <div className="max-w-5xl mx-auto px-6">
+          <h2 
+            className="text-6xl md:text-9xl font-display font-black mb-12 leading-[0.85] tracking-tighter text-balance"
+            style={{ color: service.cta_text_color || '#ffffff' }}
+          >
+            {service.cta_title || `DOMINATE THE MARKET WITH ${service.title.toUpperCase()}`}
+          </h2>
+          <Link 
+            to="/contact" 
+            className="inline-flex items-center gap-4 px-16 py-6 font-black tracking-widest hover:scale-105 transition-all duration-300 shadow-xl group"
+            style={{ 
+              backgroundColor: service.cta_button_color || '#c2ff00',
+              color: service.cta_button_text_color || '#000000',
+              borderRadius: service.cta_button_radius || '9999px'
+            }}
+          >
+            {service.cta_button_text || 'BOOK A STRATEGY CALL'}
+            <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+          </Link>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function ScrollSection({ idx, feature, setActiveFeature, contentColor, numberColor, lineColor, bgColor }: any) {
+  const ref = useRef(null);
+  
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setActiveFeature(idx);
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [idx, setActiveFeature]);
+
+  return (
+    <div 
+      ref={ref} 
+      className={`group relative flex flex-col justify-center transition-all duration-500
+        ${idx === 0 ? 'mt-0' : 'mt-4 lg:mt-0'}
+        lg:sticky lg:top-0 lg:min-h-screen py-10 lg:py-0
+      `}
+      style={{ 
+        backgroundColor: bgColor || '#000000',
+        boxShadow: '0 -20px 40px rgba(0,0,0,0.5)'
+      }}
+    >
+      <div className="flex items-center gap-6 mb-10">
+        <span 
+          className="text-4xl font-display font-black transition-colors duration-500"
+          style={{ color: numberColor || 'rgba(255,255,255,0.1)' }}
+        >
+          0{idx + 1}
+        </span>
+        <div 
+          className="h-[2px] flex-grow transition-colors duration-500"
+          style={{ backgroundColor: lineColor || 'rgba(255,255,255,0.05)' }}
+        ></div>
+      </div>
+      
+      <h3 className="text-4xl md:text-6xl font-display font-black text-white mb-8 leading-tight tracking-tighter group-hover:translate-x-2 transition-transform duration-500">
+        {feature.title}
+      </h3>
+      
+      <p 
+        className="text-xl md:text-2xl leading-relaxed font-medium mb-12"
+        style={{ color: contentColor || '#9ca3af' }}
+      >
+        {feature.description}
+      </p>
+      
+      {/* Mobile Image */}
+      <div className="lg:hidden rounded-2xl overflow-hidden mt-2 mb-8 border border-white/10 shadow-xl">
+        <img src={feature.image_url} alt="" className="w-full h-auto object-cover max-h-[300px]" />
+      </div>
+    </div>
+  );
+}
+
+function FAQItem({ faq, hoverColor }: any) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div 
+      className="bg-[#111111] border border-white/5 rounded-[2rem] overflow-hidden transition-all duration-300"
+      style={{ 
+        borderColor: isOpen ? `${hoverColor}33` : undefined,
+      }}
+      onMouseEnter={(e) => {
+        if (!isOpen) e.currentTarget.style.borderColor = `${hoverColor}33`;
+      }}
+      onMouseLeave={(e) => {
+        if (!isOpen) e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)';
+      }}
+    >
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex items-center justify-between p-8 text-left"
+      >
+        <span className="text-xl md:text-2xl font-bold text-white tracking-tight">{faq.question}</span>
+        <div 
+          className="p-2 rounded-full transition-all duration-300"
+          style={{ 
+            backgroundColor: isOpen ? hoverColor : 'rgba(255,255,255,0.05)',
+            color: isOpen ? '#000000' : '#ffffff'
+          }}
+        >
+          {isOpen ? <Minus size={20} /> : <Plus size={20} />}
+        </div>
+      </button>
+      <motion.div
+        initial={false}
+        animate={{ height: isOpen ? 'auto' : 0, opacity: isOpen ? 1 : 0 }}
+        className="overflow-hidden"
+        transition={{ duration: 0.4, ease: [0.19, 1, 0.22, 1] }}
+      >
+        <div className="px-8 pb-8 text-xl text-gray-500 leading-relaxed font-medium">
+          {faq.answer}
+        </div>
+      </motion.div>
+    </div>
+  );
+}
