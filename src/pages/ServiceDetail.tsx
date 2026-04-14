@@ -61,11 +61,13 @@ export default function ServiceDetail() {
       {/* Banner */}
       <section className={`relative flex items-center justify-center overflow-hidden ${service.banner_padding_top || 'pt-32'} ${service.banner_padding_bottom || 'pb-12'}`}>
         <div className="absolute inset-0 z-0">
-          <img 
-            src={service.image_url || 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2426'} 
-            className="w-full h-full object-cover opacity-40 blur-[2px] scale-110"
-            alt=""
-          />
+          {service.image_url && (
+            <img 
+              src={service.image_url} 
+              className="w-full h-full object-cover opacity-40 blur-[2px] scale-110"
+              alt=""
+            />
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
         </div>
         
@@ -75,17 +77,19 @@ export default function ServiceDetail() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            {service.show_banner_tag !== false && (
+            {service.show_banner_tag !== false && service.subtitle && (
               <span className="font-bold uppercase tracking-widest text-sm mb-4 lg:mb-6 block" style={{ color: service.subtitle_color || '#c2ff00' }}>
-                {service.subtitle || 'Service Expertise'}
+                {service.subtitle}
               </span>
             )}
             <h1 className="text-5xl md:text-9xl font-display font-black leading-[0.9] lg:leading-[0.8] tracking-tighter mb-6 lg:mb-10 max-w-5xl mx-auto" style={{ color: service.title_color || '#ffffff' }}>
               {service.detail_heading || service.title}
             </h1>
-            <p className="text-lg md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed font-medium">
-              {service.detail_subheading || service.description}
-            </p>
+            {service.detail_subheading && (
+              <p className="text-lg md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed font-medium">
+                {service.detail_subheading}
+              </p>
+            )}
           </motion.div>
         </div>
       </section>
@@ -130,12 +134,14 @@ export default function ServiceDetail() {
                 {/* Right Side: Sticky Image Context */}
                 <div className="lg:w-1/2 lg:sticky lg:top-[20vh] lg:h-[60vh] flex items-center">
                   <div className="relative w-full h-[400px] lg:h-full rounded-2xl lg:rounded-[3rem] overflow-hidden shadow-2xl bg-gray-900 border border-white/5 ring-1 ring-white/10">
-                    <img 
-                      src={feature.image_url || 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=2070'} 
-                      className="w-full h-full object-cover" 
-                      alt={feature.title}
-                      referrerPolicy="no-referrer"
-                    />
+                    {feature.image_url && (
+                      <img 
+                        src={feature.image_url} 
+                        className="w-full h-full object-cover" 
+                        alt={feature.title}
+                        referrerPolicy="no-referrer"
+                      />
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                     
                     <div className="absolute bottom-8 left-8 right-8 lg:bottom-12 lg:left-12 lg:right-12 flex items-center justify-between">
@@ -181,24 +187,28 @@ export default function ServiceDetail() {
       >
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/10 rounded-full blur-[120px] -z-10"></div>
         <div className="max-w-5xl mx-auto px-6">
-          <h2 
-            className="text-6xl md:text-9xl font-display font-black mb-12 leading-[0.85] tracking-tighter text-balance"
-            style={{ color: service.cta_text_color || '#ffffff' }}
-          >
-            {service.cta_title || `DOMINATE THE MARKET WITH ${service.title.toUpperCase()}`}
-          </h2>
-          <Link 
-            to="/contact" 
-            className="inline-flex items-center gap-4 px-16 py-6 font-black tracking-widest hover:scale-105 transition-all duration-300 shadow-xl group"
-            style={{ 
-              backgroundColor: service.cta_button_color || '#c2ff00',
-              color: service.cta_button_text_color || '#000000',
-              borderRadius: service.cta_button_radius || '9999px'
-            }}
-          >
-            {service.cta_button_text || 'BOOK A STRATEGY CALL'}
-            <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
-          </Link>
+          {service.cta_title && (
+            <h2 
+              className="text-6xl md:text-9xl font-display font-black mb-12 leading-[0.85] tracking-tighter text-balance"
+              style={{ color: service.cta_text_color || '#ffffff' }}
+            >
+              {service.cta_title}
+            </h2>
+          )}
+          {service.cta_button_text && (
+            <Link 
+              to="/contact" 
+              className="inline-flex items-center gap-4 px-16 py-6 font-black tracking-widest hover:scale-105 transition-all duration-300 shadow-xl group"
+              style={{ 
+                backgroundColor: service.cta_button_color || '#c2ff00',
+                color: service.cta_button_text_color || '#000000',
+                borderRadius: service.cta_button_radius || '9999px'
+              }}
+            >
+              {service.cta_button_text}
+              <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+            </Link>
+          )}
         </div>
       </section>
     </div>
