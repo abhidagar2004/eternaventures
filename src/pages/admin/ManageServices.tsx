@@ -35,7 +35,11 @@ export default function ManageServices() {
     features_content_color: '#9ca3af',
     features_number_color: 'rgba(255,255,255,0.1)',
     features_line_color: 'rgba(255,255,255,0.05)',
-    features_bg_color: '#000000'
+    features_bg_color: '#000000',
+    banner_padding_top: 'pt-32',
+    banner_padding_bottom: 'pb-12',
+    show_banner_tag: true,
+    features_font_size: 'text-lg lg:text-2xl'
   });
 
   useEffect(() => {
@@ -113,7 +117,11 @@ export default function ManageServices() {
         features_content_color: formData.features_content_color,
         features_number_color: formData.features_number_color,
         features_line_color: formData.features_line_color,
-        features_bg_color: formData.features_bg_color
+        features_bg_color: formData.features_bg_color,
+        banner_padding_top: formData.banner_padding_top,
+        banner_padding_bottom: formData.banner_padding_bottom,
+        show_banner_tag: formData.show_banner_tag,
+        features_font_size: formData.features_font_size
       };
 
       if (formData.id) {
@@ -175,7 +183,11 @@ export default function ManageServices() {
         features_content_color: service.features_content_color || '#9ca3af',
         features_number_color: service.features_number_color || 'rgba(255,255,255,0.1)',
         features_line_color: service.features_line_color || 'rgba(255,255,255,0.05)',
-        features_bg_color: service.features_bg_color || '#000000'
+        features_bg_color: service.features_bg_color || '#000000',
+        banner_padding_top: service.banner_padding_top || 'pt-32',
+        banner_padding_bottom: service.banner_padding_bottom || 'pb-12',
+        show_banner_tag: service.show_banner_tag !== undefined ? service.show_banner_tag : true,
+        features_font_size: service.features_font_size || 'text-lg lg:text-2xl'
       });
     } else {
       setFormData({ 
@@ -187,7 +199,9 @@ export default function ManageServices() {
         cta_button_text: 'BOOK A STRATEGY CALL', cta_button_color: '#c2ff00',
         cta_button_text_color: '#000000', cta_button_radius: '9999px',
         features_content_color: '#9ca3af', features_number_color: 'rgba(255,255,255,0.1)',
-        features_line_color: 'rgba(255,255,255,0.05)', features_bg_color: '#000000'
+        features_line_color: 'rgba(255,255,255,0.05)', features_bg_color: '#000000',
+        banner_padding_top: 'pt-32', banner_padding_bottom: 'pb-12', show_banner_tag: true,
+        features_font_size: 'text-lg lg:text-2xl'
       });
     }
     setIsModalOpen(true);
@@ -496,6 +510,44 @@ export default function ManageServices() {
                     </div>
                   </div>
 
+                  <div className="bg-blue-50/50 p-6 rounded-2xl border border-blue-100 space-y-6">
+                    <h4 className="text-xs font-black text-blue-900 uppercase tracking-widest">Banner Layout & Spacing</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      <div>
+                        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 text-[10px]">Top Padding (Tailwind Class)</label>
+                        <input
+                          type="text"
+                          value={formData.banner_padding_top}
+                          onChange={(e) => setFormData({ ...formData, banner_padding_top: e.target.value })}
+                          placeholder="pt-32, pt-40, pt-60..."
+                          className="w-full border-2 border-gray-100 rounded-xl px-4 py-2 font-mono text-xs"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 text-[10px]">Bottom Padding (Tailwind Class)</label>
+                        <input
+                          type="text"
+                          value={formData.banner_padding_bottom}
+                          onChange={(e) => setFormData({ ...formData, banner_padding_bottom: e.target.value })}
+                          placeholder="pb-12, pb-24, pb-40..."
+                          className="w-full border-2 border-gray-100 rounded-xl px-4 py-2 font-mono text-xs"
+                        />
+                      </div>
+                      <div className="flex items-center gap-4 pt-6">
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input 
+                            type="checkbox" 
+                            className="sr-only peer" 
+                            checked={formData.show_banner_tag}
+                            onChange={(e) => setFormData({ ...formData, show_banner_tag: e.target.checked })}
+                          />
+                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                          <span className="ml-3 text-xs font-black text-gray-400 uppercase tracking-widest">Show Tag</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
                   <div className="space-y-6">
                     <div className="flex justify-between items-center">
                       <label className="block text-xs font-black text-red-400 uppercase tracking-widest">Sticky Scroll Points</label>
@@ -696,6 +748,20 @@ export default function ManageServices() {
                         <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Lines/Dividers</label>
                         <input type="color" value={formData.features_line_color} onChange={(e) => setFormData({ ...formData, features_line_color: e.target.value })} className="w-full h-12 rounded-xl cursor-pointer" />
                       </div>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Content Font Size</label>
+                      <select
+                        value={formData.features_font_size}
+                        onChange={(e) => setFormData({ ...formData, features_font_size: e.target.value })}
+                        className="w-full border-2 border-gray-100 rounded-xl px-5 py-3 font-bold text-sm"
+                      >
+                        <option value="text-sm lg:text-base">Small</option>
+                        <option value="text-base lg:text-lg">Medium</option>
+                        <option value="text-lg lg:text-2xl">Large (Default)</option>
+                        <option value="text-xl lg:text-3xl">Extra Large</option>
+                        <option value="text-2xl lg:text-4xl">Huge</option>
+                      </select>
                     </div>
                   </div>
                 </div>

@@ -59,7 +59,7 @@ export default function ServiceDetail() {
   return (
     <div className="bg-black text-white">
       {/* Banner */}
-      <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
+      <section className={`relative flex items-center justify-center overflow-hidden ${service.banner_padding_top || 'pt-32'} ${service.banner_padding_bottom || 'pb-12'}`}>
         <div className="absolute inset-0 z-0">
           <img 
             src={service.image_url || 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2426'} 
@@ -75,9 +75,11 @@ export default function ServiceDetail() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <span className="font-bold uppercase tracking-widest text-sm mb-4 lg:mb-6 block" style={{ color: service.subtitle_color || '#c2ff00' }}>
-              {service.subtitle || 'Service Expertise'}
-            </span>
+            {service.show_banner_tag !== false && (
+              <span className="font-bold uppercase tracking-widest text-sm mb-4 lg:mb-6 block" style={{ color: service.subtitle_color || '#c2ff00' }}>
+                {service.subtitle || 'Service Expertise'}
+              </span>
+            )}
             <h1 className="text-5xl md:text-9xl font-display font-black leading-[0.9] lg:leading-[0.8] tracking-tighter mb-6 lg:mb-10 max-w-5xl mx-auto" style={{ color: service.title_color || '#ffffff' }}>
               {service.detail_heading || service.title}
             </h1>
@@ -96,8 +98,8 @@ export default function ServiceDetail() {
           style={{ backgroundColor: service.features_bg_color || '#000000' }}
         >
           <div className="max-w-7xl mx-auto px-6 lg:px-12">
-            {features.map((feature: any, idx: number) => (
-              <div key={idx} className="flex flex-col lg:flex-row gap-10 lg:gap-20 min-h-[60vh] lg:min-h-screen py-10 lg:py-0">
+            {features.filter((f: any) => f.title && f.description).map((feature: any, idx: number) => (
+              <div key={idx} className="flex flex-col lg:flex-row gap-10 lg:gap-20 min-h-[50vh] lg:min-h-screen py-20 lg:py-0 items-center">
                 {/* Left Side: Content */}
                 <div className="lg:w-1/2 flex flex-col justify-center">
                   <div className="flex items-center gap-6 mb-8 lg:mb-10">
@@ -118,7 +120,7 @@ export default function ServiceDetail() {
                   </h3>
                   
                   <p 
-                    className="text-lg lg:text-2xl leading-relaxed font-medium mb-12"
+                    className={`leading-relaxed font-medium mb-12 ${service.features_font_size || 'text-lg lg:text-2xl'}`}
                     style={{ color: service.features_content_color || '#9ca3af' }}
                   >
                     {feature.description}
@@ -126,7 +128,7 @@ export default function ServiceDetail() {
                 </div>
 
                 {/* Right Side: Sticky Image Context */}
-                <div className="lg:w-1/2 lg:sticky lg:top-[15vh] lg:h-[70vh]">
+                <div className="lg:w-1/2 lg:sticky lg:top-[20vh] lg:h-[60vh] flex items-center">
                   <div className="relative w-full h-[400px] lg:h-full rounded-2xl lg:rounded-[3rem] overflow-hidden shadow-2xl bg-gray-900 border border-white/5 ring-1 ring-white/10">
                     <img 
                       src={feature.image_url || 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=2070'} 
@@ -156,7 +158,7 @@ export default function ServiceDetail() {
       )}
 
       {/* FAQ Section */}
-      {faqs.length > 0 && (
+      {faqs.filter((f: any) => f.question && f.answer).length > 0 && (
         <section className="py-32 bg-[#0a0a0a] border-y border-gray-900">
           <div className="max-w-4xl mx-auto px-6">
             <div className="text-center mb-20 text-balance">
@@ -164,7 +166,7 @@ export default function ServiceDetail() {
               <p className="text-gray-400 text-lg">Everything you need to know about our {service.title} process.</p>
             </div>
             <div className="space-y-4">
-              {faqs.map((faq: any, idx: number) => (
+              {faqs.filter((f: any) => f.question && f.answer).map((faq: any, idx: number) => (
                 <FAQItem key={idx} faq={faq} hoverColor={service.faq_hover_color || '#c2ff00'} />
               ))}
             </div>
