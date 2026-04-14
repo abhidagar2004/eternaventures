@@ -9,7 +9,6 @@ export default function ServiceDetail() {
   const [service, setService] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeFeature, setActiveFeature] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -70,93 +69,88 @@ export default function ServiceDetail() {
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
         </div>
         
-        <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 text-center pt-32 pb-12 lg:pt-0 lg:pb-0">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <span className="font-bold uppercase tracking-widest text-sm mb-6 block" style={{ color: service.subtitle_color || '#c2ff00' }}>
+            <span className="font-bold uppercase tracking-widest text-sm mb-4 lg:mb-6 block" style={{ color: service.subtitle_color || '#c2ff00' }}>
               {service.subtitle || 'Service Expertise'}
             </span>
-            <h1 className="text-6xl md:text-9xl font-display font-black leading-[0.8] tracking-tighter mb-10 max-w-5xl mx-auto" style={{ color: service.title_color || '#ffffff' }}>
+            <h1 className="text-5xl md:text-9xl font-display font-black leading-[0.9] lg:leading-[0.8] tracking-tighter mb-6 lg:mb-10 max-w-5xl mx-auto" style={{ color: service.title_color || '#ffffff' }}>
               {service.detail_heading || service.title}
             </h1>
-            <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed font-medium">
+            <p className="text-lg md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed font-medium">
               {service.detail_subheading || service.description}
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Sticky Features Section */}
+      {/* Features Section */}
       {features.length > 0 && (
         <section 
-          className="py-32 relative" 
+          className="pb-32 relative" 
           ref={containerRef}
           style={{ backgroundColor: service.features_bg_color || '#000000' }}
         >
           <div className="max-w-7xl mx-auto px-6 lg:px-12">
-            <div className="flex flex-col lg:flex-row gap-20">
-              
-              {/* Left Side: Content Scroller with Layered Stacking */}
-              <div className="lg:w-1/2 relative">
-                {features.map((feature: any, idx: number) => (
-                  <ScrollSection 
-                    key={idx} 
-                    idx={idx} 
-                    feature={feature} 
-                    setActiveFeature={setActiveFeature} 
-                    contentColor={service.features_content_color}
-                    numberColor={service.features_number_color}
-                    lineColor={service.features_line_color}
-                    bgColor={service.features_bg_color}
-                  />
-                ))}
-              </div>
+            {features.map((feature: any, idx: number) => (
+              <div key={idx} className="flex flex-col lg:flex-row gap-10 lg:gap-20 min-h-[60vh] lg:min-h-screen py-10 lg:py-0">
+                {/* Left Side: Content */}
+                <div className="lg:w-1/2 flex flex-col justify-center">
+                  <div className="flex items-center gap-6 mb-8 lg:mb-10">
+                    <span 
+                      className="text-3xl lg:text-4xl font-display font-black"
+                      style={{ color: service.features_number_color || 'rgba(255,255,255,0.1)' }}
+                    >
+                      0{idx + 1}
+                    </span>
+                    <div 
+                      className="h-[2px] flex-grow"
+                      style={{ backgroundColor: service.features_line_color || 'rgba(255,255,255,0.05)' }}
+                    ></div>
+                  </div>
+                  
+                  <h3 className="text-4xl lg:text-6xl font-display font-black text-white mb-6 lg:mb-8 leading-tight tracking-tighter">
+                    {feature.title}
+                  </h3>
+                  
+                  <p 
+                    className="text-lg lg:text-2xl leading-relaxed font-medium mb-12"
+                    style={{ color: service.features_content_color || '#9ca3af' }}
+                  >
+                    {feature.description}
+                  </p>
+                </div>
 
-              {/* Right Side: Sticky Image */}
-              <div className="hidden lg:block lg:w-1/2 h-[80vh] sticky top-[10vh]">
-                <div className="relative w-full h-full rounded-[3rem] overflow-hidden shadow-2xl bg-gray-900 border border-gray-800 group">
-                  <AnimatePresence mode="wait">
-                    {features.map((feature: any, idx: number) => (
-                      activeFeature === idx && (
-                        <motion.div
-                          key={idx}
-                          initial={{ opacity: 0, scale: 1.1 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          exit={{ opacity: 0, scale: 0.95 }}
-                          transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
-                          className="absolute inset-0"
-                        >
-                          <img 
-                            src={feature.image_url || 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=2070'} 
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
-                            alt={feature.title}
-                            referrerPolicy="no-referrer"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                          <div className="absolute bottom-12 left-12 right-12 flex items-center justify-between">
-                            <div className="h-1 flex-grow bg-white/20 rounded-full overflow-hidden mr-6" style={{ backgroundColor: `${service.features_line_color}33` }}>
-                              <motion.div 
-                                initial={{ width: "0%" }}
-                                animate={{ width: "100%" }}
-                                transition={{ duration: 0.6 }}
-                                className="h-full"
-                                style={{ backgroundColor: service.subtitle_color || '#c2ff00' }}
-                              />
-                            </div>
-                            <span className="font-black text-2xl tracking-tighter opacity-50" style={{ color: service.features_number_color || '#ffffff' }}>
-                              0{idx + 1}
-                            </span>
-                          </div>
-                        </motion.div>
-                      )
-                    ))}
-                  </AnimatePresence>
+                {/* Right Side: Sticky Image Context */}
+                <div className="lg:w-1/2 lg:sticky lg:top-[15vh] lg:h-[70vh]">
+                  <div className="relative w-full h-[400px] lg:h-full rounded-2xl lg:rounded-[3rem] overflow-hidden shadow-2xl bg-gray-900 border border-white/5 ring-1 ring-white/10">
+                    <img 
+                      src={feature.image_url || 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=2070'} 
+                      className="w-full h-full object-cover" 
+                      alt={feature.title}
+                      referrerPolicy="no-referrer"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    
+                    <div className="absolute bottom-8 left-8 right-8 lg:bottom-12 lg:left-12 lg:right-12 flex items-center justify-between">
+                      <div className="h-1 flex-grow bg-white/20 rounded-full overflow-hidden mr-6" style={{ backgroundColor: `${service.features_line_color}33` }}>
+                        <div 
+                          className="h-full w-full"
+                          style={{ backgroundColor: service.subtitle_color || '#c2ff00' }}
+                        />
+                      </div>
+                      <span className="font-black text-xl lg:text-2xl tracking-tighter opacity-50" style={{ color: service.features_number_color || '#ffffff' }}>
+                        0{idx + 1}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
         </section>
       )}
@@ -209,66 +203,7 @@ export default function ServiceDetail() {
   );
 }
 
-function ScrollSection({ idx, feature, setActiveFeature, contentColor, numberColor, lineColor, bgColor }: any) {
-  const ref = useRef(null);
-  
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setActiveFeature(idx);
-        }
-      },
-      { threshold: 0.5 }
-    );
 
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [idx, setActiveFeature]);
-
-  return (
-    <div 
-      ref={ref} 
-      className={`group relative flex flex-col justify-center transition-all duration-500
-        ${idx === 0 ? 'mt-0' : 'mt-4 lg:mt-0'}
-        lg:sticky lg:top-0 lg:min-h-screen py-10 lg:py-0
-      `}
-      style={{ 
-        backgroundColor: bgColor || '#000000',
-        boxShadow: '0 -20px 40px rgba(0,0,0,0.5)'
-      }}
-    >
-      <div className="flex items-center gap-6 mb-10">
-        <span 
-          className="text-4xl font-display font-black transition-colors duration-500"
-          style={{ color: numberColor || 'rgba(255,255,255,0.1)' }}
-        >
-          0{idx + 1}
-        </span>
-        <div 
-          className="h-[2px] flex-grow transition-colors duration-500"
-          style={{ backgroundColor: lineColor || 'rgba(255,255,255,0.05)' }}
-        ></div>
-      </div>
-      
-      <h3 className="text-4xl md:text-6xl font-display font-black text-white mb-8 leading-tight tracking-tighter group-hover:translate-x-2 transition-transform duration-500">
-        {feature.title}
-      </h3>
-      
-      <p 
-        className="text-xl md:text-2xl leading-relaxed font-medium mb-12"
-        style={{ color: contentColor || '#9ca3af' }}
-      >
-        {feature.description}
-      </p>
-      
-      {/* Mobile Image */}
-      <div className="lg:hidden rounded-2xl overflow-hidden mt-2 mb-8 border border-white/10 shadow-xl">
-        <img src={feature.image_url} alt="" className="w-full h-auto object-cover max-h-[300px]" />
-      </div>
-    </div>
-  );
-}
 
 function FAQItem({ faq, hoverColor }: any) {
   const [isOpen, setIsOpen] = useState(false);
