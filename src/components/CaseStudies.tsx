@@ -261,23 +261,25 @@ export default function CaseStudies({
                       <h4 className="text-2xl font-bold text-white uppercase tracking-wide">{item.title}</h4>
                     </div>
                     
-                    <div className="flex-1 flex flex-col justify-between">
-                      <div className="max-h-[3.75rem] overflow-y-auto hide-scrollbar mb-6">
+                    <div className="flex-1 flex flex-col h-full">
+                      <div className={`mb-6 ${item.brochure_url ? 'line-clamp-3' : 'flex-1'}`}>
                         <p className="text-gray-400 text-sm leading-relaxed">{item.description}</p>
                       </div>
                       
                       {item.brochure_url && (
-                        <button 
-                          onClick={() => setSelectedProject(item)}
-                          className="w-full py-3 font-bold uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all mt-auto"
-                          style={{
-                            backgroundColor: item.brochure_btn_bg_color || '#ffffff',
-                            color: item.brochure_btn_text_color || '#000000',
-                            borderRadius: item.brochure_btn_radius || '8px'
-                          }}
-                        >
-                          <FileDown size={14} /> {item.brochure_btn_text || 'Download Brochure'}
-                        </button>
+                        <div className="mt-auto">
+                          <button 
+                            onClick={() => setSelectedProject(item)}
+                            className="w-full py-3 font-bold uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all"
+                            style={{
+                              backgroundColor: item.brochure_btn_bg_color || '#ffffff',
+                              color: item.brochure_btn_text_color || '#000000',
+                              borderRadius: item.brochure_btn_radius || '8px'
+                            }}
+                          >
+                            <FileDown size={14} /> {item.brochure_btn_text || 'Download Brochure'}
+                          </button>
+                        </div>
                       )}
                     </div>
                   </div>

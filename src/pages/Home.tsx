@@ -517,18 +517,23 @@ export default function Home() {
 
       case 'marquee_logos':
         return (homeContent.brands_logos && homeContent.brands_logos.length > 0) ? (
-          <div key="logos" style={{ backgroundColor: homeContent.brands_bg_color }} className="py-12 overflow-hidden flex whitespace-nowrap border-y border-gray-900 relative">
-            <div className="flex w-max animate-[marquee_30s_linear_infinite]">
-              <div className="flex items-center gap-16 md:gap-32 pr-16 md:pr-32">
-                {homeContent.brands_logos.map((logo: string, i: number) => (
-                  logo ? <img key={i} src={logo} alt="Brand Logo" className="h-12 md:h-16 w-auto max-w-none shrink-0 object-contain opacity-70 hover:opacity-100 hover:scale-110 transition-all duration-300" /> : null
-                ))}
-              </div>
-              <div className="flex items-center gap-16 md:gap-32 pr-16 md:pr-32">
-                {homeContent.brands_logos.map((logo: string, i: number) => (
-                  logo ? <img key={`dup-${i}`} src={logo} alt="Brand Logo" className="h-12 md:h-16 w-auto max-w-none shrink-0 object-contain opacity-70 hover:opacity-100 hover:scale-110 transition-all duration-300" /> : null
-                ))}
-              </div>
+          <div key="logos" style={{ backgroundColor: homeContent.brands_bg_color }} className="py-16 overflow-hidden flex whitespace-nowrap border-y border-white/5 relative">
+            <div className="flex w-max animate-[marquee_40s_linear_infinite]">
+              {[1, 2, 3, 4].map((set) => (
+                <div key={set} className="flex items-center gap-20 md:gap-40 pr-20 md:pr-40">
+                  {homeContent.brands_logos.map((logo: string, i: number) => (
+                    logo ? (
+                      <div key={`${set}-${i}`} className="h-10 md:h-14 flex items-center justify-center">
+                        <img 
+                          src={logo} 
+                          alt="Brand Logo" 
+                          className="h-full w-auto max-w-[120px] md:max-w-[180px] shrink-0 object-contain opacity-70 hover:opacity-100 hover:scale-110 transition-all duration-500 saturate-[0.8] contrast-[1.1]" 
+                        />
+                      </div>
+                    ) : null
+                  ))}
+                </div>
+              ))}
             </div>
           </div>
         ) : null;

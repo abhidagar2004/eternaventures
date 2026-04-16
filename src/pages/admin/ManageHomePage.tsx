@@ -1642,16 +1642,6 @@ export default function ManageHomePage() {
             </div>
           </div>
 
-          <div className="flex justify-end pt-4 border-t border-gray-200">
-            <button
-              type="submit"
-              disabled={isSubmitting || uploading}
-              className="px-6 py-2.5 bg-[#2596be] hover:bg-[#1e7a9b] text-white font-medium rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2"
-            >
-              {(isSubmitting || uploading) ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
-              Save Changes
-            </button>
-          </div>
           {/* Who We Serve Section */}
           <div className="pt-8 border-t border-gray-200">
             <div className="flex justify-between items-center mb-4 pb-2 border-b">
@@ -1868,7 +1858,17 @@ export default function ManageHomePage() {
             </div>
           </div>
         </form>
-        <div className="h-64"></div>
+          <div className="flex justify-end pt-12 mt-12 border-t border-gray-200">
+            <button
+              type="submit"
+              disabled={isSubmitting || uploading}
+              className="px-10 py-4 bg-[#2596be] hover:bg-[#1e7a9b] text-white font-bold uppercase tracking-widest rounded-xl transition-all shadow-xl hover:scale-105 active:scale-95 disabled:opacity-50 flex items-center gap-3"
+            >
+              {(isSubmitting || uploading) ? <Loader2 size={24} className="animate-spin" /> : <Save size={24} />}
+              Save All Changes
+            </button>
+          </div>
+          <div className="h-32"></div>
         </div>
       )}
     </div>
