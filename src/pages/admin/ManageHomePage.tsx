@@ -99,7 +99,28 @@ export default function ManageHomePage() {
     method_step3_title: "Build & Activate",
     method_step3_desc: "We execute across capabilities simultaneously — not in silos. Brand, content, performance, influence, and experience working as one integrated system, not a list of services.",
     method_step4_title: "Measure & Compound",
-    method_step4_desc: "We track what matters: brand equity, audience quality, revenue influence, and market share signals. Then we reinvest learnings into the next cycle. Growth compounds when strategy doesn’t reset every quarter."
+    method_step4_desc: "We track what matters: brand equity, audience quality, revenue influence, and market share signals. Then we reinvest learnings into the next cycle. Growth compounds when strategy doesn’t reset every quarter.",
+    section_order: ['hero', 'philosophy', 'services', 'marquee', 'method', 'who_we_serve', 'work', 'testimonials', 'cta', 'blogs', 'marquee_logos'],
+    serve_visibility: true,
+    serve_tag: "Who We Serve",
+    serve_tag_color: "#2596be",
+    serve_title: "Built for brands with real ambition.",
+    serve_title_color: "#ffffff",
+    serve_bg_color: "#000000",
+    serve_items: [
+      {title: "Consumer Brands", desc: "D2C, FMCG, and lifestyle brands competing for shelf space and mind share in an attention economy."},
+      {title: "Retail & Hospitality", desc: "Physical and experiential brands that need premium positioning to justify premium pricing."},
+      {title: "Professional Services", desc: "Firms where reputation is revenue — law, finance, consulting, healthcare, education."},
+      {title: "Startups & Founders", desc: "Early-stage ventures that need to punch above their weight before funding gives them the right to."},
+      {title: "Real Estate & Infrastructure", desc: "Developers and platforms where trust is built long before a transaction is signed."},
+      {title: "Culture & Entertainment", desc: "Artists, labels, media companies, and experience brands building audiences for the long term."},
+      {title: "Health & Wellness", desc: "Brands operating in high-trust, high-scrutiny categories where credibility is the product."},
+      {title: "Fashion & Luxury", desc: "Labels and designers navigating the intersection of aspiration, authenticity, and culture."}
+    ],
+    serve_hover_color: "#2596be",
+    serve_text_color: "#ffffff",
+    method_step_color: "#ffffff",
+    method_step_hover_color: "#2596be"
   });
 
   useEffect(() => {
@@ -174,6 +195,34 @@ export default function ManageHomePage() {
     }
   };
 
+  const moveSection = (index: number, direction: 'up' | 'down') => {
+    const newOrder = [...(formData.section_order || [])];
+    if (direction === 'up' && index > 0) {
+      [newOrder[index], newOrder[index - 1]] = [newOrder[index - 1], newOrder[index]];
+    } else if (direction === 'down' && index < newOrder.length - 1) {
+      [newOrder[index], newOrder[index + 1]] = [newOrder[index + 1], newOrder[index]];
+    }
+    setFormData({ ...formData, section_order: newOrder });
+  };
+
+  const updateServeItem = (index: number, field: string, value: string) => {
+    const newItems = [...(formData.serve_items || [])];
+    newItems[index] = { ...newItems[index], [field]: value };
+    setFormData({ ...formData, serve_items: newItems });
+  };
+
+  const removeServeItem = (index: number) => {
+    const newItems = (formData.serve_items || []).filter((_: any, i: number) => i !== index);
+    setFormData({ ...formData, serve_items: newItems });
+  };
+
+  const addServeItem = () => {
+    setFormData({ 
+      ...formData, 
+      serve_items: [...(formData.serve_items || []), { title: "", desc: "" }] 
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -237,6 +286,54 @@ export default function ManageHomePage() {
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
           <form onSubmit={handleSubmit} className="p-6 space-y-8">
           
+          {/* Section Visibility & Reordering */}
+          <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
+            <h2 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b">Homepage Section Order</h2>
+            <p className="text-sm text-gray-500 mb-4 font-normal">Use the arrows to reorder sections on your homepage. The top item will appear first.</p>
+            <div className="space-y-2">
+              {(formData.section_order || []).map((sectionId: string, index: number) => {
+                const labels: Record<string, string> = {
+                  hero: "Hero Section",
+                  philosophy: "Philosophy Section",
+                  services: "What We Do / Services",
+                  marquee: "Text Marquee",
+                  method: "How We Work / Method",
+                  who_we_serve: "Who We Serve Section",
+                  work: "Our Work / Projects",
+                  testimonials: "Testimonials Section",
+                  cta: "Call to Action (CTA)",
+                  blogs: "Latest Blogs",
+                  marquee_logos: "Client Logo Marquee"
+                };
+                return (
+                  <div key={sectionId} className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg shadow-sm">
+                    <span className="font-medium text-gray-700">{labels[sectionId] || sectionId}</span>
+                    <div className="flex gap-2">
+                      <button 
+                        type="button"
+                        disabled={index === 0}
+                        onClick={() => moveSection(index, 'up')}
+                        className="p-1.5 hover:bg-gray-100 rounded text-gray-500 disabled:opacity-30"
+                      >
+                        <Plus className="w-4 h-4 transform -rotate-180" />
+                        <span className="sr-only">Up</span>
+                      </button>
+                      <button 
+                        type="button"
+                        disabled={index === (formData.section_order?.length || 0) - 1}
+                        onClick={() => moveSection(index, 'down')}
+                        className="p-1.5 hover:bg-gray-100 rounded text-gray-500 disabled:opacity-30"
+                      >
+                        <Plus className="w-4 h-4 rotate-180" />
+                        <span className="sr-only">Down</span>
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
           {/* Global Page Settings */}
           <div>
             <h2 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b">Global Page Settings</h2>
@@ -1453,6 +1550,182 @@ export default function ManageHomePage() {
               {(isSubmitting || uploading) ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
               Save Changes
             </button>
+          </div>
+          {/* Who We Serve Section */}
+          <div className="pt-8 border-t border-gray-200">
+            <div className="flex justify-between items-center mb-4 pb-2 border-b">
+              <h2 className="text-lg font-bold text-gray-900">Who We Serve Section</h2>
+              <label className="flex items-center cursor-pointer">
+                <div className="relative">
+                  <input 
+                    type="checkbox" 
+                    className="sr-only" 
+                    checked={formData.serve_visibility}
+                    onChange={(e) => setFormData({ ...formData, serve_visibility: e.target.checked })}
+                  />
+                  <div className={`block w-10 h-6 rounded-full transition-colors ${formData.serve_visibility ? 'bg-[#2596be]' : 'bg-gray-300'}`}></div>
+                  <div className={`absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${formData.serve_visibility ? 'transform translate-x-4' : ''}`}></div>
+                </div>
+                <span className="ml-3 text-sm font-medium text-gray-700">Visible</span>
+              </label>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Tag Text</label>
+                <input
+                  type="text"
+                  value={formData.serve_tag}
+                  onChange={(e) => setFormData({ ...formData, serve_tag: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Tag Color</label>
+                <div className="flex gap-2">
+                  <input
+                    type="color"
+                    value={formData.serve_tag_color}
+                    onChange={(e) => setFormData({ ...formData, serve_tag_color: e.target.value })}
+                    className="h-10 w-10 rounded cursor-pointer"
+                  />
+                  <input
+                    type="text"
+                    value={formData.serve_tag_color}
+                    onChange={(e) => setFormData({ ...formData, serve_tag_color: e.target.value })}
+                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2"
+                  />
+                </div>
+              </div>
+              <div className="md:col-span-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Section Title</label>
+                <textarea
+                  rows={2}
+                  value={formData.serve_title}
+                  onChange={(e) => setFormData({ ...formData, serve_title: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Title Color</label>
+                <div className="flex gap-2">
+                  <input
+                    type="color"
+                    value={formData.serve_title_color}
+                    onChange={(e) => setFormData({ ...formData, serve_title_color: e.target.value })}
+                    className="h-10 w-10 rounded cursor-pointer"
+                  />
+                  <input
+                    type="text"
+                    value={formData.serve_title_color}
+                    onChange={(e) => setFormData({ ...formData, serve_title_color: e.target.value })}
+                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Background Color</label>
+                <div className="flex gap-2">
+                  <input
+                    type="color"
+                    value={formData.serve_bg_color}
+                    onChange={(e) => setFormData({ ...formData, serve_bg_color: e.target.value })}
+                    className="h-10 w-10 rounded cursor-pointer"
+                  />
+                  <input
+                    type="text"
+                    value={formData.serve_bg_color}
+                    onChange={(e) => setFormData({ ...formData, serve_bg_color: e.target.value })}
+                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Item Accent/Hover Color</label>
+                <div className="flex gap-2">
+                  <input
+                    type="color"
+                    value={formData.serve_hover_color}
+                    onChange={(e) => setFormData({ ...formData, serve_hover_color: e.target.value })}
+                    className="h-10 w-10 rounded cursor-pointer"
+                  />
+                  <input
+                    type="text"
+                    value={formData.serve_hover_color}
+                    onChange={(e) => setFormData({ ...formData, serve_hover_color: e.target.value })}
+                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Item Text Color</label>
+                <div className="flex gap-2">
+                  <input
+                    type="color"
+                    value={formData.serve_text_color}
+                    onChange={(e) => setFormData({ ...formData, serve_text_color: e.target.value })}
+                    className="h-10 w-10 rounded cursor-pointer"
+                  />
+                  <input
+                    type="text"
+                    value={formData.serve_text_color}
+                    onChange={(e) => setFormData({ ...formData, serve_text_color: e.target.value })}
+                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2"
+                  />
+                </div>
+              </div>
+
+              {/* Serve Items List */}
+              <div className="md:col-span-2 space-y-4 mt-6">
+                <div className="flex justify-between items-center border-b pb-2">
+                  <h3 className="font-bold text-gray-900">Industries / Items</h3>
+                  <button
+                    type="button"
+                    onClick={addServeItem}
+                    className="flex items-center gap-1 text-sm bg-gray-100 px-3 py-1 rounded hover:bg-gray-200 text-[#2596be] font-bold transition-colors"
+                  >
+                    <Plus className="w-4 h-4" /> Add Item
+                  </button>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {(formData.serve_items || []).map((item: any, index: number) => (
+                    <div key={index} className="p-4 bg-gray-50 rounded-lg border border-gray-200 relative group">
+                      <button
+                        type="button"
+                        onClick={() => removeServeItem(index)}
+                        className="absolute top-2 right-2 p-1 text-red-500 hover:bg-red-50 rounded"
+                        title="Remove Item"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                      <div className="space-y-3">
+                        <div>
+                          <label className="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-wider">Title</label>
+                          <input
+                            type="text"
+                            value={item.title}
+                            onChange={(e) => updateServeItem(index, 'title', e.target.value)}
+                            className="w-full border border-gray-200 rounded px-3 py-1.5 focus:border-[#2596be] focus:ring-1 focus:ring-[#2596be] outline-none"
+                            placeholder="e.g. Consumer Brands"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-wider">Description</label>
+                          <textarea
+                            rows={2}
+                            value={item.desc}
+                            onChange={(e) => updateServeItem(index, 'desc', e.target.value)}
+                            className="w-full border border-gray-200 rounded px-3 py-1.5 focus:border-[#2596be] focus:ring-1 focus:ring-[#2596be] outline-none text-sm"
+                            placeholder="Brief description..."
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </form>
         </div>
