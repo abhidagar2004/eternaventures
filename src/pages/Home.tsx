@@ -80,7 +80,25 @@ export default function Home() {
     blogs_btn_text_color: "#ffffff",
     blogs_btn_radius: "9999px",
     cta_btn_text_color: "#000000",
-    cta_btn_radius: "9999px"
+    cta_btn_radius: "9999px",
+    help_tag: "What We Do",
+    help_tag_color: "#2596be",
+    method_visibility: true,
+    method_tag: "How We Work",
+    method_tag_color: "#2596be",
+    method_title: "The EternaVentures Method",
+    method_title_color: "#ffffff",
+    method_quote: "“We don’t start with deliverables. We start with the gap between where your brand is and where it should be — and build the bridge.”",
+    method_quote_color: "#c2ff00",
+    method_bg_color: "#000000",
+    method_step1_title: "Audit & Immersion",
+    method_step1_desc: "We spend time in your world before we touch your brand. Market landscape, competitor positioning, audience signals, and the story your brand is currently telling — whether you intended it or not.",
+    method_step2_title: "Strategic Foundation",
+    method_step2_desc: "Every action we take is grounded in a positioning document that the whole team — ours and yours — can build from. Clear differentiation, defined audience tiers, and a growth thesis we can defend.",
+    method_step3_title: "Build & Activate",
+    method_step3_desc: "We execute across capabilities simultaneously — not in silos. Brand, content, performance, influence, and experience working as one integrated system, not a list of services.",
+    method_step4_title: "Measure & Compound",
+    method_step4_desc: "We track what matters: brand equity, audience quality, revenue influence, and market share signals. Then we reinvest learnings into the next cycle. Growth compounds when strategy doesn’t reset every quarter."
   });
   const [services, setServices] = useState<any[]>([]);
 
@@ -273,21 +291,44 @@ export default function Home() {
       {((homeContent.help_heading && homeContent.help_heading.trim() !== "") || (homeContent.help_subheading && homeContent.help_subheading.trim() !== "")) && (
         <section style={{ backgroundColor: homeContent.help_bg_color, color: homeContent.help_text_color }} className="py-24 md:py-32 px-6 md:px-12">
           <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16">
-              {homeContent.help_heading && homeContent.help_heading.trim() !== "" && (
-                <h2 className={`${homeContent.help_heading_size || 'text-5xl md:text-7xl'} font-display font-black uppercase tracking-tighter leading-none mb-8 md:mb-0 whitespace-pre-line`}>
-                  {homeContent.help_heading}
-                </h2>
-              )}
-              <div className="max-w-md text-right">
+            {homeContent.help_tag && (
+              <motion.span 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                style={{ color: homeContent.help_tag_color }}
+                className="inline-block text-sm font-bold uppercase tracking-[0.3em] mb-12"
+              >
+                {homeContent.help_tag}
+              </motion.span>
+            )}
+
+            <div className="flex flex-col lg:flex-row justify-between items-start gap-12 lg:gap-24 mb-24">
+              <div className="lg:w-3/5">
+                {homeContent.help_heading && homeContent.help_heading.trim() !== "" && (
+                  <h2 className={`${homeContent.help_heading_size || 'text-5xl md:text-7xl'} font-display font-black uppercase tracking-tighter leading-[0.85] whitespace-pre-line`}>
+                    {homeContent.help_heading}
+                  </h2>
+                )}
+              </div>
+              <div className="lg:w-2/5 flex flex-col items-start lg:items-end lg:text-right">
                 {homeContent.help_subheading && homeContent.help_subheading.trim() !== "" && (
-                  <p className={`${homeContent.help_subheading_size || 'text-xl font-bold'} mb-6 whitespace-pre-line`}>
+                  <p className={`${homeContent.help_subheading_size || 'text-xl font-bold'} mb-10 leading-relaxed opacity-90 whitespace-pre-line`}>
                     {homeContent.help_subheading}
                   </p>
                 )}
                 {homeContent.help_button_text && homeContent.help_button_text.trim() !== "" && (
-                  <Link to="/services" style={{ backgroundColor: homeContent.help_btn_color, color: homeContent.help_btn_text_color, borderRadius: homeContent.help_btn_radius }} className="inline-block font-bold uppercase tracking-wider px-8 py-4 hover:opacity-90 transition-opacity">
+                  <Link 
+                    to="/services" 
+                    style={{ 
+                      backgroundColor: homeContent.help_btn_color, 
+                      color: homeContent.help_btn_text_color, 
+                      borderRadius: homeContent.help_btn_radius 
+                    }} 
+                    className="group inline-flex items-center gap-3 font-bold uppercase tracking-wider px-10 py-5 hover:opacity-90 transition-all active:scale-95"
+                  >
                     {homeContent.help_button_text}
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 )}
               </div>
@@ -329,7 +370,86 @@ export default function Home() {
         </div>
       )}
 
+      {/* The EternaVentures Method Section */}
+      {homeContent.method_visibility && (
+        <section style={{ backgroundColor: homeContent.method_bg_color }} className="py-24 md:py-32 px-6 md:px-12 relative overflow-hidden">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 mb-24">
+              <div className="lg:w-1/2">
+                {homeContent.method_tag && (
+                  <motion.span 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    style={{ color: homeContent.method_tag_color }}
+                    className="inline-block text-sm font-bold uppercase tracking-[0.3em] mb-8"
+                  >
+                    {homeContent.method_tag}
+                  </motion.span>
+                )}
+                <motion.h2 
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 }}
+                  style={{ color: homeContent.method_title_color }}
+                  className="text-5xl md:text-7xl lg:text-8xl font-display font-black uppercase tracking-tighter leading-[0.85] mb-12"
+                >
+                  {homeContent.method_title}
+                </motion.h2>
+              </div>
+              <div className="lg:w-1/2 flex items-center">
+                <motion.p 
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 }}
+                  style={{ color: homeContent.method_quote_color }}
+                  className="text-2xl md:text-3xl lg:text-4xl font-display font-black uppercase tracking-tight italic leading-tight"
+                >
+                  {homeContent.method_quote}
+                </motion.p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {[
+                { title: homeContent.method_step1_title, desc: homeContent.method_step1_desc, step: "01" },
+                { title: homeContent.method_step2_title, desc: homeContent.method_step2_desc, step: "02" },
+                { title: homeContent.method_step3_title, desc: homeContent.method_step3_desc, step: "03" },
+                { title: homeContent.method_step4_title, desc: homeContent.method_step4_desc, step: "04" }
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 * (i + 1) }}
+                  className="relative group h-full"
+                >
+                  <div className="mb-6">
+                    <span className="text-6xl font-display font-black text-white/10 group-hover:text-[#2596be]/20 transition-colors duration-500">
+                      {item.step}
+                    </span>
+                  </div>
+                  <h3 className="text-2xl font-display font-black uppercase tracking-tight text-white mb-4 group-hover:text-[#2596be] transition-colors">
+                    {item.title}
+                  </h3>
+                  <p className="text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed">
+                    {item.desc}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+          
+          {/* Subtle methodology background accent */}
+          <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-[#2596be]/5 blur-[120px] rounded-full pointer-events-none"></div>
+        </section>
+      )}
+
       {/* Work Section */}
+
       {((homeContent.our_work_heading && homeContent.our_work_heading.trim() !== "") || (homeContent.our_work_subheading && homeContent.our_work_subheading.trim() !== "")) && (
         <section style={{ backgroundColor: homeContent.our_work_bg_color, color: homeContent.our_work_text_color }} className="py-24 md:py-32 overflow-hidden">
           <div className="max-w-[100rem] mx-auto px-6 md:px-12 mb-16">

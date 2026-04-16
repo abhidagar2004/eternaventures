@@ -81,7 +81,25 @@ export default function ManageHomePage() {
     our_work_btn_radius: "9999px",
     blogs_btn_text_color: "#ffffff",
     blogs_btn_radius: "9999px",
-    cta_btn_radius: "9999px"
+    cta_btn_radius: "9999px",
+    help_tag: "What We Do",
+    help_tag_color: "#2596be",
+    method_visibility: true,
+    method_tag: "How We Work",
+    method_tag_color: "#2596be",
+    method_title: "The EternaVentures Method",
+    method_title_color: "#ffffff",
+    method_quote: "“We don’t start with deliverables. We start with the gap between where your brand is and where it should be — and build the bridge.”",
+    method_quote_color: "#c2ff00",
+    method_bg_color: "#000000",
+    method_step1_title: "Audit & Immersion",
+    method_step1_desc: "We spend time in your world before we touch your brand. Market landscape, competitor positioning, audience signals, and the story your brand is currently telling — whether you intended it or not.",
+    method_step2_title: "Strategic Foundation",
+    method_step2_desc: "Every action we take is grounded in a positioning document that the whole team — ours and yours — can build from. Clear differentiation, defined audience tiers, and a growth thesis we can defend.",
+    method_step3_title: "Build & Activate",
+    method_step3_desc: "We execute across capabilities simultaneously — not in silos. Brand, content, performance, influence, and experience working as one integrated system, not a list of services.",
+    method_step4_title: "Measure & Compound",
+    method_step4_desc: "We track what matters: brand equity, audience quality, revenue influence, and market share signals. Then we reinvest learnings into the next cycle. Growth compounds when strategy doesn’t reset every quarter."
   });
 
   useEffect(() => {
@@ -553,11 +571,35 @@ export default function ManageHomePage() {
             </div>
           </div>
 
-          {/* How We Can Help Section */}
-
           <div>
-            <h2 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b">"How We Can Help You" Section</h2>
+            <h2 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b">"What We Do" (Services Section)</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="md:col-span-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Tag Text</label>
+                <input
+                  type="text"
+                  value={formData.help_tag}
+                  onChange={(e) => setFormData({ ...formData, help_tag: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                />
+              </div>
+              <div className="md:col-span-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Tag Color</label>
+                <div className="flex gap-2">
+                  <input
+                    type="color"
+                    value={formData.help_tag_color}
+                    onChange={(e) => setFormData({ ...formData, help_tag_color: e.target.value })}
+                    className="h-10 w-10 rounded cursor-pointer"
+                  />
+                  <input
+                    type="text"
+                    value={formData.help_tag_color}
+                    onChange={(e) => setFormData({ ...formData, help_tag_color: e.target.value })}
+                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                  />
+                </div>
+              </div>
               <div className="md:col-span-1">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Heading</label>
                 <textarea
@@ -1209,6 +1251,194 @@ export default function ManageHomePage() {
                     onChange={(e) => setFormData({ ...formData, cta_text_color: e.target.value })}
                     className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
                   />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* The EternaVentures Method Section */}
+          <div>
+            <div className="flex justify-between items-center mb-4 pb-2 border-b">
+              <h2 className="text-lg font-bold text-gray-900">How We Work (Method Section)</h2>
+              <label className="flex items-center cursor-pointer">
+                <div className="relative">
+                  <input 
+                    type="checkbox" 
+                    className="sr-only" 
+                    checked={formData.method_visibility}
+                    onChange={(e) => setFormData({ ...formData, method_visibility: e.target.checked })}
+                  />
+                  <div className={`block w-10 h-6 rounded-full transition-colors ${formData.method_visibility ? 'bg-[#2596be]' : 'bg-gray-300'}`}></div>
+                  <div className={`absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${formData.method_visibility ? 'transform translate-x-4' : ''}`}></div>
+                </div>
+                <span className="ml-3 text-sm font-medium text-gray-700">Visible</span>
+              </label>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Tag Text</label>
+                <input
+                  type="text"
+                  value={formData.method_tag}
+                  onChange={(e) => setFormData({ ...formData, method_tag: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Tag Color</label>
+                <div className="flex gap-2">
+                  <input
+                    type="color"
+                    value={formData.method_tag_color}
+                    onChange={(e) => setFormData({ ...formData, method_tag_color: e.target.value })}
+                    className="h-10 w-10 rounded cursor-pointer"
+                  />
+                  <input
+                    type="text"
+                    value={formData.method_tag_color}
+                    onChange={(e) => setFormData({ ...formData, method_tag_color: e.target.value })}
+                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                  />
+                </div>
+              </div>
+              <div className="md:col-span-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Method Title</label>
+                <input
+                  type="text"
+                  value={formData.method_title}
+                  onChange={(e) => setFormData({ ...formData, method_title: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                />
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Quote Text</label>
+                <textarea
+                  rows={2}
+                  value={formData.method_quote}
+                  onChange={(e) => setFormData({ ...formData, method_quote: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Quote Color</label>
+                <div className="flex gap-2">
+                  <input
+                    type="color"
+                    value={formData.method_quote_color}
+                    onChange={(e) => setFormData({ ...formData, method_quote_color: e.target.value })}
+                    className="h-10 w-10 rounded cursor-pointer"
+                  />
+                  <input
+                    type="text"
+                    value={formData.method_quote_color}
+                    onChange={(e) => setFormData({ ...formData, method_quote_color: e.target.value })}
+                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Background Color</label>
+                <div className="flex gap-2">
+                  <input
+                    type="color"
+                    value={formData.method_bg_color}
+                    onChange={(e) => setFormData({ ...formData, method_bg_color: e.target.value })}
+                    className="h-10 w-10 rounded cursor-pointer"
+                  />
+                  <input
+                    type="text"
+                    value={formData.method_bg_color}
+                    onChange={(e) => setFormData({ ...formData, method_bg_color: e.target.value })}
+                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                  />
+                </div>
+              </div>
+
+              {/* Steps */}
+              <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 p-4 bg-gray-50 rounded-lg">
+                <div className="space-y-4">
+                  <h3 className="font-bold text-gray-800 border-b">Step 01</h3>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-500 mb-1">Title</label>
+                    <input
+                      type="text"
+                      value={formData.method_step1_title}
+                      onChange={(e) => setFormData({ ...formData, method_step1_title: e.target.value })}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-500 mb-1">Description</label>
+                    <textarea
+                      rows={3}
+                      value={formData.method_step1_desc}
+                      onChange={(e) => setFormData({ ...formData, method_step1_desc: e.target.value })}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <h3 className="font-bold text-gray-800 border-b">Step 02</h3>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-500 mb-1">Title</label>
+                    <input
+                      type="text"
+                      value={formData.method_step2_title}
+                      onChange={(e) => setFormData({ ...formData, method_step2_title: e.target.value })}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-500 mb-1">Description</label>
+                    <textarea
+                      rows={3}
+                      value={formData.method_step2_desc}
+                      onChange={(e) => setFormData({ ...formData, method_step2_desc: e.target.value })}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <h3 className="font-bold text-gray-800 border-b">Step 03</h3>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-500 mb-1">Title</label>
+                    <input
+                      type="text"
+                      value={formData.method_step3_title}
+                      onChange={(e) => setFormData({ ...formData, method_step3_title: e.target.value })}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-500 mb-1">Description</label>
+                    <textarea
+                      rows={3}
+                      value={formData.method_step3_desc}
+                      onChange={(e) => setFormData({ ...formData, method_step3_desc: e.target.value })}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <h3 className="font-bold text-gray-800 border-b">Step 04</h3>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-500 mb-1">Title</label>
+                    <input
+                      type="text"
+                      value={formData.method_step4_title}
+                      onChange={(e) => setFormData({ ...formData, method_step4_title: e.target.value })}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-500 mb-1">Description</label>
+                    <textarea
+                      rows={3}
+                      value={formData.method_step4_desc}
+                      onChange={(e) => setFormData({ ...formData, method_step4_desc: e.target.value })}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
