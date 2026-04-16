@@ -63,6 +63,17 @@ export default function Home() {
     brands_text_color: "#ffffff",
     blogs_subheading: "",
     blogs_subheading_size: "text-lg md:text-xl font-bold",
+    phil_tag: "Our Philosophy",
+    phil_tag_color: "#2596be",
+    phil_tag_bg_color: "rgba(37, 150, 190, 0.1)",
+    phil_title: "Growth is not a campaign. It’s a discipline.",
+    phil_title_color: "#ffffff",
+    phil_title_size: "text-4xl md:text-6xl lg:text-7xl",
+    phil_description: "",
+    phil_description_color: "#9ca3af",
+    phil_description_size: "text-lg md:text-xl",
+    phil_bg_color: "#000000",
+    phil_visibility: true,
     help_btn_radius: "9999px",
     our_work_btn_text_color: "#ffffff",
     our_work_btn_radius: "9999px",
@@ -201,7 +212,64 @@ export default function Home() {
         </div>
       )}
 
+      {/* Philosophy Section */}
+      {homeContent.phil_visibility && homeContent.phil_title && (
+        <section style={{ backgroundColor: homeContent.phil_bg_color }} className="py-24 md:py-32 px-6 md:px-12 relative overflow-hidden">
+          <div className="max-w-7xl mx-auto">
+            {homeContent.phil_tag && (
+              <motion.span 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                style={{ 
+                  color: homeContent.phil_tag_color,
+                  backgroundColor: homeContent.phil_tag_bg_color || 'transparent'
+                }}
+                className="inline-block px-4 py-1.5 rounded-full text-sm font-bold uppercase tracking-widest mb-8"
+              >
+                {homeContent.phil_tag}
+              </motion.span>
+            )}
+            
+            <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start">
+              <div className="lg:w-1/2">
+                <motion.h2 
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 }}
+                  style={{ color: homeContent.phil_title_color }}
+                  className={`${homeContent.phil_title_size || 'text-4xl md:text-6xl'} font-display font-black uppercase tracking-tighter leading-[0.9] whitespace-pre-line`}
+                >
+                  {homeContent.phil_title}
+                </motion.h2>
+              </div>
+              
+              <div className="lg:w-1/2">
+                <motion.div
+                  initial={{ opacity: 0, x: 30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <p 
+                    style={{ color: homeContent.phil_description_color }}
+                    className={`${homeContent.phil_description_size || 'text-lg md:text-xl'} leading-relaxed opacity-90 whitespace-pre-line`}
+                  >
+                    {homeContent.phil_description}
+                  </p>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Subtle Background Accent */}
+          <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-[#2596be]/5 to-transparent pointer-none"></div>
+        </section>
+      )}
+
       {/* Services Section */}
+
       {((homeContent.help_heading && homeContent.help_heading.trim() !== "") || (homeContent.help_subheading && homeContent.help_subheading.trim() !== "")) && (
         <section style={{ backgroundColor: homeContent.help_bg_color, color: homeContent.help_text_color }} className="py-24 md:py-32 px-6 md:px-12">
           <div className="max-w-7xl mx-auto">
