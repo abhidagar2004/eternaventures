@@ -336,12 +336,17 @@ export default function Home() {
               {services.length > 0 && (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                   {services.slice(0, 6).map((service, i) => (
-                    <Link to={`/services/${service.slug}`} key={i} className="group cursor-pointer text-inherit no-underline">
+                    <Link 
+                      to={`/services/${service.slug}`} 
+                      key={i} 
+                      className="group cursor-pointer text-inherit no-underline"
+                      style={{ '--hover-color': homeContent.services_hover_color } as any}
+                    >
                       <div className="overflow-hidden mb-6 rounded-xl bg-gray-100">
                         <img src={service.image_url || 'https://picsum.photos/seed/service/800/800'} alt={service.title} className="w-full aspect-square object-cover transform group-hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" />
                       </div>
                       {service.subtitle && <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">{service.subtitle}</p>}
-                      <h3 className="text-3xl font-display font-black uppercase tracking-tighter mb-4 transition-colors group-hover:text-[#2596be]">{service.title}</h3>
+                      <h3 className={`font-display font-black uppercase tracking-tighter mb-4 transition-colors group-hover:text-[var(--hover-color)] ${homeContent.serve_item_title_size || 'text-3xl'}`}>{service.title}</h3>
                       <p className="opacity-80 leading-relaxed line-clamp-3">{service.description}</p>
                     </Link>
                   ))}
@@ -388,7 +393,7 @@ export default function Home() {
                     viewport={{ once: true }}
                     transition={{ delay: 0.1 }}
                     style={{ color: homeContent.method_title_color }}
-                    className="text-5xl md:text-7xl lg:text-8xl font-display font-black uppercase tracking-tighter leading-[0.85] mb-12"
+                    className={`${homeContent.method_title_size || 'text-5xl md:text-7xl lg:text-8xl'} font-display font-black uppercase tracking-tighter leading-[0.85] mb-12`}
                   >
                     {homeContent.method_title}
                   </motion.h2>
@@ -400,7 +405,7 @@ export default function Home() {
                     viewport={{ once: true }}
                     transition={{ delay: 0.2 }}
                     style={{ color: homeContent.method_quote_color }}
-                    className="text-2xl md:text-3xl lg:text-4xl font-display font-black uppercase tracking-tight italic leading-tight"
+                    className={`${homeContent.method_quote_size || 'text-2xl md:text-3xl lg:text-4xl'} font-display font-black uppercase tracking-tight italic leading-tight`}
                   >
                     {homeContent.method_quote}
                   </motion.p>
@@ -420,16 +425,25 @@ export default function Home() {
                     viewport={{ once: true }}
                     transition={{ delay: 0.1 * (i + 1) }}
                     className="relative group h-full"
+                    style={{ '--step-hover-color': homeContent.method_step_hover_color } as any}
                   >
                     <div className="mb-6">
-                      <span className="text-6xl font-display font-black text-white/10 group-hover:text-[#2596be]/20 transition-colors duration-500">
+                      <span 
+                        style={{ color: homeContent.page_text_color }}
+                        className="text-6xl font-display font-black opacity-10 group-hover:opacity-20 group-hover:text-[var(--step-hover-color)] transition-all duration-500"
+                      >
                         {item.step}
                       </span>
                     </div>
-                    <h3 className="text-2xl font-display font-black uppercase tracking-tight text-white mb-4 group-hover:text-[#2596be] transition-colors">
+                    <h3 
+                      style={{ color: homeContent.method_step_color }}
+                      className={`${homeContent.method_step_title_size || 'text-2xl'} font-display font-black uppercase tracking-tight mb-4 group-hover:text-[var(--step-hover-color)] transition-colors`}
+                    >
                       {item.title}
                     </h3>
-                    <p className="text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed">
+                    <p 
+                      className={`${homeContent.method_step_desc_size || 'text-base'} text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed`}
+                    >
                       {item.desc}
                     </p>
                   </motion.div>
@@ -451,7 +465,7 @@ export default function Home() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     style={{ color: homeContent.serve_tag_color }}
-                    className="inline-block text-sm font-bold uppercase tracking-[0.3em] mb-8"
+                    className={`${homeContent.serve_tag_size || 'text-sm'} inline-block font-bold uppercase tracking-[0.3em] mb-8`}
                   >
                     {homeContent.serve_tag}
                   </motion.span>
@@ -462,7 +476,7 @@ export default function Home() {
                   viewport={{ once: true }}
                   transition={{ delay: 0.1 }}
                   style={{ color: homeContent.serve_title_color }}
-                  className="text-5xl md:text-7xl lg:text-8xl font-display font-black uppercase tracking-tighter leading-[0.85] w-full lg:w-3/4"
+                  className={`${homeContent.serve_title_size || 'text-5xl md:text-7xl lg:text-8xl'} font-display font-black uppercase tracking-tighter leading-[0.85] w-full lg:w-3/4`}
                 >
                   {homeContent.serve_title}
                 </motion.h2>
@@ -477,15 +491,21 @@ export default function Home() {
                     viewport={{ once: true }}
                     transition={{ delay: 0.05 * i }}
                     className="group"
+                    style={{ '--serve-hover-color': homeContent.serve_hover_color } as any}
                   >
                     <h3 
                       style={{ color: homeContent.serve_text_color }}
-                      className="text-xl md:text-2xl font-display font-black uppercase tracking-tight mb-4 group-hover:text-[#2596be] transition-colors duration-300 flex items-center gap-3"
+                      className={`${homeContent.serve_item_title_size || 'text-xl md:text-2xl'} font-display font-black uppercase tracking-tight mb-4 group-hover:text-[var(--serve-hover-color)] transition-colors duration-300 flex items-center gap-3`}
                     >
-                      <span className="w-2 h-2 rounded-full bg-[#2596be] scale-0 group-hover:scale-110 transition-transform duration-300"></span>
+                      <span 
+                        style={{ backgroundColor: homeContent.serve_hover_color }}
+                        className="w-2 h-2 rounded-full scale-0 group-hover:scale-110 transition-transform duration-300"
+                      ></span>
                       {item.title}
                     </h3>
-                    <p className="text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed">
+                    <p 
+                      className={`${homeContent.serve_item_desc_size || 'text-base'} text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed`}
+                    >
                       {item.desc}
                     </p>
                   </motion.div>

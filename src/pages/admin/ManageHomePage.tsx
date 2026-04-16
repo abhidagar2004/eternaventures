@@ -120,7 +120,16 @@ export default function ManageHomePage() {
     serve_hover_color: "#2596be",
     serve_text_color: "#ffffff",
     method_step_color: "#ffffff",
-    method_step_hover_color: "#2596be"
+    method_step_hover_color: "#2596be",
+    method_title_size: "text-5xl md:text-7xl lg:text-8xl",
+    method_quote_size: "text-2xl md:text-3xl lg:text-4xl",
+    method_step_title_size: "text-2xl",
+    method_step_desc_size: "text-base",
+    serve_title_size: "text-5xl md:text-7xl lg:text-8xl",
+    serve_tag_size: "text-sm",
+    serve_item_title_size: "text-xl md:text-2xl",
+    serve_item_desc_size: "text-base",
+    services_hover_color: "#2596be"
   });
 
   useEffect(() => {
@@ -819,6 +828,23 @@ export default function ManageHomePage() {
                   />
                 </div>
               </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Service Card Hover Color</label>
+                <div className="flex gap-2">
+                  <input
+                    type="color"
+                    value={formData.services_hover_color}
+                    onChange={(e) => setFormData({ ...formData, services_hover_color: e.target.value })}
+                    className="h-10 w-10 rounded cursor-pointer"
+                  />
+                  <input
+                    type="text"
+                    value={formData.services_hover_color}
+                    onChange={(e) => setFormData({ ...formData, services_hover_color: e.target.value })}
+                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
@@ -1407,6 +1433,16 @@ export default function ManageHomePage() {
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
                 />
               </div>
+              <div className="md:col-span-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Title Font Size (Tailwind Class)</label>
+                <input
+                  type="text"
+                  value={formData.method_title_size}
+                  onChange={(e) => setFormData({ ...formData, method_title_size: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                  placeholder="e.g. text-5xl md:text-7xl"
+                />
+              </div>
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Quote Text</label>
                 <textarea
@@ -1414,6 +1450,16 @@ export default function ManageHomePage() {
                   value={formData.method_quote}
                   onChange={(e) => setFormData({ ...formData, method_quote: e.target.value })}
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                />
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Quote Font Size (Tailwind Class)</label>
+                <input
+                  type="text"
+                  value={formData.method_quote_size}
+                  onChange={(e) => setFormData({ ...formData, method_quote_size: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                  placeholder="e.g. text-2xl md:text-4xl"
                 />
               </div>
               <div>
@@ -1447,6 +1493,61 @@ export default function ManageHomePage() {
                     value={formData.method_bg_color}
                     onChange={(e) => setFormData({ ...formData, method_bg_color: e.target.value })}
                     className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                  />
+                </div>
+              </div>
+              
+              <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t">
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 mb-2 uppercase">Step Title Color</label>
+                  <div className="flex gap-2">
+                    <input
+                      type="color"
+                      value={formData.method_step_color}
+                      onChange={(e) => setFormData({ ...formData, method_step_color: e.target.value })}
+                      className="h-8 w-8 rounded cursor-pointer"
+                    />
+                    <input
+                      type="text"
+                      value={formData.method_step_color}
+                      onChange={(e) => setFormData({ ...formData, method_step_color: e.target.value })}
+                      className="flex-1 border border-gray-300 rounded px-2 py-1 text-xs"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 mb-2 uppercase">Step Hover Color</label>
+                  <div className="flex gap-2">
+                    <input
+                      type="color"
+                      value={formData.method_step_hover_color}
+                      onChange={(e) => setFormData({ ...formData, method_step_hover_color: e.target.value })}
+                      className="h-8 w-8 rounded cursor-pointer"
+                    />
+                    <input
+                      type="text"
+                      value={formData.method_step_hover_color}
+                      onChange={(e) => setFormData({ ...formData, method_step_hover_color: e.target.value })}
+                      className="flex-1 border border-gray-300 rounded px-2 py-1 text-xs"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 mb-2 uppercase">Step Title Size</label>
+                  <input
+                    type="text"
+                    value={formData.method_step_title_size}
+                    onChange={(e) => setFormData({ ...formData, method_step_title_size: e.target.value })}
+                    className="w-full border border-gray-300 rounded px-2 py-1 text-xs"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 mb-2 uppercase">Step Desc Size</label>
+                  <input
+                    type="text"
+                    value={formData.method_step_desc_size}
+                    onChange={(e) => setFormData({ ...formData, method_step_desc_size: e.target.value })}
+                    className="w-full border border-gray-300 rounded px-2 py-1 text-xs"
                   />
                 </div>
               </div>
@@ -1675,6 +1776,45 @@ export default function ManageHomePage() {
                 </div>
               </div>
 
+              <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t">
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 mb-2 uppercase">Title Size</label>
+                  <input
+                    type="text"
+                    value={formData.serve_title_size}
+                    onChange={(e) => setFormData({ ...formData, serve_title_size: e.target.value })}
+                    className="w-full border border-gray-300 rounded px-2 py-1 text-xs"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 mb-2 uppercase">Tag Size</label>
+                  <input
+                    type="text"
+                    value={formData.serve_tag_size}
+                    onChange={(e) => setFormData({ ...formData, serve_tag_size: e.target.value })}
+                    className="w-full border border-gray-300 rounded px-2 py-1 text-xs"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 mb-2 uppercase">Item Title Size</label>
+                  <input
+                    type="text"
+                    value={formData.serve_item_title_size}
+                    onChange={(e) => setFormData({ ...formData, serve_item_title_size: e.target.value })}
+                    className="w-full border border-gray-300 rounded px-2 py-1 text-xs"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 mb-2 uppercase">Item Desc Size</label>
+                  <input
+                    type="text"
+                    value={formData.serve_item_desc_size}
+                    onChange={(e) => setFormData({ ...formData, serve_item_desc_size: e.target.value })}
+                    className="w-full border border-gray-300 rounded px-2 py-1 text-xs"
+                  />
+                </div>
+              </div>
+
               {/* Serve Items List */}
               <div className="md:col-span-2 space-y-4 mt-6">
                 <div className="flex justify-between items-center border-b pb-2">
@@ -1728,6 +1868,7 @@ export default function ManageHomePage() {
             </div>
           </div>
         </form>
+        <div className="h-64"></div>
         </div>
       )}
     </div>
