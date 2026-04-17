@@ -4,7 +4,7 @@ import { supabase, uploadImage } from '../../lib/supabase';
 import { 
   Loader2, Save, ArrowLeft, ArrowUp, ArrowDown, Trash2, Plus, 
   GripVertical, Image as ImageIcon, Type, Layout, Palette, 
-  Layers, Monitor, Smartphone, Check, X, Eye
+  Layers, Monitor, Smartphone, Check, X, Eye, FileText
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'motion/react';

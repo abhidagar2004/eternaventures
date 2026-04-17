@@ -32,9 +32,9 @@ export default function DynamicPage({ systemSlug }: { systemSlug?: string }) {
         setPage(pageData);
 
         // Fetch shared dynamic data if blocks need it
-        const needsServices = pageData.blocks.some((b: any) => b.type === 'services_grid');
-        const needsProjects = pageData.blocks.some((b: any) => b.type === 'projects_slider');
-        const needsBlogs = pageData.blocks.some((b: any) => b.type === 'latest_blogs');
+        const needsServices = (pageData.blocks || []).some((b: any) => b.type === 'services_grid');
+        const needsProjects = (pageData.blocks || []).some((b: any) => b.type === 'projects_slider');
+        const needsBlogs = (pageData.blocks || []).some((b: any) => b.type === 'latest_blogs');
 
         const promises = [];
         if (needsServices) promises.push(supabase.from('services').select('*').order('created_at', { ascending: true }));
@@ -80,8 +80,8 @@ export default function DynamicPage({ systemSlug }: { systemSlug?: string }) {
   }
 
   return (
-    <div style={{ backgroundColor: page.config.bgColor || '#000000', color: page.config.textColor || '#ffffff' }}>
-      {page.blocks.map((block: any, idx: number) => (
+    <div style={{ backgroundColor: page.config?.bgColor || '#000000', color: page.config?.textColor || '#ffffff' }}>
+      {(page.blocks || []).map((block: any, idx: number) => (
         <BlockRenderer key={block.id || idx} block={block} index={idx} data={data} />
       ))}
     </div>

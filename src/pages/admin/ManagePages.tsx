@@ -3,6 +3,7 @@ import { supabase } from '../../lib/supabase';
 import { Loader2, Plus, FileText, ExternalLink, Trash2, Edit2, Search, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { motion } from 'motion/react';
 
 export default function ManagePages() {
   const [pages, setPages] = useState<any[]>([]);
