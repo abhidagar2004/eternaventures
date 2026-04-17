@@ -1,45 +1,76 @@
 import React, { useState, useEffect } from 'react';
 import { supabase, uploadImage } from '../../lib/supabase';
-import { Loader2, Save, ArrowUp, ArrowDown, Trash2, Plus, GripVertical, Image as ImageIcon, Type, Layout, Palette } from 'lucide-react';
+import { Loader2, Save, MoveUp, MoveDown, Eye, EyeOff, Trash2, Plus, Settings2, Palette, Layout as LayoutIcon, Type } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-const FONT_FAMILIES = [
-  { name: 'Default Sans', value: 'font-sans' },
-  { name: 'Display (Space Grotesk)', value: 'font-display' },
-  { name: 'Outfit', value: "'Outfit', sans-serif" },
-  { name: 'Bebas Neue (Heavy)', value: "'Bebas Neue', cursive" },
-  { name: 'Inter', value: "'Inter', sans-serif" },
-  { name: 'Serif', value: 'font-serif' },
-  { name: 'Mono', value: 'font-mono' }
+const BLOCK_TYPES = [
+  { type: 'hero', label: 'Hero Section' },
+  { type: 'who_we_are', label: 'Who We Are (2 Column)' },
+  { type: 'what_we_believe', label: 'What We Believe (Cards)' },
+  { type: 'our_approach', label: 'Our Approach (Flow)' },
+  { type: 'why_us', label: 'Why EternaVentures (Grid)' },
+  { type: 'who_we_work_with', label: 'Who We Work With' },
+  { type: 'our_role', label: 'Our Role (Big Lines)' },
+  { type: 'cta', label: 'Closing CTA' },
 ];
 
-const FONT_SIZES = [
-  { name: 'XS', value: 'text-xs' },
-  { name: 'Small', value: 'text-sm' },
-  { name: 'Base', value: 'text-base' },
-  { name: 'Large', value: 'text-lg' },
-  { name: 'XL', value: 'text-xl' },
-  { name: '2XL', value: 'text-2xl' },
-  { name: '3XL', value: 'text-3xl' },
-  { name: '4XL', value: 'text-4xl md:text-5xl' },
-  { name: '5XL', value: 'text-5xl md:text-6xl' },
-  { name: '6XL', value: 'text-5xl md:text-7xl' },
-  { name: '7XL', value: 'text-6xl md:text-8xl' },
-  { name: '8XL', value: 'text-7xl md:text-8xl lg:text-9xl' }
-];
+const ColorInput = ({ label, value, onChange }: any) => (
+  <div>
+    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">{label}</label>
+    <div className="flex gap-2">
+      <input
+        type="color"
+        value={value || '#000000'}
+        onChange={(e) => onChange(e.target.value)}
+        className="h-10 w-10 rounded cursor-pointer border border-gray-700 bg-gray-800"
+      />
+      <input
+        type="text"
+        value={value || ''}
+        onChange={(e) => onChange(e.target.value)}
+        className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#D6FF00]"
+        placeholder="#000000"
+      />
+    </div>
+  </div>
+);
+
+const TextInput = ({ label, value, onChange, placeholder = '' }: any) => (
+  <div>
+    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">{label}</label>
+    <input
+      type="text"
+      value={value || ''}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder={placeholder}
+      className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#D6FF00]"
+    />
+  </div>
+);
+
+const TextareaInput = ({ label, value, onChange, rows = 3 }: any) => (
+  <div>
+    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">{label}</label>
+    <textarea
+      rows={rows}
+      value={value || ''}
+      onChange={(e) => onChange(e.target.value)}
+      className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#D6FF00]"
+    />
+  </div>
+);
 
 export default function ManageAboutPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [uploading, setUploading] = useState<string | null>(null);
   const [rowId, setRowId] = useState<string | null>(null);
-  
-  const [globalSettings, setGlobalSettings] = useState<any>({
-    page_bg_color: '#000000',
-    page_text_color: '#ffffff',
-    font_style: 'font-sans'
-  });
-
   const [blocks, setBlocks] = useState<any[]>([]);
+  const [activeBlockId, setActiveBlockId] = useState<string | null>(null);
+  const [config, setConfig] = useState<any>({
+    font_style: 'font-sans',
+    accent_color: '#D6FF00'
+  });
 
   useEffect(() => { fetchContent(); }, []);
 
@@ -48,19 +79,17 @@ export default function ManageAboutPage() {
       const { data, error } = await supabase
         .from('about_page_content')
         .select('*')
-        .order('created_at', { ascending: false })
-        .limit(1)
         .single();
       if (error && error.code !== 'PGRST116') throw error;
       if (data) {
+        setBlocks(data.blocks || []);
         setRowId(data.id);
-        setGlobalSettings({
-          page_bg_color: data.page_bg_color || '#000000',
-          page_text_color: data.page_text_color || '#ffffff',
-          font_style: data.font_style || 'font-sans'
+        setConfig({
+          font_style: data.font_style || 'font-sans',
+          accent_color: data.accent_color || '#D6FF00'
         });
-        if (data.blocks && Array.isArray(data.blocks)) {
-          setBlocks(data.blocks);
+        if (data.blocks && data.blocks.length > 0) {
+          setActiveBlockId(data.blocks[0].id);
         }
       }
     } catch (error: any) {
@@ -70,15 +99,13 @@ export default function ManageAboutPage() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSave = async () => {
     setIsSubmitting(true);
     try {
       const payload = {
-        ...globalSettings,
-        blocks
+        blocks,
+        ...config
       };
-
       if (rowId) {
         const { error } = await supabase.from('about_page_content').update(payload).eq('id', rowId);
         if (error) throw error;
@@ -87,7 +114,7 @@ export default function ManageAboutPage() {
         if (error) throw error;
         if (data) setRowId(data.id);
       }
-      toast.success('About page updated successfully!');
+      toast.success('About page updated!');
     } catch (error: any) {
       toast.error(error.message);
     } finally {
@@ -95,358 +122,394 @@ export default function ManageAboutPage() {
     }
   };
 
+  const addBlock = (type: string) => {
+    const newBlock = {
+      id: `${type}-${Date.now()}`,
+      type,
+      isVisible: true,
+      paddingTop: '120px',
+      paddingBottom: '120px',
+      bgColor: '#000000',
+      headingColor: '#ffffff'
+    };
+    setBlocks([...blocks, newBlock]);
+    setActiveBlockId(newBlock.id);
+  };
+
+  const deleteBlock = (id: string) => {
+    if (window.confirm('Are you sure you want to delete this block?')) {
+      setBlocks(blocks.filter(b => b.id !== id));
+      if (activeBlockId === id) setActiveBlockId(null);
+    }
+  };
+
   const moveBlock = (index: number, direction: 'up' | 'down') => {
-    if (direction === 'up' && index === 0) return;
-    if (direction === 'down' && index === blocks.length - 1) return;
-    
     const newBlocks = [...blocks];
-    const swapIndex = direction === 'up' ? index - 1 : index + 1;
-    [newBlocks[index], newBlocks[swapIndex]] = [newBlocks[swapIndex], newBlocks[index]];
+    if (direction === 'up' && index > 0) {
+      [newBlocks[index], newBlocks[index - 1]] = [newBlocks[index - 1], newBlocks[index]];
+    } else if (direction === 'down' && index < newBlocks.length - 1) {
+      [newBlocks[index], newBlocks[index + 1]] = [newBlocks[index + 1], newBlocks[index]];
+    }
     setBlocks(newBlocks);
   };
 
-  const updateBlock = (index: number, key: string, value: any) => {
-    const newBlocks = [...blocks];
-    newBlocks[index] = { ...newBlocks[index], [key]: value };
-    setBlocks(newBlocks);
+  const toggleVisibility = (id: string) => {
+    setBlocks(blocks.map(b => b.id === id ? { ...b, isVisible: !b.isVisible } : b));
   };
 
-  const ColorInput = ({ label, value, onChange }: { label: string, value: string, onChange: (val: string) => void }) => (
-    <div>
-      <label className="block text-xs font-medium text-gray-500 mb-1">{label}</label>
-      <div className="flex gap-2">
-        <input type="color" value={value || '#ffffff'} onChange={(e) => onChange(e.target.value)} className="w-8 h-8 rounded border" />
-        <input type="text" value={value || ''} onChange={(e) => onChange(e.target.value)} className="flex-1 border rounded px-2 text-xs" />
-      </div>
-    </div>
-  );
-
-  const FontSelector = ({ label, family, size, onFamilyChange, onSizeChange }: any) => (
-    <div className="grid grid-cols-2 gap-2">
-       {onFamilyChange && (
-         <div>
-           <label className="block text-xs font-medium text-gray-500 mb-1">{label} Family</label>
-           <select value={family || ''} onChange={(e) => onFamilyChange(e.target.value)} className="w-full border rounded px-2 py-1 text-xs">
-             <option value="">Default</option>
-             {FONT_FAMILIES.map(f => <option key={f.value} value={f.value}>{f.name}</option>)}
-           </select>
-         </div>
-       )}
-       {onSizeChange && (
-         <div>
-           <label className="block text-xs font-medium text-gray-500 mb-1">{label} Size</label>
-           <select value={size || ''} onChange={(e) => onSizeChange(e.target.value)} className="w-full border rounded px-2 py-1 text-xs">
-             <option value="">Default</option>
-             {FONT_SIZES.map(f => <option key={f.value} value={f.value}>{f.name}</option>)}
-           </select>
-         </div>
-       )}
-    </div>
-  );
-
-  const ImageUploader = ({ label, value, onUpload, onChange, placeholder }: any) => {
-    const [uploading, setUploading] = useState(false);
-    return (
-      <div className="md:col-span-2">
-        <label className="block text-sm font-medium text-gray-700 mb-2">{label}</label>
-        <div className="flex gap-3">
-          <input
-            type="text"
-            value={value || ''}
-            onChange={(e) => onChange(e.target.value)}
-            placeholder={placeholder}
-            className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-[#D6FF00] text-sm"
-          />
-          <div className="relative">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={async (e) => {
-                if (!e.target.files?.length) return;
-                setUploading(true);
-                try {
-                  const url = await uploadImage(e.target.files[0]);
-                  onUpload(url);
-                  toast.success('Image uploaded!');
-                } catch (err: any) {
-                  toast.error(err.message);
-                } finally {
-                  setUploading(false);
-                }
-              }}
-              disabled={uploading}
-              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-            />
-            <button type="button" disabled={uploading} className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg border border-gray-300 hover:bg-gray-200 flex items-center gap-2 whitespace-nowrap text-sm">
-              {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ImageIcon className="w-4 h-4" />}
-              {uploading ? '...' : 'Upload'}
-            </button>
-          </div>
-        </div>
-      </div>
-    );
+  const updateBlock = (id: string, updates: any) => {
+    setBlocks(blocks.map(b => b.id === id ? { ...b, ...updates } : b));
   };
 
-  const renderBlockEditor = (block: any, index: number) => {
-    return (
-      <div key={block.id} className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden mb-8">
-        <div className="bg-gray-50 border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4 text-gray-900">
-            <GripVertical className="text-gray-400 cursor-move" />
-            <h3 className="font-black text-sm uppercase tracking-widest">{block.type.replace(/_/g, ' ')}</h3>
-          </div>
-          <div className="flex items-center gap-4">
-            <label className="flex items-center gap-2 text-xs font-bold text-gray-700 cursor-pointer">
-              <input 
-                type="checkbox" 
-                checked={block.isVisible} 
-                onChange={(e) => updateBlock(index, 'isVisible', e.target.checked)}
-                className="rounded border-gray-300 text-[#D6FF00] focus:ring-[#D6FF00]"
-              />
-              VISIBLE
-            </label>
-            <div className="flex border rounded-lg overflow-hidden">
-              <button type="button" onClick={() => moveBlock(index, 'up')} disabled={index === 0} className="px-3 py-1 bg-white hover:bg-gray-100 disabled:opacity-50 border-r"><ArrowUp className="w-4 h-4 text-gray-600" /></button>
-              <button type="button" onClick={() => moveBlock(index, 'down')} disabled={index === blocks.length - 1} className="px-3 py-1 bg-white hover:bg-gray-100 disabled:opacity-50"><ArrowDown className="w-4 h-4 text-gray-600" /></button>
-            </div>
-            <button type="button" onClick={() => {
-                if (window.confirm('Delete this block?')) {
-                  const nb = [...blocks];
-                  nb.splice(index, 1);
-                  setBlocks(nb);
-                }
-            }} className="text-red-500 hover:bg-red-50 p-1 rounded-lg transition-colors">
-              <Trash2 className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
+  const activeBlock = blocks.find(b => b.id === activeBlockId);
 
-        <div className="p-8">
-          <div className="space-y-10">
-            {/* 1. LAYOUT & BACKGROUND */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 text-[#2596be] mb-4">
-                 <Layout className="w-4 h-4" /> 
-                 <span className="font-black text-xs uppercase tracking-tighter">Layout & Background</span>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 bg-gray-50 p-6 rounded-2xl border border-gray-100">
-                <ColorInput label="Background Color" value={block.bgColor} onChange={(v) => updateBlock(index, 'bgColor', v)} />
-                <ColorInput label="Accent Color" value={block.accentColor} onChange={(v) => updateBlock(index, 'accentColor', v)} />
-                <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1">Text Alignment</label>
-                  <select value={block.alignment || 'left'} onChange={(e) => updateBlock(index, 'alignment', e.target.value)} className="w-full border rounded px-2 py-1.5 text-xs bg-white">
-                    <option value="left">Left</option>
-                    <option value="center">Center</option>
-                    <option value="right">Right</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1">Padding Top/Bottom</label>
-                  <input type="text" placeholder="e.g. py-24" value={block.paddingTop || ''} onChange={(e) => updateBlock(index, 'paddingTop', e.target.value)} className="w-full border rounded px-2 py-1.5 text-xs bg-white" />
-                </div>
-                {block.type === 'hero' && (
-                  <>
-                    <ImageUploader label="Banner Background Image" value={block.bgImage} onUpload={(url: string) => updateBlock(index, 'bgImage', url)} onChange={(v: string) => updateBlock(index, 'bgImage', v)} placeholder="Big background image for Hero only" />
-                    <div className="md:col-span-2 grid grid-cols-2 gap-4">
-                      <ColorInput label="Overlay Color" value={block.overlayColor} onChange={(v) => updateBlock(index, 'overlayColor', v)} />
-                      <div>
-                        <label className="block text-xs font-medium text-gray-500 mb-1">Overlay Opacity (0.0 - 1.0)</label>
-                        <input type="number" step="0.1" min="0" max="1" value={block.overlayOpacity ?? 0.6} onChange={(e) => updateBlock(index, 'overlayOpacity', parseFloat(e.target.value))} className="w-full border rounded px-2 py-1.5 text-xs bg-white" />
-                      </div>
-                    </div>
-                  </>
-                )}
-                {block.type !== 'hero' && block.type !== 'our_approach' && block.type !== 'our_role' && block.type !== 'cta' && (
-                   <div className="md:col-span-2 bg-blue-50/30 p-4 rounded-xl border border-blue-100/50">
-                     <ImageUploader label="Section Side Image" value={block.imageUrl} onUpload={(url: string) => updateBlock(index, 'imageUrl', url)} onChange={(url: string) => updateBlock(index, 'imageUrl', url)} placeholder="Image shown on the side (left/right)" />
-                     <div className="mt-4 flex items-center gap-4">
-                        <label className="text-xs font-bold text-gray-400 uppercase">IMAGE POSITION:</label>
-                        <select value={block.imageOrder || 'left'} onChange={(e) => updateBlock(index, 'imageOrder', e.target.value)} className="border rounded px-2 py-1 text-xs bg-white font-bold">
-                          <option value="left">LEFT SIDE Content on Right</option>
-                          <option value="right">RIGHT SIDE Content on Left</option>
-                        </select>
-                     </div>
-                   </div>
-                )}
-              </div>
-            </div>
-
-            {/* 2. TYPOGRAPHY CONTROLS */}
-            <div className="space-y-6">
-              <div className="flex items-center gap-2 text-[#2596be] mb-4">
-                 <Type className="w-4 h-4" /> 
-                 <span className="font-black text-xs uppercase tracking-tighter">Typography Styles</span>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-[#11182705] p-6 rounded-2xl border border-gray-100">
-                 <div className="space-y-4">
-                    <ColorInput label="Heading Color" value={block.headingColor} onChange={(v) => updateBlock(index, 'headingColor', v)} />
-                    <FontSelector label="Heading" family={block.headingFontFamily} size={block.headingSize} onFamilyChange={(v: string) => updateBlock(index, 'headingFontFamily', v)} onSizeChange={(v: string) => updateBlock(index, 'headingSize', v)} />
-                 </div>
-                 <div className="space-y-4">
-                    <ColorInput label="Paragraph Color" value={block.paragraphColor} onChange={(v) => updateBlock(index, 'paragraphColor', v)} />
-                    <FontSelector label="Paragraph" family={block.paragraphFontFamily} size={block.paragraphSize} onFamilyChange={(v: string) => updateBlock(index, 'paragraphFontFamily', v)} onSizeChange={(v: string) => updateBlock(index, 'paragraphSize', v)} />
-                 </div>
-                 <div className="space-y-4 border-t pt-4">
-                    <ColorInput label="Tag Color" value={block.tagColor} onChange={(v) => updateBlock(index, 'tagColor', v)} />
-                    <FontSelector label="Tag" family={block.tagFontFamily} size={block.tagSize} onFamilyChange={(v: string) => updateBlock(index, 'tagFontFamily', v)} onSizeChange={(v: string) => updateBlock(index, 'tagSize', v)} />
-                 </div>
-                 <div className="space-y-4 border-t pt-4">
-                    <ColorInput label="Sub/Item Color" value={block.subtextColor || block.itemColor} onChange={(v) => updateBlock(index, block.subtextColor !== undefined ? 'subtextColor' : 'itemColor', v)} />
-                    <FontSelector label="Subtext" family={block.subtextFontFamily} size={block.subtextSize} onFamilyChange={(v: string) => updateBlock(index, 'subtextFontFamily', v)} onSizeChange={(v: string) => updateBlock(index, 'subtextSize', v)} />
-                 </div>
-              </div>
-            </div>
-
-            {/* 3. CONTENT CONTENT */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 text-[#2596be] mb-4">
-                 <Palette className="w-4 h-4" /> 
-                 <span className="font-black text-xs uppercase tracking-tighter">Section Content</span>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {(block.tag !== undefined) && (
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Tag Text</label>
-                    <input type="text" value={block.tag || ''} onChange={(e) => updateBlock(index, 'tag', e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm" />
-                  </div>
-                )}
-                {block.heading !== undefined && (
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Heading</label>
-                    <input type="text" value={block.heading || ''} onChange={(e) => updateBlock(index, 'heading', e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm" />
-                  </div>
-                )}
-                {block.subtext !== undefined && (
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Subtext</label>
-                    <textarea value={block.subtext || ''} onChange={(e) => updateBlock(index, 'subtext', e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm" rows={2} />
-                  </div>
-                )}
-                {block.paragraphs !== undefined && (
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Description Paragraphs (Auto-bullets logic or list splitting)</label>
-                    <textarea value={block.paragraphs || ''} onChange={(e) => updateBlock(index, 'paragraphs', e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm" rows={5} />
-                  </div>
-                )}
-                {block.closingText !== undefined && (
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Closing Statement</label>
-                    <input type="text" value={block.closingText || ''} onChange={(e) => updateBlock(index, 'closingText', e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm" />
-                  </div>
-                )}
-
-                {/* Lists / Items */}
-                {block.items !== undefined && (
-                  <div className="md:col-span-2 border rounded-xl p-6 bg-gray-50 border-gray-200">
-                    <label className="block text-xs font-black text-gray-400 mb-4 uppercase">List Items (Bullets/Features)</label>
-                    {block.items.map((item: any, itIdx: number) => (
-                      <div key={itIdx} className="flex gap-4 mb-4 items-start bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
-                         <div className="flex-1 space-y-3">
-                            {item.title !== undefined && <input type="text" placeholder="Title" value={item.title || ''} onChange={(e) => {
-                               const ni = [...block.items]; ni[itIdx].title = e.target.value; updateBlock(index, 'items', ni);
-                            }} className="w-full border rounded px-3 py-1.5 text-sm" />}
-                            {item.text !== undefined && <input type="text" placeholder="Bullet Point" value={item.text || ''} onChange={(e) => {
-                               const ni = [...block.items]; ni[itIdx].text = e.target.value; updateBlock(index, 'items', ni);
-                            }} className="w-full border rounded px-3 py-1.5 text-sm" />}
-                            {item.desc !== undefined && <textarea placeholder="Description" value={item.desc || ''} onChange={(e) => {
-                               const ni = [...block.items]; ni[itIdx].desc = e.target.value; updateBlock(index, 'items', ni);
-                            }} className="w-full border rounded px-3 py-1.5 text-sm h-16" />}
-                         </div>
-                         <button type="button" onClick={() => {
-                            const ni = [...block.items]; ni.splice(itIdx, 1); updateBlock(index, 'items', ni);
-                         }} className="text-red-400 hover:text-red-600 p-1"><Trash2 className="w-4 h-4" /></button>
-                      </div>
-                    ))}
-                    <button type="button" onClick={() => {
-                       const ni = [...block.items, { title: '', text: '', desc: '' }]; updateBlock(index, 'items', ni);
-                    }} className="flex items-center gap-2 text-xs font-bold text-[#2596be] hover:underline uppercase"><Plus className="w-4 h-4" /> Add New Item</button>
-                  </div>
-                )}
-
-                {/* Side Image controls removed from here - moved to Layout section */}
-
-
-                {/* CTA logic */}
-                {block.btnText !== undefined && (
-                  <div className="md:col-span-2 grid grid-cols-2 gap-4">
-                     <div>
-                       <label className="block text-sm font-medium text-gray-700 mb-2">Button Text</label>
-                       <input type="text" value={block.btnText || ''} onChange={(e) => updateBlock(index, 'btnText', e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm" />
-                     </div>
-                     <div>
-                       <label className="block text-sm font-medium text-gray-700 mb-2">Button Link</label>
-                       <input type="text" value={block.btnLink || ''} onChange={(e) => updateBlock(index, 'btnLink', e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm" />
-                     </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, blockId: string) => {
+    if (!e.target.files?.[0]) return;
+    setUploading(blockId);
+    try {
+      const url = await uploadImage(e.target.files[0]);
+      updateBlock(blockId, { imageUrl: url });
+      toast.success('Image uploaded!');
+    } catch (err: any) {
+      toast.error(err.message);
+    } finally {
+      setUploading(null);
+    }
   };
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="w-8 h-8 animate-spin text-[#2596be]" />
+      <div className="flex items-center justify-center h-screen bg-[#050505]">
+        <Loader2 className="w-10 h-10 animate-spin text-[#D6FF00]" />
       </div>
     );
   }
 
   return (
-    <div className="max-w-6xl mx-auto pb-32">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10">
+    <div className="flex flex-col h-[calc(100vh-120px)] overflow-hidden">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6 bg-[#0A0A0A] p-4 rounded-xl border border-white/5">
         <div>
-          <h1 className="text-4xl font-black text-gray-900 tracking-tighter">ABOUT PAGE BUILDER</h1>
-          <p className="text-gray-500 font-medium text-sm mt-1">Design your storytelling narrative with granular control.</p>
+          <h1 className="text-xl font-black text-white uppercase tracking-tighter">About Page Editor</h1>
+          <p className="text-xs text-white/40 font-bold uppercase tracking-widest">Premium Content Management</p>
         </div>
         <div className="flex gap-4">
-          <button
-            onClick={() => {
-               const newBlock = { id: `block-${Date.now()}`, type: 'hero', isVisible: true, heading: 'New Heading', alignment: 'center', bgColor: '#000000', headingColor: '#ffffff' };
-               setBlocks([...blocks, newBlock]);
-               toast.success('Block added! Scroll down.');
-            }}
-            className="flex items-center gap-2 px-6 py-3 bg-white text-gray-900 font-black border-2 border-gray-900 rounded-xl hover:bg-gray-50 transition-all text-xs uppercase"
-          >
-            <Plus className="w-4 h-4" /> Add Block
-          </button>
-          <button
-            onClick={handleSubmit}
+           <div className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-lg border border-white/10">
+              <span className="text-xs font-bold text-white/40 uppercase">Accent Color</span>
+              <input 
+                type="color" 
+                value={config.accent_color} 
+                onChange={(e) => setConfig({...config, accent_color: e.target.value})}
+                className="w-6 h-6 rounded cursor-pointer bg-transparent border-0"
+              />
+           </div>
+           <button
+            onClick={handleSave}
             disabled={isSubmitting}
-            className="flex items-center gap-2 px-8 py-3 bg-[#111827] text-white font-black rounded-xl hover:bg-black transition-all shadow-xl disabled:opacity-50 text-xs uppercase"
+            className="flex items-center gap-2 px-6 py-2 bg-[#D6FF00] text-black font-black uppercase text-sm rounded-lg hover:scale-105 transition-transform disabled:opacity-50"
           >
             {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-            Save Architecture
+            Save Changes
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 mb-12">
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-           <div className="flex items-center gap-3 mb-6">
-              <div className="w-1.5 h-6 bg-[#D6FF00] rounded-full"></div>
-              <h2 className="text-lg font-black text-gray-900 uppercase tracking-tighter">Global Canvas Settings</h2>
-           </div>
-           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <ColorInput label="Page Canvas Background" value={globalSettings.page_bg_color} onChange={(v) => setGlobalSettings({...globalSettings, page_bg_color: v})} />
-              <ColorInput label="Default Text Body" value={globalSettings.page_text_color} onChange={(v) => setGlobalSettings({...globalSettings, page_text_color: v})} />
-              <div>
-                <label className="block text-xs font-black text-gray-400 mb-2 uppercase">Base Typography Stack</label>
-                <select value={globalSettings.font_style || ''} onChange={(e) => setGlobalSettings({...globalSettings, font_style: e.target.value})} className="w-full border rounded-lg px-3 py-2 text-sm bg-white font-medium">
-                   {FONT_FAMILIES.map(f => <option key={f.value} value={f.value}>{f.name}</option>)}
-                </select>
+      <div className="flex flex-1 gap-6 overflow-hidden">
+        {/* Left Sidebar: Blocks List */}
+        <div className="w-80 flex flex-col gap-4 overflow-y-auto pr-2 custom-scrollbar">
+          <div className="space-y-2">
+            {blocks.map((block, index) => (
+              <div 
+                key={block.id}
+                onClick={() => setActiveBlockId(block.id)}
+                className={`group relative p-4 rounded-xl border transition-all cursor-pointer ${
+                  activeBlockId === block.id 
+                  ? 'bg-white/10 border-[#D6FF00]/50 shadow-[0_0_20px_rgba(214,255,0,0.1)]' 
+                  : 'bg-[#0A0A0A] border-white/5 hover:border-white/20'
+                }`}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <span className={`text-[10px] font-black uppercase tracking-widest ${activeBlockId === block.id ? 'text-[#D6FF00]' : 'text-white/30'}`}>
+                    {block.type.replace(/_/g, ' ')}
+                  </span>
+                  <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button onClick={(e) => { e.stopPropagation(); moveBlock(index, 'up'); }} className="p-1 hover:text-[#D6FF00] text-white/40"><MoveUp size={14} /></button>
+                    <button onClick={(e) => { e.stopPropagation(); moveBlock(index, 'down'); }} className="p-1 hover:text-[#D6FF00] text-white/40"><MoveDown size={14} /></button>
+                    <button onClick={(e) => { e.stopPropagation(); toggleVisibility(block.id); }} className="p-1 hover:text-[#D6FF00] text-white/40">
+                      {block.isVisible ? <Eye size={14} /> : <EyeOff size={14} />}
+                    </button>
+                    <button onClick={(e) => { e.stopPropagation(); deleteBlock(block.id); }} className="p-1 hover:text-red-500 text-white/40"><Trash2 size={14} /></button>
+                  </div>
+                </div>
+                <h4 className="text-white font-bold leading-tight line-clamp-1 text-sm">
+                  {block.heading || block.id}
+                </h4>
               </div>
-           </div>
+            ))}
+          </div>
+
+          {/* Add Block Dropdown */}
+          <div className="mt-4 p-4 border border-dashed border-white/10 rounded-xl bg-white/5">
+            <h5 className="text-[10px] font-black uppercase text-white/40 mb-3 tracking-widest text-center">Add New Section</h5>
+            <div className="grid grid-cols-2 gap-2">
+              {BLOCK_TYPES.map(bt => (
+                <button 
+                  key={bt.type}
+                  onClick={() => addBlock(bt.type)}
+                  className="px-2 py-2 bg-white/5 hover:bg-[#D6FF00] hover:text-black rounded text-[10px] font-bold text-white/70 transition-colors border border-white/5 uppercase"
+                >
+                  {bt.label.split(' ')[0]}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Right Content: Editor */}
+        <div className="flex-1 bg-[#0A0A0A] rounded-xl border border-white/5 overflow-y-auto p-8 custom-scrollbar">
+          {activeBlock ? (
+            <div className="max-w-3xl mx-auto space-y-10">
+              {/* Header Info */}
+              <div className="flex justify-between items-start border-b border-white/10 pb-6">
+                <div>
+                  <h2 className="text-2xl font-black text-white uppercase tracking-tighter">{BLOCK_TYPES.find(b => b.type === activeBlock.type)?.label}</h2>
+                  <p className="text-xs text-white/40 font-bold uppercase tracking-widest mt-1">Block ID: {activeBlock.id}</p>
+                </div>
+                <div className="flex items-center gap-3 bg-white/5 p-2 rounded-lg">
+                   <span className="text-[10px] font-black text-white/30 uppercase mr-2">Visibility</span>
+                   <button 
+                    onClick={() => toggleVisibility(activeBlock.id)}
+                    className={`relative w-10 h-5 rounded-full transition-colors ${activeBlock.isVisible ? 'bg-[#D6FF00]' : 'bg-white/10'}`}
+                   >
+                     <div className={`absolute top-1 w-3 h-3 bg-black rounded-full transition-transform ${activeBlock.isVisible ? 'translate-x-6' : 'translate-x-1'}`} />
+                   </button>
+                </div>
+              </div>
+
+              {/* Sections: Content, Style, Layout */}
+              <div className="grid grid-cols-1 gap-12">
+                
+                {/* Content Section */}
+                <div className="space-y-6">
+                   <div className="flex items-center gap-2 mb-2">
+                      <Settings2 className="w-4 h-4 text-[#D6FF00]" />
+                      <h3 className="text-sm font-black text-white uppercase tracking-widest">Content Settings</h3>
+                   </div>
+                   
+                   <div className="grid grid-cols-1 gap-6 bg-white/5 p-6 rounded-xl border border-white/5">
+                      {activeBlock.type === 'hero' && (
+                        <>
+                          <TextInput label="Heading" value={activeBlock.heading} onChange={(v: string) => updateBlock(activeBlock.id, { heading: v })} />
+                          <TextareaInput label="Subtext" value={activeBlock.subtext} onChange={(v: string) => updateBlock(activeBlock.id, { subtext: v })} />
+                          <div>
+                            <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Text Alignment</label>
+                            <div className="flex gap-2">
+                              {['left', 'center', 'right'].map(align => (
+                                <button 
+                                  key={align}
+                                  onClick={() => updateBlock(activeBlock.id, { alignment: align })}
+                                  className={`flex-1 py-1 px-3 rounded text-[10px] font-bold uppercase transition-colors ${activeBlock.alignment === align ? 'bg-[#D6FF00] text-black' : 'bg-white/5 text-white/40'}`}
+                                >{align}</button>
+                              ))}
+                            </div>
+                          </div>
+                        </>
+                      )}
+                      
+                      {activeBlock.type === 'who_we_are' && (
+                        <>
+                          <TextInput label="Heading" value={activeBlock.heading} onChange={(v: string) => updateBlock(activeBlock.id, { heading: v })} />
+                          <TextareaInput label="Paragraphs (Use double enter for new paragraph)" value={activeBlock.paragraphs} onChange={(v: string) => updateBlock(activeBlock.id, { paragraphs: v })} rows={6} />
+                          <div>
+                            <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Image URL</label>
+                            <div className="flex gap-4">
+                              <input 
+                                type="text" value={activeBlock.imageUrl} onChange={(e) => updateBlock(activeBlock.id, { imageUrl: e.target.value })}
+                                className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none"
+                              />
+                              <div className="relative">
+                                <input type="file" onChange={(e) => handleImageUpload(e, activeBlock.id)} className="absolute inset-0 opacity-0 cursor-pointer" />
+                                <button className="px-4 py-2 bg-white/10 rounded-lg text-xs font-bold text-white hover:bg-white/20">
+                                  {uploading === activeBlock.id ? '...' : 'Upload'}
+                                </button>
+                              </div>
+                            </div>
+                            {activeBlock.imageUrl && <img src={activeBlock.imageUrl} className="mt-4 h-32 rounded-lg object-cover" alt="Preview" />}
+                          </div>
+                        </>
+                      )}
+
+                      {activeBlock.type === 'our_approach' && (
+                        <div className="space-y-4">
+                          {activeBlock.items?.map((item: any, i: number) => (
+                            <div key={i} className="p-4 border border-white/5 rounded-lg bg-black/40 space-y-3">
+                               <TextInput label={`Step ${i+1} Title`} value={item.title} onChange={(v: string) => {
+                                 const items = [...activeBlock.items];
+                                 items[i] = { ...items[i], title: v };
+                                 updateBlock(activeBlock.id, { items });
+                               }} />
+                               <TextInput label={`Step ${i+1} Description`} value={item.desc} onChange={(v: string) => {
+                                 const items = [...activeBlock.items];
+                                 items[i] = { ...items[i], desc: v };
+                                 updateBlock(activeBlock.id, { items });
+                               }} />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {(activeBlock.type === 'why_us' || activeBlock.type === 'who_we_work_with' || activeBlock.type === 'what_we_believe') && (
+                        <div className="space-y-4">
+                           <div>
+                             <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Grid Columns (on Desktop)</label>
+                             <div className="flex gap-2">
+                               {[2, 3, 4].map(cols => (
+                                 <button 
+                                   key={cols}
+                                   onClick={() => updateBlock(activeBlock.id, { gridColumns: cols })}
+                                   className={`flex-1 py-1 rounded text-[10px] font-bold uppercase ${activeBlock.gridColumns === cols ? 'bg-[#D6FF00] text-black' : 'bg-white/5 text-white/40'}`}
+                                 >{cols} Columns</button>
+                               ))}
+                             </div>
+                           </div>
+                           {activeBlock.type !== 'what_we_believe' && (
+                             <>
+                               {activeBlock.items?.map((item: any, i: number) => (
+                                 <div key={i} className="flex gap-3">
+                                   <input 
+                                    value={typeof item === 'string' ? item : item.title} 
+                                    onChange={(e) => {
+                                      const items = [...activeBlock.items];
+                                      if (typeof item === 'string') items[i] = e.target.value;
+                                      else items[i] = { ...items[i], title: e.target.value };
+                                      updateBlock(activeBlock.id, { items });
+                                    }}
+                                    className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white text-sm"
+                                   />
+                                   <button onClick={() => {
+                                     const items = activeBlock.items.filter((_:any, idx:number) => idx !== i);
+                                     updateBlock(activeBlock.id, { items });
+                                   }} className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg"><Trash2 size={16}/></button>
+                                 </div>
+                               ))}
+                               <button onClick={() => {
+                                 const items = [...(activeBlock.items || []), activeBlock.type === 'why_us' ? {title: "", desc: ""} : ""];
+                                 updateBlock(activeBlock.id, { items });
+                               }} className="w-full py-2 border border-dashed border-white/20 rounded-lg text-xs font-bold text-white/40 hover:text-white transition-colors">+ Add Item</button>
+                             </>
+                           )}
+                        </div>
+                      )}
+
+                      {activeBlock.type === 'our_role' && (
+                        <div className="space-y-4">
+                           {activeBlock.lines?.map((line: any, i: number) => (
+                             <div key={i} className="flex gap-3">
+                               <input value={line.text} onChange={(e) => {
+                                 const lines = [...activeBlock.lines];
+                                 lines[i] = { ...lines[i], text: e.target.value };
+                                 updateBlock(activeBlock.id, { lines });
+                               }} className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white text-sm" />
+                               <button onClick={() => updateBlock(activeBlock.id, { lines: activeBlock.lines.filter((_:any, idx:number) => idx !== i) })} className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg"><Trash2 size={16}/></button>
+                             </div>
+                           ))}
+                           <button onClick={() => updateBlock(activeBlock.id, { lines: [...(activeBlock.lines || []), {text: ""}] })} className="w-full py-2 border border-dashed border-white/20 rounded-lg text-xs font-bold text-white/40 hover:text-white transition-colors">+ Add Line</button>
+                        </div>
+                      )}
+
+                      {activeBlock.type === 'cta' && (
+                        <>
+                          <TextInput label="Heading" value={activeBlock.heading} onChange={(v: string) => updateBlock(activeBlock.id, { heading: v })} />
+                          <div className="grid grid-cols-2 gap-4">
+                            <TextInput label="Button Text" value={activeBlock.btnText} onChange={(v: string) => updateBlock(activeBlock.id, { btnText: v })} />
+                            <TextInput label="Button Link" value={activeBlock.btnLink} onChange={(v: string) => updateBlock(activeBlock.id, { btnLink: v })} />
+                          </div>
+                          <TextInput label="Email" value={activeBlock.email} onChange={(v: string) => updateBlock(activeBlock.id, { email: v })} />
+                        </>
+                      )}
+                   </div>
+                </div>
+
+                {/* Style Section */}
+                <div className="space-y-6">
+                   <div className="flex items-center gap-2 mb-2">
+                      <Palette className="w-4 h-4 text-[#D6FF00]" />
+                      <h3 className="text-sm font-black text-white uppercase tracking-widest">Visual Styles</h3>
+                   </div>
+                   
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white/5 p-6 rounded-xl border border-white/5">
+                      <ColorInput label="Background Color" value={activeBlock.bgColor} onChange={(v: string) => updateBlock(activeBlock.id, { bgColor: v })} />
+                      <ColorInput label="Primary Heading Color" value={activeBlock.headingColor} onChange={(v: string) => updateBlock(activeBlock.id, { headingColor: v })} />
+                      
+                      {activeBlock.type === 'hero' && (
+                        <>
+                          <ColorInput label="Subtext Color" value={activeBlock.subtextColor} onChange={(v: string) => updateBlock(activeBlock.id, { subtextColor: v })} />
+                          <TextInput label="Heading Size (clamp/vh/px)" value={activeBlock.headingSize} onChange={(v: string) => updateBlock(activeBlock.id, { headingSize: v })} placeholder="clamp(2.5rem, 8vw, 6rem)" />
+                          <TextInput label="Font Weight" value={activeBlock.fontWeight} onChange={(v: string) => updateBlock(activeBlock.id, { fontWeight: v })} placeholder="800" />
+                        </>
+                      )}
+                   </div>
+                </div>
+
+                {/* Layout Section */}
+                <div className="space-y-6 font-sans">
+                   <div className="flex items-center gap-2 mb-2">
+                      <LayoutIcon className="w-4 h-4 text-[#D6FF00]" />
+                      <h3 className="text-sm font-black text-white uppercase tracking-widest">Layout & Spacing</h3>
+                   </div>
+                   
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white/5 p-6 rounded-xl border border-white/5">
+                      <TextInput label="Padding Top" value={activeBlock.paddingTop} onChange={(v: string) => updateBlock(activeBlock.id, { paddingTop: v })} placeholder="120px" />
+                      <TextInput label="Padding Bottom" value={activeBlock.paddingBottom} onChange={(v: string) => updateBlock(activeBlock.id, { paddingBottom: v })} placeholder="120px" />
+                      
+                      {activeBlock.type === 'who_we_are' && (
+                        <div>
+                          <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Image Position</label>
+                          <div className="flex gap-2">
+                            <button 
+                              onClick={() => updateBlock(activeBlock.id, { imageOrder: 'left' })}
+                              className={`flex-1 py-2 rounded-lg text-xs font-bold uppercase ${activeBlock.imageOrder === 'left' ? 'bg-[#D6FF00] text-black' : 'bg-white/5 text-white/40'}`}
+                            >Left</button>
+                            <button 
+                              onClick={() => updateBlock(activeBlock.id, { imageOrder: 'right' })}
+                              className={`flex-1 py-2 rounded-lg text-xs font-bold uppercase ${activeBlock.imageOrder === 'right' ? 'bg-[#D6FF00] text-black' : 'bg-white/5 text-white/40'}`}
+                            >Right</button>
+                          </div>
+                        </div>
+                      )}
+                   </div>
+                </div>
+
+              </div>
+            </div>
+          ) : (
+            <div className="h-full flex flex-col items-center justify-center text-center">
+              <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mb-6">
+                <Plus className="w-10 h-10 text-white/20" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2 uppercase">Select a block to edit</h3>
+              <p className="text-white/40 max-w-xs uppercase text-[10px] font-black tracking-widest">Choose a section from the sidebar to manage its content and styling.</p>
+            </div>
+          )}
         </div>
       </div>
 
-      <div className="space-y-4">
-        {blocks.map((block, index) => renderBlockEditor(block, index))}
-      </div>
-      
+       {/* Custom Scrollbar Styles */}
+       <style>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(214, 255, 0, 0.3);
+        }
+      `}</style>
     </div>
   );
 }

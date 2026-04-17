@@ -1,37 +1,48 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { renderBlock } from '../components/about/AboutBlocks';
+import { AboutBlocks } from '../components/about/AboutBlocks';
+import { Loader2 } from 'lucide-react';
 
 export default function AboutPage() {
   const [content, setContent] = useState<any>(null);
-  const [blocks, setBlocks] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchContent() {
-      const { data } = await supabase
-        .from('about_page_content')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .single();
-      if (data) {
-        setContent(data);
-        if (data.blocks && Array.isArray(data.blocks)) {
-          setBlocks(data.blocks);
-        }
+      try {
+        const { data } = await supabase
+          .from('about_page_content')
+          .select('*')
+          .single();
+        if (data) setContent(data);
+      } catch (err) {
+        console.error('Error fetching about content:', err);
+      } finally {
+        setIsLoading(false);
       }
     }
     fetchContent();
   }, []);
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <Loader2 className="w-10 h-10 text-[#D6FF00] animate-spin" />
+      </div>
+    );
+  }
+
   const c = content || {};
+  const blocks = c.blocks || [];
+  const config = {
+    font_style: c.font_style,
+    accent_color: c.accent_color
+  };
 
   return (
-    <div
-      className={`min-h-screen ${c.font_style || 'font-sans'}`}
-      style={{ backgroundColor: c.page_bg_color || '#000000', color: c.page_text_color || '#ffffff' }}
-    >
-      {blocks.map(block => renderBlock(block))}
+    <div className={`min-h-screen bg-black ${c.font_style || 'font-sans'}`}>
+        <AboutBlocks blocks={blocks} config={config} />
     </div>
   );
 }
+

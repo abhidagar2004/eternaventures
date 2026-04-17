@@ -63,7 +63,6 @@ export default function ManageHomePage() {
     cta_btn_link: "/contact",
     cta_text_color: "#ffffff",
     cta_btn_text_color: "#000000",
-    cta_bg_color: "#000000",
     cta_heading_size: "text-5xl md:text-7xl",
     cta_subheading_size: "text-xl md:text-2xl",
     phil_tag: "Our Philosophy",
