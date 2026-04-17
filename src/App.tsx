@@ -9,10 +9,9 @@ import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import GlobalStyleHandler from './components/GlobalStyleHandler';
 import { Toaster } from 'react-hot-toast';
-import Home from './pages/Home';
+import DynamicPage from './pages/DynamicPage';
 import ServicesPage from './pages/ServicesPage';
 import ProjectsPage from './pages/ProjectsPage';
-import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import BlogsPage from './pages/BlogsPage';
 import BlogPost from './pages/BlogPost';
@@ -29,10 +28,8 @@ import ManageProjects from './pages/admin/ManageProjects';
 import ManageTestimonials from './pages/admin/ManageTestimonials';
 import ManageLeads from './pages/admin/ManageLeads';
 import ManageServices from './pages/admin/ManageServices';
-import ManageHomePage from './pages/admin/ManageHomePage';
-import ManageBlogsPage from './pages/admin/ManageBlogsPage';
-import ManageProjectsPage from './pages/admin/ManageProjectsPage';
-import ManageAboutPage from './pages/admin/ManageAboutPage';
+import ManagePages from './pages/admin/ManagePages';
+import EditPage from './pages/admin/EditPage';
 import ManageServicesPage from './pages/admin/ManageServicesPage';
 import ManageContactPage from './pages/admin/ManageContactPage';
 import ManageGlobalSections from './pages/admin/ManageGlobalSections';
@@ -61,11 +58,9 @@ export default function App() {
             <Route path="footer" element={<ManageFooter />} />
             <Route path="categories" element={<ManageCategories />} />
             <Route path="projects" element={<ManageProjects />} />
-            <Route path="home-page" element={<ManageHomePage />} />
-            <Route path="about-page" element={<ManageAboutPage />} />
-            <Route path="blogs-page" element={<ManageBlogsPage />} />
+            <Route path="pages" element={<ManagePages />} />
+            <Route path="pages/edit/:slug" element={<EditPage />} />
             <Route path="services-page" element={<ManageServicesPage />} />
-            <Route path="projects-page" element={<ManageProjectsPage />} />
             <Route path="contact-page" element={<ManageContactPage />} />
             <Route path="global-sections" element={<ManageGlobalSections />} />
             <Route path="services" element={<ManageServices />} />
@@ -81,11 +76,12 @@ export default function App() {
               <Navbar />
               <main className="flex-grow">
                 <Routes>
-                  <Route path="/" element={<Home />} />
+                  <Route path="/" element={<DynamicPage systemSlug="home" />} />
+                  <Route path="/about" element={<DynamicPage systemSlug="about" />} />
+                  <Route path="/p/:slug" element={<DynamicPage />} />
                   <Route path="/services" element={<ServicesPage />} />
                   <Route path="/services/:slug" element={<ServiceDetail />} />
                   <Route path="/projects" element={<ProjectsPage />} />
-                  <Route path="/about" element={<AboutPage />} />
                   <Route path="/contact" element={<ContactPage />} />
                   <Route path="/blogs" element={<BlogsPage />} />
                   <Route path="/blogs/:slug" element={<BlogPost />} />

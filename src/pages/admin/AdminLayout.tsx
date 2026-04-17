@@ -44,21 +44,18 @@ export default function AdminLayout() {
   }
 
   const navItems = [
-    { name: 'Overview', path: '/admin/overview', icon: LayoutDashboard },
-    { name: 'Leads', path: '/admin', icon: Users },
-    { name: 'Manage Navbar', path: '/admin/navbar', icon: LayoutDashboard },
-    { name: 'Manage Footer', path: '/admin/footer', icon: Layout },
-    { name: 'Media Library', path: '/admin/media', icon: FolderOpen },
+    { name: 'Website Pages', path: '/admin/pages', icon: LayoutDashboard },
+    { name: 'Global Typography', path: '/admin/global-sections', icon: Type },
     { name: 'Categories', path: '/admin/categories', icon: Tags },
     { name: 'Blogs', path: '/admin/blogs', icon: FileText },
     { name: 'Projects', path: '/admin/projects', icon: Briefcase },
     { name: 'Testimonials', path: '/admin/testimonials', icon: MessageSquare },
-    { name: 'Home Page', path: '/admin/home-page', icon: Home },
-    { name: 'About Page', path: '/admin/about-page', icon: FileText },
-    { name: 'Blogs Page', path: '/admin/blogs-page', icon: FileText },
     { name: 'Services', path: '/admin/services', icon: Briefcase },
     { name: 'Services Page', path: '/admin/services-page', icon: Briefcase },
-    { name: 'Projects Page', path: '/admin/projects-page', icon: FolderOpen },
+    { name: 'Leads', path: '/admin', icon: Users },
+    { name: 'Manage Navbar', path: '/admin/navbar', icon: LayoutDashboard },
+    { name: 'Manage Footer', path: '/admin/footer', icon: Layout },
+    { name: 'Media Library', path: '/admin/media', icon: FolderOpen },
     { name: 'Contact & FAQs', path: '/admin/contact-page', icon: MessageSquare },
     { name: 'Manage Admins', path: '/admin/admins', icon: ShieldCheck },
   ];
