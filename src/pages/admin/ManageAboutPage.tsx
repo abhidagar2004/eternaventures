@@ -244,14 +244,30 @@ export default function ManageAboutPage() {
                   <label className="block text-xs font-medium text-gray-500 mb-1">Padding Top/Bottom</label>
                   <input type="text" placeholder="e.g. py-24" value={block.paddingTop || ''} onChange={(e) => updateBlock(index, 'paddingTop', e.target.value)} className="w-full border rounded px-2 py-1.5 text-xs bg-white" />
                 </div>
-                <ImageUploader label="Banner / Background Image" value={block.bgImage} onUpload={(url: string) => updateBlock(index, 'bgImage', url)} onChange={(v: string) => updateBlock(index, 'bgImage', v)} placeholder="If empty, uses background color fallback" />
-                <div className="md:col-span-2 grid grid-cols-2 gap-4">
-                  <ColorInput label="Overlay Color" value={block.overlayColor} onChange={(v) => updateBlock(index, 'overlayColor', v)} />
-                  <div>
-                    <label className="block text-xs font-medium text-gray-500 mb-1">Overlay Opacity (0.0 - 1.0)</label>
-                    <input type="number" step="0.1" min="0" max="1" value={block.overlayOpacity ?? 0.6} onChange={(e) => updateBlock(index, 'overlayOpacity', parseFloat(e.target.value))} className="w-full border rounded px-2 py-1.5 text-xs bg-white" />
-                  </div>
-                </div>
+                {block.type === 'hero' && (
+                  <>
+                    <ImageUploader label="Banner Background Image" value={block.bgImage} onUpload={(url: string) => updateBlock(index, 'bgImage', url)} onChange={(v: string) => updateBlock(index, 'bgImage', v)} placeholder="Big background image for Hero only" />
+                    <div className="md:col-span-2 grid grid-cols-2 gap-4">
+                      <ColorInput label="Overlay Color" value={block.overlayColor} onChange={(v) => updateBlock(index, 'overlayColor', v)} />
+                      <div>
+                        <label className="block text-xs font-medium text-gray-500 mb-1">Overlay Opacity (0.0 - 1.0)</label>
+                        <input type="number" step="0.1" min="0" max="1" value={block.overlayOpacity ?? 0.6} onChange={(e) => updateBlock(index, 'overlayOpacity', parseFloat(e.target.value))} className="w-full border rounded px-2 py-1.5 text-xs bg-white" />
+                      </div>
+                    </div>
+                  </>
+                )}
+                {block.type !== 'hero' && block.type !== 'our_approach' && block.type !== 'our_role' && block.type !== 'cta' && (
+                   <div className="md:col-span-2 bg-blue-50/30 p-4 rounded-xl border border-blue-100/50">
+                     <ImageUploader label="Section Side Image" value={block.imageUrl} onUpload={(url: string) => updateBlock(index, 'imageUrl', url)} onChange={(url: string) => updateBlock(index, 'imageUrl', url)} placeholder="Image shown on the side (left/right)" />
+                     <div className="mt-4 flex items-center gap-4">
+                        <label className="text-xs font-bold text-gray-400 uppercase">IMAGE POSITION:</label>
+                        <select value={block.imageOrder || 'left'} onChange={(e) => updateBlock(index, 'imageOrder', e.target.value)} className="border rounded px-2 py-1 text-xs bg-white font-bold">
+                          <option value="left">LEFT SIDE Content on Right</option>
+                          <option value="right">RIGHT SIDE Content on Left</option>
+                        </select>
+                     </div>
+                   </div>
+                )}
               </div>
             </div>
 
@@ -347,19 +363,8 @@ export default function ManageAboutPage() {
                   </div>
                 )}
 
-                {/* Who We Are specific Image */}
-                {block.imageUrl !== undefined && (
-                   <div className="md:col-span-2 bg-[#111822] p-6 rounded-2xl border border-white/10 mt-4">
-                     <ImageUploader label="Side Image (Who We Are / Why Us)" value={block.imageUrl} onUpload={(url: string) => updateBlock(index, 'imageUrl', url)} onChange={(url: string) => updateBlock(index, 'imageUrl', url)} />
-                     <div className="mt-4 flex items-center gap-4">
-                        <label className="text-xs font-bold text-gray-400 uppercase">Image Side:</label>
-                        <select value={block.imageOrder || 'left'} onChange={(e) => updateBlock(index, 'imageOrder', e.target.value)} className="border rounded px-2 py-1 text-xs bg-white">
-                          <option value="left">Left Side</option>
-                          <option value="right">Right Side</option>
-                        </select>
-                     </div>
-                   </div>
-                )}
+                {/* Side Image controls removed from here - moved to Layout section */}
+
 
                 {/* CTA logic */}
                 {block.btnText !== undefined && (

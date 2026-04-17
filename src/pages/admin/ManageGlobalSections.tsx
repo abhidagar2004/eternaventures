@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Loader2, Save, Plus, Trash2, Edit2, X } from 'lucide-react';
+import { Loader2, Save, Plus, Trash2, Edit2, Type, Layout } from 'lucide-react';
 import toast from 'react-hot-toast';
 
+const FONT_FAMILIES = [
+  { name: 'Inter (Sans)', value: "'Inter', sans-serif" },
+  { name: 'Space Grotesk (Display)', value: "'Space Grotesk', sans-serif" },
+  { name: 'Outfit (Modern)', value: "'Outfit', sans-serif" },
+  { name: 'Bebas Neue (Heavy)', value: "'Bebas Neue', cursive" },
+  { name: 'System Sans', value: 'ui-sans-serif, system-ui, sans-serif' },
+  { name: 'System Serif', value: 'ui-serif, Georgia, serif' }
+];
+
 export default function ManageGlobalSections() {
-  const [activeTab, setActiveTab] = useState<'whyus' | 'process'>('whyus');
+  const [activeTab, setActiveTab] = useState<'whyus' | 'process' | 'typography'>('whyus');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -20,26 +29,52 @@ export default function ManageGlobalSections() {
   const [editingProcess, setEditingProcess] = useState<any>(null);
   const [processForm, setProcessForm] = useState({ step_num: '', title: '', description: '', order_index: 0 });
 
+  // Typography state
+  const [typoSettings, setTypoSettings] = useState({
+    font_sans: "'Inter', sans-serif",
+    font_display: "'Space Grotesk', sans-serif",
+    base_font_family: "font-sans"
+  });
+
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
     try {
-      const [{ data: wuData }, { data: pData }] = await Promise.all([
+      const [{ data: wuData }, { data: pData }, { data: tData }] = await Promise.all([
         supabase.from('why_us_items').select('*').order('order_index', { ascending: true }),
-        supabase.from('process_steps').select('*').order('order_index', { ascending: true })
+        supabase.from('process_steps').select('*').order('order_index', { ascending: true }),
+        supabase.from('site_settings').select('*').eq('setting_key', 'typography_settings').single()
       ]);
       if (wuData) setWhyUsItems(wuData);
       if (pData) setProcessSteps(pData);
+      if (tData) setTypoSettings(tData.setting_value);
     } catch (e: any) {
-      toast.error(e.message);
+      if (e.code !== 'PGRST116') toast.error(e.message);
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Generic Save Handler
+  const handleSaveTypography = async () => {
+    setIsSubmitting(true);
+    try {
+      const { error } = await supabase
+        .from('site_settings')
+        .upsert({ 
+          setting_key: 'typography_settings', 
+          setting_value: typoSettings 
+        }, { onConflict: 'setting_key' });
+      if (error) throw error;
+      toast.success('Typography updated across the entire website!');
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleSave = async (table: string, formState: any, editingItem: any, setModalView: any) => {
     if (!formState.title || !formState.description) {
       toast.error('Title and Description are required');
@@ -87,23 +122,22 @@ export default function ManageGlobalSections() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto pb-20">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Manage Global Sections</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Manage Global Site Sections</h1>
       </div>
 
-      <div className="flex gap-4 mb-6 border-b border-gray-200 pb-2">
-        <button 
-          onClick={() => setActiveTab('whyus')}
-          className={`px-4 py-2 font-medium rounded-lg transition-colors ${activeTab === 'whyus' ? 'bg-[#2596be] text-white' : 'text-gray-600 hover:bg-gray-100'}`}
-        >
+      <div className="flex gap-4 mb-6 border-b border-gray-200 pb-2 overflow-x-auto">
+        <button onClick={() => setActiveTab('whyus')} className={`px-4 py-2 font-medium rounded-lg transition-colors whitespace-nowrap ${activeTab === 'whyus' ? 'bg-[#2596be] text-white' : 'text-gray-600 hover:bg-gray-100'}`}>
           Why Us (Features)
         </button>
-        <button 
-          onClick={() => setActiveTab('process')}
-          className={`px-4 py-2 font-medium rounded-lg transition-colors ${activeTab === 'process' ? 'bg-[#2596be] text-white' : 'text-gray-600 hover:bg-gray-100'}`}
-        >
+        <button onClick={() => setActiveTab('process')} className={`px-4 py-2 font-medium rounded-lg transition-colors whitespace-nowrap ${activeTab === 'process' ? 'bg-[#2596be] text-white' : 'text-gray-600 hover:bg-gray-100'}`}>
           How We Work (Process)
+        </button>
+        <button onClick={() => setActiveTab('typography')} className={`px-4 py-2 font-medium rounded-lg transition-colors whitespace-nowrap ${activeTab === 'typography' ? 'bg-black text-white' : 'text-gray-600 hover:bg-gray-100'}`}>
+          <div className="flex items-center gap-2">
+            <Type size={16} /> Global Typography
+          </div>
         </button>
       </div>
 
@@ -176,6 +210,62 @@ export default function ManageGlobalSections() {
                 </div>
               ))}
               {processSteps.length === 0 && <p className="text-center text-gray-500 py-4">No steps added yet.</p>}
+            </div>
+          </div>
+        )}
+
+        {/* Typography Tab */}
+        {activeTab === 'typography' && (
+          <div className="space-y-8">
+            <div className="p-4 bg-gray-50 rounded-xl border border-gray-200 flex items-start gap-4">
+               <div className="p-3 bg-white rounded-lg shadow-sm">
+                 <Type className="text-[#2596be]" />
+               </div>
+               <div>
+                  <h2 className="font-bold text-gray-900 uppercase tracking-tighter">Global Website Typography</h2>
+                  <p className="text-sm text-gray-500">Change fonts across the entire website instantly.</p>
+               </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 bg-white border border-gray-100 rounded-2xl shadow-sm">
+               <div className="space-y-4">
+                  <label className="block text-sm font-black text-gray-400 uppercase tracking-widest">Main Body Font (Sans)</label>
+                  <select 
+                    value={typoSettings.font_sans} 
+                    onChange={e => setTypoSettings({...typoSettings, font_sans: e.target.value})}
+                    className="w-full border-2 border-gray-100 rounded-xl px-4 py-3 bg-gray-50 font-medium focus:border-[#2596be] outline-none"
+                  >
+                     {FONT_FAMILIES.map(f => <option key={f.value} value={f.value}>{f.name}</option>)}
+                  </select>
+                  <p className="p-4 bg-white border rounded-xl text-lg italic shadow-inner" style={{ fontFamily: typoSettings.font_sans }}>
+                    The quick brown fox jumps over the lazy dog. (Preview)
+                  </p>
+               </div>
+
+               <div className="space-y-4">
+                  <label className="block text-sm font-black text-gray-400 uppercase tracking-widest">Display/Heading Font</label>
+                  <select 
+                    value={typoSettings.font_display} 
+                    onChange={e => setTypoSettings({...typoSettings, font_display: e.target.value})}
+                    className="w-full border-2 border-gray-100 rounded-xl px-4 py-3 bg-gray-50 font-medium focus:border-[#2596be] outline-none"
+                  >
+                     {FONT_FAMILIES.map(f => <option key={f.value} value={f.value}>{f.name}</option>)}
+                  </select>
+                  <p className="p-4 bg-white border rounded-xl text-2xl font-black uppercase tracking-tighter shadow-inner" style={{ fontFamily: typoSettings.font_display }}>
+                    GLOBAL HEADING STYLE
+                  </p>
+               </div>
+            </div>
+
+            <div className="flex justify-end pt-4 border-t">
+               <button
+                  onClick={handleSaveTypography}
+                  disabled={isSubmitting}
+                  className="bg-black text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-gray-800 transition-all shadow-xl"
+               >
+                  {isSubmitting ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
+                  Apply Fonts Globally
+               </button>
             </div>
           </div>
         )}

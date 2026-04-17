@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import GlobalStyleHandler from './components/GlobalStyleHandler';
 import { Toaster } from 'react-hot-toast';
 import Home from './pages/Home';
 import ServicesPage from './pages/ServicesPage';
@@ -44,6 +45,7 @@ export default function App() {
     <Router>
       <ScrollToTop />
       <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
+      <GlobalStyleHandler />
       <div className="min-h-screen bg-black text-white font-sans selection:bg-[#2596be] selection:text-white flex flex-col overflow-x-hidden">
         <Routes>
           {/* Admin Routes */}
