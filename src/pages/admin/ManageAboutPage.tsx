@@ -1,7 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { supabase, uploadImage } from '../../lib/supabase';
-import { Loader2, Save, ArrowUp, ArrowDown, Trash2, Plus, GripVertical } from 'lucide-react';
+import { Loader2, Save, ArrowUp, ArrowDown, Trash2, Plus, GripVertical, Image as ImageIcon, Type, Layout, Palette } from 'lucide-react';
 import toast from 'react-hot-toast';
+
+const FONT_FAMILIES = [
+  { name: 'Default Sans', value: 'font-sans' },
+  { name: 'Display (Space Grotesk)', value: 'font-display' },
+  { name: 'Outfit', value: "'Outfit', sans-serif" },
+  { name: 'Bebas Neue (Heavy)', value: "'Bebas Neue', cursive" },
+  { name: 'Inter', value: "'Inter', sans-serif" },
+  { name: 'Serif', value: 'font-serif' },
+  { name: 'Mono', value: 'font-mono' }
+];
+
+const FONT_SIZES = [
+  { name: 'XS', value: 'text-xs' },
+  { name: 'Small', value: 'text-sm' },
+  { name: 'Base', value: 'text-base' },
+  { name: 'Large', value: 'text-lg' },
+  { name: 'XL', value: 'text-xl' },
+  { name: '2XL', value: 'text-2xl' },
+  { name: '3XL', value: 'text-3xl' },
+  { name: '4XL', value: 'text-4xl md:text-5xl' },
+  { name: '5XL', value: 'text-5xl md:text-6xl' },
+  { name: '6XL', value: 'text-5xl md:text-7xl' },
+  { name: '7XL', value: 'text-6xl md:text-8xl' },
+  { name: '8XL', value: 'text-7xl md:text-8xl lg:text-9xl' }
+];
 
 export default function ManageAboutPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -86,18 +111,51 @@ export default function ManageAboutPage() {
     setBlocks(newBlocks);
   };
 
-  const ImageUploader = ({ block, index, field }: { block: any, index: number, field: string }) => {
+  const ColorInput = ({ label, value, onChange }: { label: string, value: string, onChange: (val: string) => void }) => (
+    <div>
+      <label className="block text-xs font-medium text-gray-500 mb-1">{label}</label>
+      <div className="flex gap-2">
+        <input type="color" value={value || '#ffffff'} onChange={(e) => onChange(e.target.value)} className="w-8 h-8 rounded border" />
+        <input type="text" value={value || ''} onChange={(e) => onChange(e.target.value)} className="flex-1 border rounded px-2 text-xs" />
+      </div>
+    </div>
+  );
+
+  const FontSelector = ({ label, family, size, onFamilyChange, onSizeChange }: any) => (
+    <div className="grid grid-cols-2 gap-2">
+       {onFamilyChange && (
+         <div>
+           <label className="block text-xs font-medium text-gray-500 mb-1">{label} Family</label>
+           <select value={family || ''} onChange={(e) => onFamilyChange(e.target.value)} className="w-full border rounded px-2 py-1 text-xs">
+             <option value="">Default</option>
+             {FONT_FAMILIES.map(f => <option key={f.value} value={f.value}>{f.name}</option>)}
+           </select>
+         </div>
+       )}
+       {onSizeChange && (
+         <div>
+           <label className="block text-xs font-medium text-gray-500 mb-1">{label} Size</label>
+           <select value={size || ''} onChange={(e) => onSizeChange(e.target.value)} className="w-full border rounded px-2 py-1 text-xs">
+             <option value="">Default</option>
+             {FONT_SIZES.map(f => <option key={f.value} value={f.value}>{f.name}</option>)}
+           </select>
+         </div>
+       )}
+    </div>
+  );
+
+  const ImageUploader = ({ label, value, onUpload, onChange, placeholder }: any) => {
     const [uploading, setUploading] = useState(false);
     return (
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Image</label>
+      <div className="md:col-span-2">
+        <label className="block text-sm font-medium text-gray-700 mb-2">{label}</label>
         <div className="flex gap-3">
           <input
             type="text"
-            value={block[field] || ''}
-            onChange={(e) => updateBlock(index, field, e.target.value)}
-            placeholder="Paste image URL or upload"
-            className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-[#D6FF00]"
+            value={value || ''}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder={placeholder}
+            className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-[#D6FF00] text-sm"
           />
           <div className="relative">
             <input
@@ -108,7 +166,7 @@ export default function ManageAboutPage() {
                 setUploading(true);
                 try {
                   const url = await uploadImage(e.target.files[0]);
-                  updateBlock(index, field, url);
+                  onUpload(url);
                   toast.success('Image uploaded!');
                 } catch (err: any) {
                   toast.error(err.message);
@@ -119,212 +177,206 @@ export default function ManageAboutPage() {
               disabled={uploading}
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
             />
-            <button
-              type="button"
-              disabled={uploading}
-              className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg border border-gray-300 hover:bg-gray-200 flex items-center gap-2 whitespace-nowrap"
-            >
-              {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Upload'}
+            <button type="button" disabled={uploading} className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg border border-gray-300 hover:bg-gray-200 flex items-center gap-2 whitespace-nowrap text-sm">
+              {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ImageIcon className="w-4 h-4" />}
+              {uploading ? '...' : 'Upload'}
             </button>
           </div>
         </div>
-        {block[field] && (
-          <img src={block[field]} alt="Preview" className="mt-2 h-24 rounded-lg object-cover border border-gray-200" />
-        )}
       </div>
     );
   };
 
   const renderBlockEditor = (block: any, index: number) => {
     return (
-      <div key={block.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
+      <div key={block.id} className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden mb-8">
         <div className="bg-gray-50 border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <GripVertical className="text-gray-400" />
-            <h3 className="font-bold text-gray-900 uppercase">{block.type.replace(/_/g, ' ')}</h3>
+          <div className="flex items-center gap-4 text-gray-900">
+            <GripVertical className="text-gray-400 cursor-move" />
+            <h3 className="font-black text-sm uppercase tracking-widest">{block.type.replace(/_/g, ' ')}</h3>
           </div>
           <div className="flex items-center gap-4">
-            <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+            <label className="flex items-center gap-2 text-xs font-bold text-gray-700 cursor-pointer">
               <input 
                 type="checkbox" 
                 checked={block.isVisible} 
                 onChange={(e) => updateBlock(index, 'isVisible', e.target.checked)}
                 className="rounded border-gray-300 text-[#D6FF00] focus:ring-[#D6FF00]"
               />
-              Visible
+              VISIBLE
             </label>
             <div className="flex border rounded-lg overflow-hidden">
-              <button 
-                type="button" 
-                onClick={() => moveBlock(index, 'up')}
-                disabled={index === 0}
-                className="px-3 py-1 bg-white hover:bg-gray-100 disabled:opacity-50 border-r"
-              ><ArrowUp className="w-4 h-4 text-gray-600" /></button>
-              <button 
-                type="button"
-                onClick={() => moveBlock(index, 'down')}
-                disabled={index === blocks.length - 1}
-                className="px-3 py-1 bg-white hover:bg-gray-100 disabled:opacity-50"
-              ><ArrowDown className="w-4 h-4 text-gray-600" /></button>
+              <button type="button" onClick={() => moveBlock(index, 'up')} disabled={index === 0} className="px-3 py-1 bg-white hover:bg-gray-100 disabled:opacity-50 border-r"><ArrowUp className="w-4 h-4 text-gray-600" /></button>
+              <button type="button" onClick={() => moveBlock(index, 'down')} disabled={index === blocks.length - 1} className="px-3 py-1 bg-white hover:bg-gray-100 disabled:opacity-50"><ArrowDown className="w-4 h-4 text-gray-600" /></button>
             </div>
+            <button type="button" onClick={() => {
+                if (window.confirm('Delete this block?')) {
+                  const nb = [...blocks];
+                  nb.splice(index, 1);
+                  setBlocks(nb);
+                }
+            }} className="text-red-500 hover:bg-red-50 p-1 rounded-lg transition-colors">
+              <Trash2 className="w-4 h-4" />
+            </button>
           </div>
         </div>
 
-        <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Common Layout & Styling Controls */}
-          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-lg border">
-             <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">BG Color</label>
-                <div className="flex gap-2">
-                  <input type="color" value={block.bgColor || '#000000'} onChange={(e) => updateBlock(index, 'bgColor', e.target.value)} className="w-8 h-8 rounded" />
-                  <input type="text" value={block.bgColor || '#000000'} onChange={(e) => updateBlock(index, 'bgColor', e.target.value)} className="flex-1 border rounded px-2 text-sm" />
+        <div className="p-8">
+          <div className="space-y-10">
+            {/* 1. LAYOUT & BACKGROUND */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-[#2596be] mb-4">
+                 <Layout className="w-4 h-4" /> 
+                 <span className="font-black text-xs uppercase tracking-tighter">Layout & Background</span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 bg-gray-50 p-6 rounded-2xl border border-gray-100">
+                <ColorInput label="Background Color" value={block.bgColor} onChange={(v) => updateBlock(index, 'bgColor', v)} />
+                <ColorInput label="Accent Color" value={block.accentColor} onChange={(v) => updateBlock(index, 'accentColor', v)} />
+                <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">Text Alignment</label>
+                  <select value={block.alignment || 'left'} onChange={(e) => updateBlock(index, 'alignment', e.target.value)} className="w-full border rounded px-2 py-1.5 text-xs bg-white">
+                    <option value="left">Left</option>
+                    <option value="center">Center</option>
+                    <option value="right">Right</option>
+                  </select>
                 </div>
-             </div>
-             <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">Text Color</label>
-                <div className="flex gap-2">
-                  <input type="color" value={block.textColor || '#ffffff'} onChange={(e) => updateBlock(index, 'textColor', e.target.value)} className="w-8 h-8 rounded" />
-                  <input type="text" value={block.textColor || '#ffffff'} onChange={(e) => updateBlock(index, 'textColor', e.target.value)} className="flex-1 border rounded px-2 text-sm" />
+                <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">Padding Top/Bottom</label>
+                  <input type="text" placeholder="e.g. py-24" value={block.paddingTop || ''} onChange={(e) => updateBlock(index, 'paddingTop', e.target.value)} className="w-full border rounded px-2 py-1.5 text-xs bg-white" />
                 </div>
-             </div>
-             <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">Accent Color</label>
-                <div className="flex gap-2">
-                  <input type="color" value={block.accentColor || '#D6FF00'} onChange={(e) => updateBlock(index, 'accentColor', e.target.value)} className="w-8 h-8 rounded" />
-                  <input type="text" value={block.accentColor || '#D6FF00'} onChange={(e) => updateBlock(index, 'accentColor', e.target.value)} className="flex-1 border rounded px-2 text-sm" />
-                </div>
-             </div>
-             <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">Alignment</label>
-                <select value={block.alignment || 'left'} onChange={(e) => updateBlock(index, 'alignment', e.target.value)} className="w-full border rounded px-2 py-1.5 text-sm bg-white">
-                  <option value="left">Left</option>
-                  <option value="center">Center</option>
-                  <option value="right">Right</option>
-                </select>
-             </div>
-          </div>
-
-          {/* Block Specific Controls */}
-          {block.heading !== undefined && (
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Heading</label>
-              <input type="text" value={block.heading || ''} onChange={(e) => updateBlock(index, 'heading', e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-2" />
-            </div>
-          )}
-          {block.subtext !== undefined && (
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Subtext</label>
-              <textarea value={block.subtext || ''} onChange={(e) => updateBlock(index, 'subtext', e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-2" rows={2} />
-            </div>
-          )}
-          {block.highlightText !== undefined && (
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Highlight Text</label>
-              <textarea value={block.highlightText || ''} onChange={(e) => updateBlock(index, 'highlightText', e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-2" rows={2} />
-            </div>
-          )}
-          {block.paragraphs !== undefined && (
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Paragraphs (Line breaks create new paragraphs)</label>
-              <textarea value={block.paragraphs || ''} onChange={(e) => updateBlock(index, 'paragraphs', e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-2" rows={6} />
-            </div>
-          )}
-          {block.imageUrl !== undefined && (
-            <div className="md:col-span-2">
-              <ImageUploader block={block} index={index} field="imageUrl" />
-            </div>
-          )}
-          {block.items !== undefined && (
-            <div className="md:col-span-2 border rounded-lg p-4 bg-gray-50">
-              <label className="block text-sm font-medium text-gray-700 mb-4">List Items</label>
-              {block.items.map((item: any, itemIndex: number) => (
-                <div key={itemIndex} className="flex gap-4 mb-4 items-start bg-white p-3 rounded-lg border">
-                  <div className="flex-1 space-y-3">
-                    {item.title !== undefined && (
-                      <input type="text" placeholder="Title" value={item.title || ''} onChange={(e) => {
-                        const newItems = [...block.items];
-                        newItems[itemIndex] = { ...newItems[itemIndex], title: e.target.value };
-                        updateBlock(index, 'items', newItems);
-                      }} className="w-full border border-gray-300 rounded px-3 py-1" />
-                    )}
-                    {item.text !== undefined && (
-                      <input type="text" placeholder="Text" value={item.text || ''} onChange={(e) => {
-                        const newItems = [...block.items];
-                        newItems[itemIndex] = { ...newItems[itemIndex], text: e.target.value };
-                        updateBlock(index, 'items', newItems);
-                      }} className="w-full border border-gray-300 rounded px-3 py-1" />
-                    )}
-                    {item.desc !== undefined && (
-                      <textarea placeholder="Description" value={item.desc || ''} onChange={(e) => {
-                        const newItems = [...block.items];
-                        newItems[itemIndex] = { ...newItems[itemIndex], desc: e.target.value };
-                        updateBlock(index, 'items', newItems);
-                      }} className="w-full border border-gray-300 rounded px-3 py-1 h-16" />
-                    )}
+                <ImageUploader label="Banner / Background Image" value={block.bgImage} onUpload={(url: string) => updateBlock(index, 'bgImage', url)} onChange={(v: string) => updateBlock(index, 'bgImage', v)} placeholder="If empty, uses background color fallback" />
+                <div className="md:col-span-2 grid grid-cols-2 gap-4">
+                  <ColorInput label="Overlay Color" value={block.overlayColor} onChange={(v) => updateBlock(index, 'overlayColor', v)} />
+                  <div>
+                    <label className="block text-xs font-medium text-gray-500 mb-1">Overlay Opacity (0.0 - 1.0)</label>
+                    <input type="number" step="0.1" min="0" max="1" value={block.overlayOpacity ?? 0.6} onChange={(e) => updateBlock(index, 'overlayOpacity', parseFloat(e.target.value))} className="w-full border rounded px-2 py-1.5 text-xs bg-white" />
                   </div>
-                  <button type="button" onClick={() => {
-                    const newItems = [...block.items];
-                    newItems.splice(itemIndex, 1);
-                    updateBlock(index, 'items', newItems);
-                  }} className="text-red-500 hover:text-red-700 p-2"><Trash2 className="w-4 h-4" /></button>
                 </div>
-              ))}
-              <button type="button" onClick={() => {
-                const newItems = [...block.items];
-                const newItem = block.items[0] ? { ...block.items[0] } : {};
-                Object.keys(newItem).forEach(k => newItem[k] = ''); // clear values
-                newItems.push(newItem);
-                updateBlock(index, 'items', newItems);
-              }} className="flex items-center gap-2 text-sm text-[#2596be] hover:underline font-medium">
-                <Plus className="w-4 h-4" /> Add Item
-              </button>
+              </div>
             </div>
-          )}
-          {block.lines !== undefined && (
-             <div className="md:col-span-2 border rounded-lg p-4 bg-gray-50">
-             <label className="block text-sm font-medium text-gray-700 mb-4">Text Lines</label>
-             {block.lines.map((item: any, itemIndex: number) => (
-               <div key={itemIndex} className="flex gap-4 mb-4 items-center">
-                 <input type="text" value={item.text || ''} onChange={(e) => {
-                   const newLines = [...block.lines];
-                   newLines[itemIndex] = { text: e.target.value };
-                   updateBlock(index, 'lines', newLines);
-                 }} className="flex-1 border border-gray-300 rounded-lg px-3 py-2" />
-                 <button type="button" onClick={() => {
-                   const newLines = [...block.lines];
-                   newLines.splice(itemIndex, 1);
-                   updateBlock(index, 'lines', newLines);
-                 }} className="text-red-500 hover:text-red-700"><Trash2 className="w-5 h-5" /></button>
-               </div>
-             ))}
-             <button type="button" onClick={() => {
-               const newLines = [...block.lines, { text: 'New Line' }];
-               updateBlock(index, 'lines', newLines);
-             }} className="flex items-center gap-2 text-sm text-[#2596be] hover:underline font-medium">
-               <Plus className="w-4 h-4" /> Add Line
-             </button>
-           </div>
-          )}
 
-          {block.btnText !== undefined && (
-             <div className="md:col-span-1">
-               <label className="block text-sm font-medium text-gray-700 mb-2">Button Text</label>
-               <input type="text" value={block.btnText || ''} onChange={(e) => updateBlock(index, 'btnText', e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-2" />
-             </div>
-          )}
-          {block.btnLink !== undefined && (
-             <div className="md:col-span-1">
-               <label className="block text-sm font-medium text-gray-700 mb-2">Button Link</label>
-               <input type="text" value={block.btnLink || ''} onChange={(e) => updateBlock(index, 'btnLink', e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-2" />
-             </div>
-          )}
-          {block.email !== undefined && (
-             <div className="md:col-span-1">
-               <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-               <input type="email" value={block.email || ''} onChange={(e) => updateBlock(index, 'email', e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-2" />
-             </div>
-          )}
+            {/* 2. TYPOGRAPHY CONTROLS */}
+            <div className="space-y-6">
+              <div className="flex items-center gap-2 text-[#2596be] mb-4">
+                 <Type className="w-4 h-4" /> 
+                 <span className="font-black text-xs uppercase tracking-tighter">Typography Styles</span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-[#11182705] p-6 rounded-2xl border border-gray-100">
+                 <div className="space-y-4">
+                    <ColorInput label="Heading Color" value={block.headingColor} onChange={(v) => updateBlock(index, 'headingColor', v)} />
+                    <FontSelector label="Heading" family={block.headingFontFamily} size={block.headingSize} onFamilyChange={(v: string) => updateBlock(index, 'headingFontFamily', v)} onSizeChange={(v: string) => updateBlock(index, 'headingSize', v)} />
+                 </div>
+                 <div className="space-y-4">
+                    <ColorInput label="Paragraph Color" value={block.paragraphColor} onChange={(v) => updateBlock(index, 'paragraphColor', v)} />
+                    <FontSelector label="Paragraph" family={block.paragraphFontFamily} size={block.paragraphSize} onFamilyChange={(v: string) => updateBlock(index, 'paragraphFontFamily', v)} onSizeChange={(v: string) => updateBlock(index, 'paragraphSize', v)} />
+                 </div>
+                 <div className="space-y-4 border-t pt-4">
+                    <ColorInput label="Tag Color" value={block.tagColor} onChange={(v) => updateBlock(index, 'tagColor', v)} />
+                    <FontSelector label="Tag" family={block.tagFontFamily} size={block.tagSize} onFamilyChange={(v: string) => updateBlock(index, 'tagFontFamily', v)} onSizeChange={(v: string) => updateBlock(index, 'tagSize', v)} />
+                 </div>
+                 <div className="space-y-4 border-t pt-4">
+                    <ColorInput label="Sub/Item Color" value={block.subtextColor || block.itemColor} onChange={(v) => updateBlock(index, block.subtextColor !== undefined ? 'subtextColor' : 'itemColor', v)} />
+                    <FontSelector label="Subtext" family={block.subtextFontFamily} size={block.subtextSize} onFamilyChange={(v: string) => updateBlock(index, 'subtextFontFamily', v)} onSizeChange={(v: string) => updateBlock(index, 'subtextSize', v)} />
+                 </div>
+              </div>
+            </div>
 
+            {/* 3. CONTENT CONTENT */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-[#2596be] mb-4">
+                 <Palette className="w-4 h-4" /> 
+                 <span className="font-black text-xs uppercase tracking-tighter">Section Content</span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {(block.tag !== undefined) && (
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Tag Text</label>
+                    <input type="text" value={block.tag || ''} onChange={(e) => updateBlock(index, 'tag', e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm" />
+                  </div>
+                )}
+                {block.heading !== undefined && (
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Heading</label>
+                    <input type="text" value={block.heading || ''} onChange={(e) => updateBlock(index, 'heading', e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm" />
+                  </div>
+                )}
+                {block.subtext !== undefined && (
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Subtext</label>
+                    <textarea value={block.subtext || ''} onChange={(e) => updateBlock(index, 'subtext', e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm" rows={2} />
+                  </div>
+                )}
+                {block.paragraphs !== undefined && (
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Description Paragraphs (Auto-bullets logic or list splitting)</label>
+                    <textarea value={block.paragraphs || ''} onChange={(e) => updateBlock(index, 'paragraphs', e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm" rows={5} />
+                  </div>
+                )}
+                {block.closingText !== undefined && (
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Closing Statement</label>
+                    <input type="text" value={block.closingText || ''} onChange={(e) => updateBlock(index, 'closingText', e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm" />
+                  </div>
+                )}
+
+                {/* Lists / Items */}
+                {block.items !== undefined && (
+                  <div className="md:col-span-2 border rounded-xl p-6 bg-gray-50 border-gray-200">
+                    <label className="block text-xs font-black text-gray-400 mb-4 uppercase">List Items (Bullets/Features)</label>
+                    {block.items.map((item: any, itIdx: number) => (
+                      <div key={itIdx} className="flex gap-4 mb-4 items-start bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                         <div className="flex-1 space-y-3">
+                            {item.title !== undefined && <input type="text" placeholder="Title" value={item.title || ''} onChange={(e) => {
+                               const ni = [...block.items]; ni[itIdx].title = e.target.value; updateBlock(index, 'items', ni);
+                            }} className="w-full border rounded px-3 py-1.5 text-sm" />}
+                            {item.text !== undefined && <input type="text" placeholder="Bullet Point" value={item.text || ''} onChange={(e) => {
+                               const ni = [...block.items]; ni[itIdx].text = e.target.value; updateBlock(index, 'items', ni);
+                            }} className="w-full border rounded px-3 py-1.5 text-sm" />}
+                            {item.desc !== undefined && <textarea placeholder="Description" value={item.desc || ''} onChange={(e) => {
+                               const ni = [...block.items]; ni[itIdx].desc = e.target.value; updateBlock(index, 'items', ni);
+                            }} className="w-full border rounded px-3 py-1.5 text-sm h-16" />}
+                         </div>
+                         <button type="button" onClick={() => {
+                            const ni = [...block.items]; ni.splice(itIdx, 1); updateBlock(index, 'items', ni);
+                         }} className="text-red-400 hover:text-red-600 p-1"><Trash2 className="w-4 h-4" /></button>
+                      </div>
+                    ))}
+                    <button type="button" onClick={() => {
+                       const ni = [...block.items, { title: '', text: '', desc: '' }]; updateBlock(index, 'items', ni);
+                    }} className="flex items-center gap-2 text-xs font-bold text-[#2596be] hover:underline uppercase"><Plus className="w-4 h-4" /> Add New Item</button>
+                  </div>
+                )}
+
+                {/* Who We Are specific Image */}
+                {block.imageUrl !== undefined && (
+                   <div className="md:col-span-2 bg-[#111822] p-6 rounded-2xl border border-white/10 mt-4">
+                     <ImageUploader label="Side Image (Who We Are / Why Us)" value={block.imageUrl} onUpload={(url: string) => updateBlock(index, 'imageUrl', url)} onChange={(url: string) => updateBlock(index, 'imageUrl', url)} />
+                     <div className="mt-4 flex items-center gap-4">
+                        <label className="text-xs font-bold text-gray-400 uppercase">Image Side:</label>
+                        <select value={block.imageOrder || 'left'} onChange={(e) => updateBlock(index, 'imageOrder', e.target.value)} className="border rounded px-2 py-1 text-xs bg-white">
+                          <option value="left">Left Side</option>
+                          <option value="right">Right Side</option>
+                        </select>
+                     </div>
+                   </div>
+                )}
+
+                {/* CTA logic */}
+                {block.btnText !== undefined && (
+                  <div className="md:col-span-2 grid grid-cols-2 gap-4">
+                     <div>
+                       <label className="block text-sm font-medium text-gray-700 mb-2">Button Text</label>
+                       <input type="text" value={block.btnText || ''} onChange={(e) => updateBlock(index, 'btnText', e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm" />
+                     </div>
+                     <div>
+                       <label className="block text-sm font-medium text-gray-700 mb-2">Button Link</label>
+                       <input type="text" value={block.btnLink || ''} onChange={(e) => updateBlock(index, 'btnLink', e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm" />
+                     </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -339,40 +391,54 @@ export default function ManageAboutPage() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto pb-24">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Manage About Page</h1>
-        <button
-          onClick={handleSubmit}
-          disabled={isSubmitting}
-          className="flex items-center gap-2 px-6 py-2.5 bg-[#111827] text-white font-bold rounded-lg hover:bg-black transition-colors disabled:opacity-50"
-        >
-          {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
-          Save All Changes
-        </button>
+    <div className="max-w-6xl mx-auto pb-32">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10">
+        <div>
+          <h1 className="text-4xl font-black text-gray-900 tracking-tighter">ABOUT PAGE BUILDER</h1>
+          <p className="text-gray-500 font-medium text-sm mt-1">Design your storytelling narrative with granular control.</p>
+        </div>
+        <div className="flex gap-4">
+          <button
+            onClick={() => {
+               const newBlock = { id: `block-${Date.now()}`, type: 'hero', isVisible: true, heading: 'New Heading', alignment: 'center', bgColor: '#000000', headingColor: '#ffffff' };
+               setBlocks([...blocks, newBlock]);
+               toast.success('Block added! Scroll down.');
+            }}
+            className="flex items-center gap-2 px-6 py-3 bg-white text-gray-900 font-black border-2 border-gray-900 rounded-xl hover:bg-gray-50 transition-all text-xs uppercase"
+          >
+            <Plus className="w-4 h-4" /> Add Block
+          </button>
+          <button
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+            className="flex items-center gap-2 px-8 py-3 bg-[#111827] text-white font-black rounded-xl hover:bg-black transition-all shadow-xl disabled:opacity-50 text-xs uppercase"
+          >
+            {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+            Save Architecture
+          </button>
+        </div>
       </div>
 
-      <div className="mb-8 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-         <h2 className="text-lg font-bold text-gray-900 mb-4">Global Settings</h2>
-         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Global Background</label>
-                <div className="flex gap-2">
-                  <input type="color" value={globalSettings.page_bg_color || '#000000'} onChange={(e) => setGlobalSettings({...globalSettings, page_bg_color: e.target.value})} className="w-10 h-10 rounded cursor-pointer" />
-                  <input type="text" value={globalSettings.page_bg_color || '#000000'} onChange={(e) => setGlobalSettings({...globalSettings, page_bg_color: e.target.value})} className="flex-1 border rounded-lg px-3" />
-                </div>
-            </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Global Text</label>
-                <div className="flex gap-2">
-                  <input type="color" value={globalSettings.page_text_color || '#ffffff'} onChange={(e) => setGlobalSettings({...globalSettings, page_text_color: e.target.value})} className="w-10 h-10 rounded cursor-pointer" />
-                  <input type="text" value={globalSettings.page_text_color || '#ffffff'} onChange={(e) => setGlobalSettings({...globalSettings, page_text_color: e.target.value})} className="flex-1 border rounded-lg px-3" />
-                </div>
-            </div>
-         </div>
+      <div className="grid grid-cols-1 gap-6 mb-12">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+           <div className="flex items-center gap-3 mb-6">
+              <div className="w-1.5 h-6 bg-[#D6FF00] rounded-full"></div>
+              <h2 className="text-lg font-black text-gray-900 uppercase tracking-tighter">Global Canvas Settings</h2>
+           </div>
+           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <ColorInput label="Page Canvas Background" value={globalSettings.page_bg_color} onChange={(v) => setGlobalSettings({...globalSettings, page_bg_color: v})} />
+              <ColorInput label="Default Text Body" value={globalSettings.page_text_color} onChange={(v) => setGlobalSettings({...globalSettings, page_text_color: v})} />
+              <div>
+                <label className="block text-xs font-black text-gray-400 mb-2 uppercase">Base Typography Stack</label>
+                <select value={globalSettings.font_style || ''} onChange={(e) => setGlobalSettings({...globalSettings, font_style: e.target.value})} className="w-full border rounded-lg px-3 py-2 text-sm bg-white font-medium">
+                   {FONT_FAMILIES.map(f => <option key={f.value} value={f.value}>{f.name}</option>)}
+                </select>
+              </div>
+           </div>
+        </div>
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-4">
         {blocks.map((block, index) => renderBlockEditor(block, index))}
       </div>
       
