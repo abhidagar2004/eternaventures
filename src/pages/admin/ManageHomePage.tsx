@@ -19,6 +19,8 @@ export default function ManageHomePage() {
     hero_text_color: "#ffffff",
     hero_bg_color: "#000000",
     hero_text_size: "text-6xl md:text-8xl lg:text-9xl",
+    hero_description: "",
+    hero_description_color: "#ffffff",
     marquee_text: "WE PUT SOCIAL AT THE CENTER OF EVERYTHING WE DO.",
     marquee_bg_color: "#2596be",
     marquee_text_color: "#ffffff",
@@ -29,13 +31,16 @@ export default function ManageHomePage() {
     help_bg_color: "#ffffff",
     help_text_color: "#000000",
     help_heading_size: "text-5xl md:text-7xl",
+    help_description_color: "#9ca3af",
     help_subheading_size: "text-xl font-bold",
     help_btn_color: "#2596be",
     help_btn_text_color: "#ffffff",
+    brands_visibility: true,
     brands_logos: [] as string[],
     brands_bg_color: "#000000",
     brands_text_color: "#ffffff",
     our_work_heading: "A Glimpse At\nOur Work",
+    work_visibility: true,
     our_work_subheading: "We are experts in driving relevance, with social at the center of everything we do.",
     our_work_btn_text: "See More",
     our_work_btn_color: "#2596be",
@@ -44,12 +49,14 @@ export default function ManageHomePage() {
     our_work_heading_size: "text-5xl md:text-7xl",
     our_work_subheading_size: "text-xl md:text-2xl",
     testimonials_tag: "Client Love",
+    testimonials_visibility: true,
     testimonials_tag_color: "#2596be",
     testimonials_title: "Don't just take our word for it.",
     testimonials_title_color: "#ffffff",
     testimonials_title_size: "text-4xl md:text-6xl",
     testimonials_bg_color: "#000000",
     blogs_title: "Read The Latest",
+    blogs_visibility: true,
     blogs_title_color: "#ffffff",
     blogs_title_size: "text-5xl md:text-7xl",
     blogs_subheading: "Insights, thoughts, and industry news directly from our expert team.",
@@ -61,6 +68,9 @@ export default function ManageHomePage() {
     cta_subheading: "Let's create something amazing together.",
     cta_btn_text: "Get in Touch",
     cta_btn_link: "/contact",
+    cta_bg_color: "#ceff00",
+    cta_email: "hello@eternaventures.in",
+    cta_email_color: "#000000",
     cta_text_color: "#ffffff",
     cta_btn_text_color: "#000000",
     cta_heading_size: "text-5xl md:text-7xl",
@@ -100,38 +110,31 @@ export default function ManageHomePage() {
     method_step3_desc: "We execute across capabilities simultaneously — not in silos. Brand, content, performance, influence, and experience working as one integrated system, not a list of services.",
     method_step4_title: "Measure & Compound",
     method_step4_desc: "We track what matters: brand equity, audience quality, revenue influence, and market share signals. Then we reinvest learnings into the next cycle. Growth compounds when strategy doesn’t reset every quarter.",
-    section_order: ['hero', 'philosophy', 'services', 'marquee', 'method', 'who_we_serve', 'work', 'testimonials', 'cta', 'blogs', 'marquee_logos'],
-    serve_visibility: true,
-    serve_tag: "Who We Serve",
-    serve_tag_color: "#2596be",
-    serve_title: "Built for brands with real ambition.",
-    serve_title_color: "#ffffff",
-    serve_bg_color: "#000000",
-    serve_items: [
-      {title: "Consumer Brands", desc: "D2C, FMCG, and lifestyle brands competing for shelf space and mind share in an attention economy."},
-      {title: "Retail & Hospitality", desc: "Physical and experiential brands that need premium positioning to justify premium pricing."},
-      {title: "Professional Services", desc: "Firms where reputation is revenue — law, finance, consulting, healthcare, education."},
-      {title: "Startups & Founders", desc: "Early-stage ventures that need to punch above their weight before funding gives them the right to."},
-      {title: "Real Estate & Infrastructure", desc: "Developers and platforms where trust is built long before a transaction is signed."},
-      {title: "Culture & Entertainment", desc: "Artists, labels, media companies, and experience brands building audiences for the long term."},
-      {title: "Health & Wellness", desc: "Brands operating in high-trust, high-scrutiny categories where credibility is the product."},
-      {title: "Fashion & Luxury", desc: "Labels and designers navigating the intersection of aspiration, authenticity, and culture."}
-    ],
-    serve_hover_color: "#2596be",
-    serve_text_color: "#ffffff",
+    section_order: ['hero', 'philosophy', 'services', 'marquee', 'marquee_logos', 'method', 'who_we_serve', 'work', 'testimonials', 'cta', 'blogs'],
     method_step_color: "#ffffff",
     method_step_hover_color: "#2596be",
-    method_title_size: "text-5xl md:text-7xl lg:text-8xl",
-    method_quote_size: "text-2xl md:text-3xl lg:text-4xl",
     method_step_title_size: "text-2xl",
     method_step_desc_size: "text-base",
-    serve_title_size: "text-5xl md:text-7xl lg:text-8xl",
+    method_title_size: "text-5xl md:text-7xl lg:text-8xl",
+    method_quote_size: "text-2xl md:text-3xl lg:text-4xl",
+    hero_description_size: "text-xl md:text-2xl",
+    help_tag_size: "text-sm",
+    serve_visibility: true,
+    serve_tag: "",
+    serve_tag_color: "#2596be",
     serve_tag_size: "text-sm",
+    serve_title: "",
+    serve_title_color: "#ffffff",
+    serve_title_size: "text-5xl md:text-7xl lg:text-8xl",
+    serve_bg_color: "#000000",
+    serve_text_color: "#ffffff",
+    serve_hover_color: "#2596be",
     serve_item_title_size: "text-xl md:text-2xl",
     serve_item_desc_size: "text-base",
-    services_hover_color: "#2596be",
-    help_description_color: "#9ca3af",
-    help_tag_size: "text-sm"
+    serve_items: [],
+    global_heading_font: "Space Grotesk",
+    global_body_font: "Inter",
+    global_tag_font: "Space Grotesk",
   });
 
   useEffect(() => {
@@ -386,7 +389,50 @@ export default function ManageHomePage() {
             </div>
           </div>
 
-          {/* Hero Section */}
+          {/* Global Font Settings */}
+          <div className="bg-purple-50 p-6 rounded-xl border border-purple-200">
+            <h2 className="text-lg font-bold text-gray-900 mb-1 pb-2 border-b border-purple-200">🔤 Global Font Families</h2>
+            <p className="text-sm text-purple-600 mb-4">Enter any Google Font name. Changes apply site-wide to headings, body text, and tags.</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-2">Heading Font <span className="text-purple-500 font-normal text-xs">(h1, h2, h3...)</span></label>
+                <input
+                  type="text"
+                  value={formData.global_heading_font}
+                  onChange={(e) => setFormData({ ...formData, global_heading_font: e.target.value })}
+                  placeholder="Space Grotesk"
+                  className="w-full border border-purple-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                />
+                <p className="text-xs text-gray-500 mt-1">e.g. Playfair Display, Bebas Neue, Montserrat</p>
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-2">Body Font <span className="text-purple-500 font-normal text-xs">(paragraphs, descriptions)</span></label>
+                <input
+                  type="text"
+                  value={formData.global_body_font}
+                  onChange={(e) => setFormData({ ...formData, global_body_font: e.target.value })}
+                  placeholder="Inter"
+                  className="w-full border border-purple-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                />
+                <p className="text-xs text-gray-500 mt-1">e.g. Inter, DM Sans, Lato, Open Sans</p>
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-2">Tag Font <span className="text-purple-500 font-normal text-xs">(labels, tags, buttons)</span></label>
+                <input
+                  type="text"
+                  value={formData.global_tag_font}
+                  onChange={(e) => setFormData({ ...formData, global_tag_font: e.target.value })}
+                  placeholder="Space Grotesk"
+                  className="w-full border border-purple-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                />
+                <p className="text-xs text-gray-500 mt-1">e.g. Space Grotesk, Rajdhani, Oswald</p>
+              </div>
+            </div>
+            <div className="mt-4 p-3 bg-purple-100 rounded-lg">
+              <p className="text-xs text-purple-700"><strong>💡 Tip for Size Fields:</strong> Use pixel values like <code className="bg-white px-1 rounded">48px</code> or Tailwind classes like <code className="bg-white px-1 rounded">text-3xl md:text-5xl lg:text-6xl</code>. Pixel values are more reliable.</p>
+            </div>
+          </div>
+
           <div>
             <h2 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b">Hero Section</h2>
             <div className="space-y-4">
@@ -451,25 +497,46 @@ export default function ManageHomePage() {
                     value={formData.hero_text_size}
                     onChange={(e) => setFormData({ ...formData, hero_text_size: e.target.value })}
                     className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                    placeholder="e.g. text-6xl md:text-8xl"
+                    placeholder="e.g. text-6xl md:text-8xl lg:text-9xl"
                   />
                 </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Hero Description</label>
+                <textarea
+                  rows={3}
+                  value={formData.hero_description}
+                  onChange={(e) => setFormData({ ...formData, hero_description: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Hero Background Color (if no video)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Description Color</label>
                   <div className="flex gap-2">
                     <input
                       type="color"
-                      value={formData.hero_bg_color}
-                      onChange={(e) => setFormData({ ...formData, hero_bg_color: e.target.value })}
+                      value={formData.hero_description_color}
+                      onChange={(e) => setFormData({ ...formData, hero_description_color: e.target.value })}
                       className="h-10 w-10 rounded cursor-pointer"
                     />
                     <input
                       type="text"
-                      value={formData.hero_bg_color}
-                      onChange={(e) => setFormData({ ...formData, hero_bg_color: e.target.value })}
+                      value={formData.hero_description_color}
+                      onChange={(e) => setFormData({ ...formData, hero_description_color: e.target.value })}
                       className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
                     />
                   </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Description Size</label>
+                  <input
+                    type="text"
+                    value={formData.hero_description_size}
+                    onChange={(e) => setFormData({ ...formData, hero_description_size: e.target.value })}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                    placeholder="e.g. text-xl md:text-2xl"
+                  />
                 </div>
               </div>
             </div>
@@ -624,33 +691,16 @@ export default function ManageHomePage() {
                   />
                 </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Background Color</label>
-                <div className="flex gap-2">
-                  <input
-                    type="color"
-                    value={formData.phil_bg_color}
-                    onChange={(e) => setFormData({ ...formData, phil_bg_color: e.target.value })}
-                    className="h-10 w-10 rounded cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={formData.phil_bg_color}
-                    onChange={(e) => setFormData({ ...formData, phil_bg_color: e.target.value })}
-                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                  />
-                </div>
-              </div>
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+              <div className="md:col-span-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Philosophy Description</label>
                 <textarea
-                  rows={6}
+                  rows={4}
                   value={formData.phil_description}
                   onChange={(e) => setFormData({ ...formData, phil_description: e.target.value })}
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
                 />
               </div>
-              <div>
+              <div className="md:col-span-1">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Description Color</label>
                 <div className="flex gap-2">
                   <input
@@ -667,14 +717,32 @@ export default function ManageHomePage() {
                   />
                 </div>
               </div>
-              <div>
+              <div className="md:col-span-1">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Description Size</label>
                 <input
                   type="text"
                   value={formData.phil_description_size}
                   onChange={(e) => setFormData({ ...formData, phil_description_size: e.target.value })}
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                  placeholder="e.g. text-lg md:text-xl"
                 />
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Section Background Color</label>
+                <div className="flex gap-2">
+                  <input
+                    type="color"
+                    value={formData.phil_bg_color}
+                    onChange={(e) => setFormData({ ...formData, phil_bg_color: e.target.value })}
+                    className="h-10 w-10 rounded cursor-pointer"
+                  />
+                  <input
+                    type="text"
+                    value={formData.phil_bg_color}
+                    onChange={(e) => setFormData({ ...formData, phil_bg_color: e.target.value })}
+                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -888,14 +956,14 @@ export default function ManageHomePage() {
                 <div className="flex gap-2">
                   <input
                     type="color"
-                    value={formData.services_hover_color}
-                    onChange={(e) => setFormData({ ...formData, services_hover_color: e.target.value })}
+                    value={formData.serve_hover_color}
+                    onChange={(e) => setFormData({ ...formData, serve_hover_color: e.target.value })}
                     className="h-10 w-10 rounded cursor-pointer"
                   />
                   <input
                     type="text"
-                    value={formData.services_hover_color}
-                    onChange={(e) => setFormData({ ...formData, services_hover_color: e.target.value })}
+                    value={formData.serve_hover_color}
+                    onChange={(e) => setFormData({ ...formData, serve_hover_color: e.target.value })}
                     className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
                   />
                 </div>
@@ -905,7 +973,22 @@ export default function ManageHomePage() {
 
           {/* Brands Section */}
           <div>
-            <h2 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b">Brands Scroll Logos</h2>
+            <div className="flex justify-between items-center mb-4 pb-2 border-b">
+              <h2 className="text-lg font-bold text-gray-900">Brands Scroll Logos (Marquee Logos)</h2>
+              <label className="flex items-center cursor-pointer">
+                <div className="relative">
+                  <input 
+                    type="checkbox" 
+                    className="sr-only" 
+                    checked={formData.brands_visibility !== false}
+                    onChange={(e) => setFormData({ ...formData, brands_visibility: e.target.checked })}
+                  />
+                  <div className={`block w-10 h-6 rounded-full transition-colors ${formData.brands_visibility !== false ? 'bg-[#2596be]' : 'bg-gray-300'}`}></div>
+                  <div className={`absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${formData.brands_visibility !== false ? 'transform translate-x-4' : ''}`}></div>
+                </div>
+                <span className="ml-3 text-sm font-medium text-gray-700">Visible</span>
+              </label>
+            </div>
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
@@ -1427,6 +1510,33 @@ export default function ManageHomePage() {
                     type="text"
                     value={formData.cta_text_color}
                     onChange={(e) => setFormData({ ...formData, cta_text_color: e.target.value })}
+                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Contact Email</label>
+                <input
+                  type="text"
+                  value={formData.cta_email}
+                  onChange={(e) => setFormData({ ...formData, cta_email: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                  placeholder="e.g. hello@eternaventures.in"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Email Color</label>
+                <div className="flex gap-2">
+                  <input
+                    type="color"
+                    value={formData.cta_email_color}
+                    onChange={(e) => setFormData({ ...formData, cta_email_color: e.target.value })}
+                    className="h-10 w-10 rounded cursor-pointer"
+                  />
+                  <input
+                    type="text"
+                    value={formData.cta_email_color}
+                    onChange={(e) => setFormData({ ...formData, cta_email_color: e.target.value })}
                     className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
                   />
                 </div>
