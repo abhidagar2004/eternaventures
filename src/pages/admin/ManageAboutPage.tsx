@@ -190,12 +190,12 @@ export default function ManageAboutPage() {
   if (isLoading) return <div className="flex items-center justify-center h-64"><Loader2 className="w-8 h-8 animate-spin text-[#2596be]" /></div>;
 
   const textSections = [
-    { title: '📌 Who We Are', headingField: 'who_we_are_heading', textField: 'who_we_are_text', bgField: 'who_we_are_bg_color', hcField: 'who_we_are_heading_color', tcField: 'who_we_are_text_color', accentField: 'who_we_are_accent_color', imgField: 'who_we_are_image' },
-    { title: '💡 What We Believe', headingField: 'what_we_believe_heading', textField: 'what_we_believe_text', bgField: 'what_we_believe_bg_color', hcField: 'what_we_believe_heading_color', tcField: 'what_we_believe_text_color', accentField: 'what_we_believe_accent_color', imgField: 'what_we_believe_image' },
-    { title: '🔗 Our Approach', headingField: 'our_approach_heading', textField: 'our_approach_text', bgField: 'our_approach_bg_color', hcField: 'our_approach_heading_color', tcField: 'our_approach_text_color', accentField: 'our_approach_accent_color', imgField: 'our_approach_image' },
-    { title: '⭐ Why EternaVentures', headingField: 'why_eterna_heading', textField: 'why_eterna_text', bgField: 'why_eterna_bg_color', hcField: 'why_eterna_heading_color', tcField: 'why_eterna_text_color', accentField: 'why_eterna_accent_color', imgField: 'why_eterna_image' },
-    { title: '🤝 Who We Work With', headingField: 'who_we_work_with_heading', textField: 'who_we_work_with_text', bgField: 'who_we_work_with_bg_color', hcField: 'who_we_work_with_heading_color', tcField: 'who_we_work_with_text_color', accentField: 'who_we_work_with_accent_color', imgField: 'who_we_work_with_image' },
-    { title: '🎯 Our Role', headingField: 'our_role_heading', textField: 'our_role_text', bgField: 'our_role_bg_color', hcField: 'our_role_heading_color', tcField: 'our_role_text_color', accentField: 'our_role_accent_color', imgField: 'our_role_image' },
+    { title: '📌 Who We Are', headingField: 'who_we_are_heading', textField: 'who_we_are_text', bgField: 'who_we_are_bg_color', hcField: 'who_we_are_heading_color', tcField: 'who_we_are_text_color', accentField: 'who_we_are_accent_color', imgField: 'who_we_are_image', hsField: 'who_we_are_heading_size', tsField: 'who_we_are_text_size' },
+    { title: '💡 What We Believe', headingField: 'what_we_believe_heading', textField: 'what_we_believe_text', bgField: 'what_we_believe_bg_color', hcField: 'what_we_believe_heading_color', tcField: 'what_we_believe_text_color', accentField: 'what_we_believe_accent_color', imgField: 'what_we_believe_image', hsField: 'what_we_believe_heading_size', tsField: 'what_we_believe_text_size' },
+    { title: '🔗 Our Approach', headingField: 'our_approach_heading', textField: 'our_approach_text', bgField: 'our_approach_bg_color', hcField: 'our_approach_heading_color', tcField: 'our_approach_text_color', accentField: 'our_approach_accent_color', imgField: 'our_approach_image', hsField: 'our_approach_heading_size', tsField: 'our_approach_text_size' },
+    { title: '⭐ Why EternaVentures', headingField: 'why_eterna_heading', textField: 'why_eterna_text', bgField: 'why_eterna_bg_color', hcField: 'why_eterna_heading_color', tcField: 'why_eterna_text_color', accentField: 'why_eterna_accent_color', imgField: 'why_eterna_image', hsField: 'why_eterna_heading_size', tsField: 'why_eterna_text_size' },
+    { title: '🤝 Who We Work With', headingField: 'who_we_work_with_heading', textField: 'who_we_work_with_text', bgField: 'who_we_work_with_bg_color', hcField: 'who_we_work_with_heading_color', tcField: 'who_we_work_with_text_color', accentField: 'who_we_work_with_accent_color', imgField: 'who_we_work_with_image', hsField: 'who_we_work_with_heading_size', tsField: 'who_we_work_with_text_size' },
+    { title: '🎯 Our Role', headingField: 'our_role_heading', textField: 'our_role_text', bgField: 'our_role_bg_color', hcField: 'our_role_heading_color', tcField: 'our_role_text_color', accentField: 'our_role_accent_color', imgField: 'our_role_image', hsField: 'our_role_heading_size', tsField: 'our_role_text_size' },
   ];
 
   return (
@@ -259,8 +259,11 @@ export default function ManageAboutPage() {
               💡 <strong>Tip:</strong> Use blank lines to separate paragraphs. Short lines (no full-stop at end) will appear as accent-colored bullet points on the page.
             </p>
             {sec.imgField && <ImageField label="Section Image (Optional)" field={sec.imgField} />}
-            <TextInput label="Section Heading" field={sec.headingField} formData={formData} setFormData={setFormData} />
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <TextInput label="Section Heading" field={sec.headingField} formData={formData} setFormData={setFormData} />
+              <TextInput label="Heading Size" field={sec.hsField} formData={formData} setFormData={setFormData} placeholder="e.g. text-4xl md:text-5xl" />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <ColorInput label="Background Color" field={sec.bgField} formData={formData} setFormData={setFormData} defaultColor="#000000" />
               <ColorInput label="Heading Color" field={sec.hcField} formData={formData} setFormData={setFormData} defaultColor="#ffffff" />
               <ColorInput label="Text Color" field={sec.tcField} formData={formData} setFormData={setFormData} defaultColor="#9ca3af" />
@@ -268,7 +271,8 @@ export default function ManageAboutPage() {
                 <ColorInput label="Accent / Bullet Color" field={sec.accentField} formData={formData} setFormData={setFormData} defaultColor="#ceff00" />
               )}
             </div>
-            <TextareaInput label="Section Text" field={sec.textField} formData={formData} setFormData={setFormData} rows={8} />
+            <TextInput label="Description Size" field={sec.tsField} formData={formData} setFormData={setFormData} placeholder="e.g. text-base md:text-lg" />
+            <TextareaInput label="Section Text / Description" field={sec.textField} formData={formData} setFormData={setFormData} rows={8} />
           </SectionCard>
         ))}
 

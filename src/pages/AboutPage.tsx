@@ -137,10 +137,11 @@ function RichText({ text, textColor, accentColor }: { text: string; textColor: s
 // ─── Content Section Template ─────────────────────────────────────────────────
 function ContentSection({
   bgColor, headingColor, textColor, accentColor,
-  heading, text, index, imageUrl
+  heading, text, index, imageUrl, headingSize, textSize
 }: {
   bgColor: string, headingColor: string, textColor: string,
-  accentColor?: string, heading: string, text: string, index: number, imageUrl?: string
+  accentColor?: string, heading: string, text: string, index: number, imageUrl?: string,
+  headingSize?: string, textSize?: string
 }) {
   const isEven = index % 2 === 0;
   return (
@@ -159,7 +160,7 @@ function ContentSection({
               <h2
                 style={{
                   color: headingColor,
-                  fontSize: 'clamp(2rem, 4vw, 3.5rem)',
+                  fontSize: fs(headingSize, '2.25rem', '3.5rem'),
                   fontWeight: 900,
                   letterSpacing: '-0.03em',
                   lineHeight: '1',
@@ -175,7 +176,7 @@ function ContentSection({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.15 }}
-              className="text-base md:text-lg"
+              className={textSize || "text-base md:text-lg"}
             >
               <RichText text={text} textColor={textColor} accentColor={accentColor} />
             </motion.div>
@@ -254,12 +255,12 @@ export default function AboutPage() {
 
       {/* Content Sections */}
       {[
-        { heading: c.who_we_are_heading, text: c.who_we_are_text, bg: c.who_we_are_bg_color, hc: c.who_we_are_heading_color, tc: c.who_we_are_text_color, accent: c.who_we_are_accent_color, img: c.who_we_are_image },
-        { heading: c.what_we_believe_heading, text: c.what_we_believe_text, bg: c.what_we_believe_bg_color, hc: c.what_we_believe_heading_color, tc: c.what_we_believe_text_color, accent: c.what_we_believe_accent_color, img: c.what_we_believe_image },
-        { heading: c.our_approach_heading, text: c.our_approach_text, bg: c.our_approach_bg_color, hc: c.our_approach_heading_color, tc: c.our_approach_text_color, accent: c.our_approach_accent_color, img: c.our_approach_image },
-        { heading: c.why_eterna_heading, text: c.why_eterna_text, bg: c.why_eterna_bg_color, hc: c.why_eterna_heading_color, tc: c.why_eterna_text_color, accent: c.why_eterna_accent_color, img: c.why_eterna_image },
-        { heading: c.who_we_work_with_heading, text: c.who_we_work_with_text, bg: c.who_we_work_with_bg_color, hc: c.who_we_work_with_heading_color, tc: c.who_we_work_with_text_color, accent: c.who_we_work_with_accent_color, img: c.who_we_work_with_image },
-        { heading: c.our_role_heading, text: c.our_role_text, bg: c.our_role_bg_color, hc: c.our_role_heading_color, tc: c.our_role_text_color, accent: c.our_role_accent_color, img: c.our_role_image },
+        { heading: c.who_we_are_heading, text: c.who_we_are_text, bg: c.who_we_are_bg_color, hc: c.who_we_are_heading_color, tc: c.who_we_are_text_color, accent: c.who_we_are_accent_color, img: c.who_we_are_image, hs: c.who_we_are_heading_size, ts: c.who_we_are_text_size },
+        { heading: c.what_we_believe_heading, text: c.what_we_believe_text, bg: c.what_we_believe_bg_color, hc: c.what_we_believe_heading_color, tc: c.what_we_believe_text_color, accent: c.what_we_believe_accent_color, img: c.what_we_believe_image, hs: c.what_we_believe_heading_size, ts: c.what_we_believe_text_size },
+        { heading: c.our_approach_heading, text: c.our_approach_text, bg: c.our_approach_bg_color, hc: c.our_approach_heading_color, tc: c.our_approach_text_color, accent: c.our_approach_accent_color, img: c.our_approach_image, hs: c.our_approach_heading_size, ts: c.our_approach_text_size },
+        { heading: c.why_eterna_heading, text: c.why_eterna_text, bg: c.why_eterna_bg_color, hc: c.why_eterna_heading_color, tc: c.why_eterna_text_color, accent: c.why_eterna_accent_color, img: c.why_eterna_image, hs: c.why_eterna_heading_size, ts: c.why_eterna_text_size },
+        { heading: c.who_we_work_with_heading, text: c.who_we_work_with_text, bg: c.who_we_work_with_bg_color, hc: c.who_we_work_with_heading_color, tc: c.who_we_work_with_text_color, accent: c.who_we_work_with_accent_color, img: c.who_we_work_with_image, hs: c.who_we_work_with_heading_size, ts: c.who_we_work_with_text_size },
+        { heading: c.our_role_heading, text: c.our_role_text, bg: c.our_role_bg_color, hc: c.our_role_heading_color, tc: c.our_role_text_color, accent: c.our_role_accent_color, img: c.our_role_image, hs: c.our_role_heading_size, ts: c.our_role_text_size },
       ].filter(s => s.heading && s.text).map((s, i) => (
         <ContentSection
           key={i} index={i}
@@ -270,6 +271,8 @@ export default function AboutPage() {
           heading={s.heading}
           text={s.text}
           imageUrl={s.img}
+          headingSize={s.hs}
+          textSize={s.ts}
         />
       ))}
 
