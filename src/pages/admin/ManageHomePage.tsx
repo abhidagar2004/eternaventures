@@ -129,7 +129,9 @@ export default function ManageHomePage() {
     serve_tag_size: "text-sm",
     serve_item_title_size: "text-xl md:text-2xl",
     serve_item_desc_size: "text-base",
-    services_hover_color: "#2596be"
+    services_hover_color: "#2596be",
+    help_description_color: "#9ca3af",
+    help_tag_size: "text-sm"
   });
 
   useEffect(() => {
@@ -293,7 +295,7 @@ export default function ManageHomePage() {
         <ManageHomeProjects />
       ) : (
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <form onSubmit={handleSubmit} className="p-6 space-y-8">
+          <form id="homepage-form" onSubmit={handleSubmit} className="p-6 space-y-8">
           
           {/* Section Visibility & Reordering */}
           <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
@@ -707,6 +709,16 @@ export default function ManageHomePage() {
                 </div>
               </div>
               <div className="md:col-span-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Tag Size (Tailwind)</label>
+                <input
+                  type="text"
+                  value={formData.help_tag_size}
+                  onChange={(e) => setFormData({ ...formData, help_tag_size: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                  placeholder="e.g. text-sm"
+                />
+              </div>
+              <div className="md:col-span-1">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Heading</label>
                 <textarea
                   rows={2}
@@ -734,6 +746,23 @@ export default function ManageHomePage() {
                 />
               </div>
               <div className="md:col-span-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Subheading Color</label>
+                <div className="flex gap-2">
+                  <input
+                    type="color"
+                    value={formData.help_description_color}
+                    onChange={(e) => setFormData({ ...formData, help_description_color: e.target.value })}
+                    className="h-10 w-10 rounded cursor-pointer"
+                  />
+                  <input
+                    type="text"
+                    value={formData.help_description_color}
+                    onChange={(e) => setFormData({ ...formData, help_description_color: e.target.value })}
+                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                  />
+                </div>
+              </div>
+              <div className="md:col-span-1">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Subheading Size</label>
                 <input
                   type="text"
@@ -741,6 +770,32 @@ export default function ManageHomePage() {
                   onChange={(e) => setFormData({ ...formData, help_subheading_size: e.target.value })}
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
                 />
+              </div>
+              <div className="md:col-span-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Subheading Size (Tailwind)</label>
+                <input
+                  type="text"
+                  value={formData.help_subheading_size}
+                  onChange={(e) => setFormData({ ...formData, help_subheading_size: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                />
+              </div>
+              <div className="md:col-span-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Subheading Color</label>
+                <div className="flex gap-2">
+                  <input
+                    type="color"
+                    value={formData.help_description_color}
+                    onChange={(e) => setFormData({ ...formData, help_description_color: e.target.value })}
+                    className="h-10 w-10 rounded cursor-pointer"
+                  />
+                  <input
+                    type="text"
+                    value={formData.help_description_color}
+                    onChange={(e) => setFormData({ ...formData, help_description_color: e.target.value })}
+                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                  />
+                </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Button Text</label>
@@ -1861,6 +1916,7 @@ export default function ManageHomePage() {
           <div className="flex justify-end pt-12 mt-12 border-t border-gray-200">
             <button
               type="submit"
+              form="homepage-form"
               disabled={isSubmitting || uploading}
               className="px-10 py-4 bg-[#2596be] hover:bg-[#1e7a9b] text-white font-bold uppercase tracking-widest rounded-xl transition-all shadow-xl hover:scale-105 active:scale-95 disabled:opacity-50 flex items-center gap-3"
             >

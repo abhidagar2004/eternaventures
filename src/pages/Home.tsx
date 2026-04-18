@@ -295,7 +295,7 @@ export default function Home() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       style={{ color: homeContent.help_tag_color }}
-                      className="inline-block text-sm font-bold uppercase tracking-[0.3em] mb-8"
+                      className={`${homeContent.help_tag_size || 'text-sm'} inline-block font-bold uppercase tracking-[0.3em] mb-8`}
                     >
                       {homeContent.help_tag}
                     </motion.span>
@@ -306,7 +306,7 @@ export default function Home() {
                     viewport={{ once: true }}
                     transition={{ delay: 0.1 }}
                     style={{ color: homeContent.help_text_color }}
-                    className="text-5xl md:text-7xl lg:text-8xl font-display font-black uppercase tracking-tighter leading-[0.85] whitespace-pre-line"
+                    className={`${homeContent.help_heading_size || 'text-5xl md:text-7xl lg:text-8xl'} font-display font-black uppercase tracking-tighter leading-[0.85] whitespace-pre-line`}
                   >
                     {homeContent.help_heading}
                   </motion.h2>
@@ -317,13 +317,19 @@ export default function Home() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.2 }}
-                    className="text-xl md:text-2xl text-gray-400 font-medium leading-relaxed"
+                    style={{ color: homeContent.help_description_color || '#9ca3af' }}
+                    className={`${homeContent.help_subheading_size || 'text-xl md:text-2xl'} font-medium leading-relaxed`}
                   >
                     {homeContent.help_subheading}
                   </motion.p>
                   <Link 
                     to="/services" 
-                    className="group flex items-center gap-3 bg-[#ceff00] text-black font-bold uppercase tracking-widest px-8 py-4 rounded-xl hover:gap-6 transition-all"
+                    style={{ 
+                      backgroundColor: homeContent.help_btn_color || '#ceff00',
+                      color: homeContent.help_btn_text_color || '#000',
+                      borderRadius: homeContent.help_btn_radius || '12px'
+                    }}
+                    className="group flex items-center gap-3 font-bold uppercase tracking-widest px-8 py-4 hover:gap-6 transition-all"
                   >
                     {homeContent.help_button_text || 'View All Practices'}
                     <ArrowRight className="w-5 h-5" />
@@ -343,24 +349,25 @@ export default function Home() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: 0.05 * i }}
-                      className="bg-[#0a0a0a] rounded-3xl p-6 border border-white/5 hover:border-[#ceff00]/30 transition-all duration-500 flex flex-col h-full"
+                      className="bg-[#111111] rounded-3xl p-6 border border-white/5 hover:border-[#ceff00]/30 transition-all duration-500 flex flex-col h-full"
                     >
-                      <div className="aspect-[4/3] rounded-2xl overflow-hidden mb-8">
+                      <div className="aspect-square rounded-2xl overflow-hidden mb-8 bg-neutral-900">
                         <img 
                           src={item.image_url || item.image} 
                           alt={item.title} 
-                          className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 group-hover:scale-110"
+                          className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
+                          referrerPolicy="no-referrer"
                         />
                       </div>
-                      <div className="flex flex-wrap gap-x-3 gap-y-1 mb-6">
-                        {(item.tags || item.areas || []).map((tag: any, j: number) => (
-                          <span key={j} className="text-[10px] font-bold tracking-widest text-[#ceff00] opacity-60 uppercase whitespace-nowrap">{tag} •</span>
+                      <div className="flex flex-wrap gap-x-3 gap-y-1 mb-4">
+                        {(item.tags || item.areas || (item.subtitle ? item.subtitle.split(' • ') : [])).map((tag: any, j: number) => (
+                          <span key={j} className="text-[10px] font-bold tracking-[0.2em] text-[#ceff00] opacity-80 uppercase whitespace-nowrap">{tag}</span>
                         ))}
                       </div>
-                      <h3 className="text-2xl font-display font-black uppercase tracking-tighter mb-4 text-white leading-tight">
+                      <h3 className="text-3xl font-display font-black uppercase tracking-tighter mb-4 text-white leading-[0.9] group-hover:text-[#ceff00] transition-colors">
                         {item.title}
                       </h3>
-                      <p className="text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed text-sm mt-auto">
+                      <p className="text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed text-sm line-clamp-3">
                         {item.desc || item.description || item.subtitle}
                       </p>
                     </motion.div>
@@ -388,7 +395,7 @@ export default function Home() {
       case 'marquee_logos':
         return (homeContent.brands_logos && homeContent.brands_logos.length > 0) ? (
           <section key="brands" style={{ backgroundColor: homeContent.brands_bg_color }} className="py-20 overflow-hidden border-y border-white/5">
-            <div className="flex w-max animate-[marquee_40s_linear_infinite] items-center gap-12 opacity-50 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-700">
+            <div className="flex w-max animate-[marquee_40s_linear_infinite] items-center gap-12 transition-all duration-700">
               {[...homeContent.brands_logos, ...homeContent.brands_logos, ...homeContent.brands_logos, ...homeContent.brands_logos].map((logo, i) => (
                 <img key={i} src={logo} alt="Brand Logo" className="h-8 md:h-12 w-auto object-contain mx-12" />
               ))}
@@ -610,8 +617,8 @@ export default function Home() {
           <section key="blogs" style={{ backgroundColor: "#000" }} className="py-24 md:py-32 px-6 md:px-12">
             <div className="max-w-7xl mx-auto">
               <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-24 gap-12">
-                <div className="max-w-2xl flex flex-col gap-8">
-                  <h2 className="text-6xl md:text-8xl lg:text-9xl font-display font-black uppercase tracking-tighter leading-[0.8] text-white">
+                <div className="max-w-2xl">
+                  <h2 className="text-6xl md:text-8xl lg:text-9xl font-display font-black uppercase tracking-tighter leading-[0.8] text-white mb-8">
                     {homeContent.blogs_title}
                   </h2>
                   {homeContent.blogs_subheading && (
@@ -619,12 +626,12 @@ export default function Home() {
                       {homeContent.blogs_subheading}
                     </p>
                   )}
-                  <div className="mt-4">
-                    <Link to="/blogs" className="inline-flex items-center gap-3 bg-[#ceff00] text-black font-bold uppercase tracking-widest px-8 py-4 rounded-xl hover:gap-6 transition-all">
-                      {homeContent.blogs_btn_text || 'View All Insights'}
-                      <ArrowRight className="w-5 h-5" />
-                    </Link>
-                  </div>
+                </div>
+                <div>
+                  <Link to="/blogs" className="inline-flex items-center gap-3 bg-[#ceff00] text-black font-bold uppercase tracking-widest px-8 py-4 rounded-xl hover:gap-6 transition-all">
+                    {homeContent.blogs_btn_text || 'View All Insights'}
+                    <ArrowRight className="w-5 h-5" />
+                  </Link>
                 </div>
               </div>
               {blogs.length > 0 && (

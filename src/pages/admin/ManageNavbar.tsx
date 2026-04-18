@@ -379,24 +379,52 @@ export default function ManageNavbar() {
             <div className="space-y-4">
               {config.buttons.map((btn, index) => (
                 <div key={btn.id} className="p-4 bg-gray-50 rounded-xl border border-gray-100 space-y-3 relative group">
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-[10px] font-bold text-gray-400 mb-1 uppercase tracking-wider">Button Text</label>
-                      <input type="text" value={btn.name} onChange={e => updateButton(index, 'name', e.target.value)} className="w-full border rounded p-2 text-xs" />
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[10px] font-bold text-gray-400 mb-1 uppercase tracking-wider">Button Text</label>
+                        <input type="text" value={btn.name} onChange={e => updateButton(index, 'name', e.target.value)} className="w-full border rounded p-2 text-xs" />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold text-gray-400 mb-1 uppercase tracking-wider">URL Link</label>
+                        <input type="text" value={btn.href} onChange={e => updateButton(index, 'href', e.target.value)} className="w-full border rounded p-2 text-xs font-mono" />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold text-gray-400 mb-1 uppercase tracking-wider">Background Color</label>
+                        <div className="flex gap-2">
+                          <input 
+                            type="color" 
+                            value={btn.bgColor.startsWith('#') ? btn.bgColor : '#ffffff'} 
+                            onChange={e => updateButton(index, 'bgColor', e.target.value)} 
+                            className="h-8 w-10 border rounded cursor-pointer" 
+                          />
+                          <input 
+                            type="text" 
+                            value={btn.bgColor} 
+                            onChange={e => updateButton(index, 'bgColor', e.target.value)} 
+                            placeholder="#ffffff" 
+                            className="flex-grow border rounded px-2 py-1 text-[10px] font-mono" 
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold text-gray-400 mb-1 uppercase tracking-wider">Text Color</label>
+                        <div className="flex gap-2">
+                          <input 
+                            type="color" 
+                            value={btn.textColor.startsWith('#') ? btn.textColor : '#000000'} 
+                            onChange={e => updateButton(index, 'textColor', e.target.value)} 
+                            className="h-8 w-10 border rounded cursor-pointer" 
+                          />
+                          <input 
+                            type="text" 
+                            value={btn.textColor} 
+                            onChange={e => updateButton(index, 'textColor', e.target.value)} 
+                            placeholder="#000000" 
+                            className="flex-grow border rounded px-2 py-1 text-[10px] font-mono" 
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <label className="block text-[10px] font-bold text-gray-400 mb-1 uppercase tracking-wider">URL Link</label>
-                      <input type="text" value={btn.href} onChange={e => updateButton(index, 'href', e.target.value)} className="w-full border rounded p-2 text-xs font-mono" />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-bold text-gray-400 mb-1 uppercase tracking-wider">BG Class</label>
-                      <input type="text" value={btn.bgColor} onChange={e => updateButton(index, 'bgColor', e.target.value)} placeholder="e.g. bg-white" className="w-full border rounded p-2 text-xs font-mono" />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-bold text-gray-400 mb-1 uppercase tracking-wider">Text Class</label>
-                      <input type="text" value={btn.textColor} onChange={e => updateButton(index, 'textColor', e.target.value)} placeholder="e.g. text-black" className="w-full border rounded p-2 text-xs font-mono" />
-                    </div>
-                  </div>
                   <div className="flex justify-between items-center">
                     <div className="flex gap-2">
                        <button onClick={() => moveButton(index, -1)} disabled={index === 0} className="p-1 hover:bg-white rounded transition-colors disabled:opacity-0"><ArrowUp size={12} /></button>
