@@ -137,18 +137,18 @@ function RichText({ text, textColor, accentColor }: { text: string; textColor: s
 // ─── Content Section Template ─────────────────────────────────────────────────
 function ContentSection({
   bgColor, headingColor, textColor, accentColor,
-  heading, text, index,
+  heading, text, index, imageUrl
 }: {
   bgColor: string, headingColor: string, textColor: string,
-  accentColor?: string, heading: string, text: string, index: number
+  accentColor?: string, heading: string, text: string, index: number, imageUrl?: string
 }) {
   const isEven = index % 2 === 0;
   return (
     <section style={{ backgroundColor: bgColor }} className="py-20 md:py-28 px-6 md:px-12 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
-        <div className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 lg:gap-24 items-start`}>
-          {/* Heading side */}
-          <div className="lg:w-2/5 lg:sticky top-32 self-start">
+        <div className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 lg:gap-24 items-center`}>
+          {/* Text side */}
+          <div className={imageUrl ? "lg:w-1/2" : "w-full"}>
             <motion.div
               initial={{ opacity: 0, x: isEven ? -30 : 30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -165,13 +165,11 @@ function ContentSection({
                   lineHeight: '1',
                   textTransform: 'uppercase',
                 }}
+                className="mb-8"
               >
                 {heading}
               </h2>
             </motion.div>
-          </div>
-          {/* Text side */}
-          <div className="lg:w-3/5">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -182,6 +180,22 @@ function ContentSection({
               <RichText text={text} textColor={textColor} accentColor={accentColor} />
             </motion.div>
           </div>
+          
+          {/* Image side */}
+          {imageUrl && (
+            <div className="lg:w-1/2">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="relative rounded-2xl overflow-hidden aspect-[4/3] border border-white/10"
+              >
+                <div className="absolute inset-0 bg-black/20 z-10" />
+                <img src={imageUrl} alt={heading} className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" referrerPolicy="no-referrer" />
+              </motion.div>
+            </div>
+          )}
         </div>
       </div>
     </section>
@@ -240,12 +254,12 @@ export default function AboutPage() {
 
       {/* Content Sections */}
       {[
-        { heading: c.who_we_are_heading, text: c.who_we_are_text, bg: c.who_we_are_bg_color, hc: c.who_we_are_heading_color, tc: c.who_we_are_text_color, accent: '#ceff00' },
-        { heading: c.what_we_believe_heading, text: c.what_we_believe_text, bg: c.what_we_believe_bg_color, hc: c.what_we_believe_heading_color, tc: c.what_we_believe_text_color, accent: c.what_we_believe_accent_color },
-        { heading: c.our_approach_heading, text: c.our_approach_text, bg: c.our_approach_bg_color, hc: c.our_approach_heading_color, tc: c.our_approach_text_color, accent: '#ceff00' },
-        { heading: c.why_eterna_heading, text: c.why_eterna_text, bg: c.why_eterna_bg_color, hc: c.why_eterna_heading_color, tc: c.why_eterna_text_color, accent: c.why_eterna_accent_color },
-        { heading: c.who_we_work_with_heading, text: c.who_we_work_with_text, bg: c.who_we_work_with_bg_color, hc: c.who_we_work_with_heading_color, tc: c.who_we_work_with_text_color, accent: '#ceff00' },
-        { heading: c.our_role_heading, text: c.our_role_text, bg: c.our_role_bg_color, hc: c.our_role_heading_color, tc: c.our_role_text_color, accent: '#ceff00' },
+        { heading: c.who_we_are_heading, text: c.who_we_are_text, bg: c.who_we_are_bg_color, hc: c.who_we_are_heading_color, tc: c.who_we_are_text_color, accent: '#ceff00', img: c.who_we_are_image },
+        { heading: c.what_we_believe_heading, text: c.what_we_believe_text, bg: c.what_we_believe_bg_color, hc: c.what_we_believe_heading_color, tc: c.what_we_believe_text_color, accent: c.what_we_believe_accent_color, img: c.what_we_believe_image },
+        { heading: c.our_approach_heading, text: c.our_approach_text, bg: c.our_approach_bg_color, hc: c.our_approach_heading_color, tc: c.our_approach_text_color, accent: '#ceff00', img: c.our_approach_image },
+        { heading: c.why_eterna_heading, text: c.why_eterna_text, bg: c.why_eterna_bg_color, hc: c.why_eterna_heading_color, tc: c.why_eterna_text_color, accent: c.why_eterna_accent_color, img: c.why_eterna_image },
+        { heading: c.who_we_work_with_heading, text: c.who_we_work_with_text, bg: c.who_we_work_with_bg_color, hc: c.who_we_work_with_heading_color, tc: c.who_we_work_with_text_color, accent: '#ceff00', img: c.who_we_work_with_image },
+        { heading: c.our_role_heading, text: c.our_role_text, bg: c.our_role_bg_color, hc: c.our_role_heading_color, tc: c.our_role_text_color, accent: '#ceff00', img: c.our_role_image },
       ].filter(s => s.heading && s.text).map((s, i) => (
         <ContentSection
           key={i} index={i}
@@ -255,6 +269,7 @@ export default function AboutPage() {
           accentColor={s.accent}
           heading={s.heading}
           text={s.text}
+          imageUrl={s.img}
         />
       ))}
 
