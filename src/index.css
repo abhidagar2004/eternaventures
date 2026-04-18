@@ -8,7 +8,7 @@
 }
 
 body {
-  @apply bg-black text-white font-sans antialiased selection:bg-[#2596be] selection:text-white overflow-x-hidden;
+  @apply bg-black text-white font-sans antialiased selection:bg-[#ceff00] selection:text-black overflow-x-hidden;
 }
 
 @layer utilities {

@@ -10,87 +10,69 @@ export default function Home() {
   const [projects, setProjects] = useState<any[]>([]);
   const [blogs, setBlogs] = useState<any[]>([]);
   const [homeContent, setHomeContent] = useState<any>({
-    hero_video_url: "",
-    hero_text: "",
+    hero_video_url: "https://cdn.pixabay.com/video/2020/05/25/40131-425257528_large.mp4",
+    hero_text: "We build brands that\nown their market position.",
     hero_text_color: "#ffffff",
-    marquee_text: "",
-    marquee_bg_color: "#2596be",
-    marquee_text_color: "#ffffff",
-    help_heading: "",
-    help_subheading: "",
-    help_button_text: "",
-    help_bg_color: "#ffffff",
-    help_text_color: "#000000",
-    help_btn_color: "#2596be",
-    help_btn_text_color: "#ffffff",
+    hero_description: "EternaVentures is a full-spectrum growth media platform for ambitious brands — architecting attention, engineering culture, and compounding market authority.",
+    hero_bg_color: "#000000",
+    hero_text_size: "text-5xl md:text-8x lg:text-9xl",
+    marquee_text: "WE DON'T RUN CAMPAIGNS. WE CONSTRUCT ECOSYSTEMS.",
+    marquee_bg_color: "#ceff00",
+    marquee_text_color: "#000000",
+    marquee_text_size: "text-xl md:text-3xl",
+    help_tag: "What We Do",
+    help_tag_color: "#ceff00",
+    help_heading: "Six practices.\nOne integrated growth engine.",
+    help_subheading: "Our capabilities aren’t siloed services — they’re interconnected practices designed to build market authority at every layer of your brand.",
+    help_bg_color: "#000000",
+    help_text_color: "#ffffff",
+    help_btn_color: "#ceff00",
+    help_btn_text_color: "#000000",
+    help_heading_size: "text-4xl md:text-7xl",
+    help_subheading_size: "text-lg md:text-xl",
     brands_logos: [] as string[],
-    our_work_heading: "",
-    our_work_subheading: "",
-    our_work_btn_text: "",
-    our_work_btn_color: "#2596be",
-    our_work_bg_color: "#ffffff",
-    our_work_text_color: "#000000",
-    testimonials_tag: "",
-    testimonials_tag_color: "#2596be",
-    testimonials_title: "",
+    brands_bg_color: "#000000",
+    our_work_heading: "Our Latest\nWork",
+    our_work_subheading: "Explore how we've helped ambitious brands scale.",
+    our_work_btn_text: "View All Projects",
+    our_work_btn_color: "#ceff00",
+    our_work_bg_color: "#000000",
+    our_work_text_color: "#ffffff",
+    testimonials_tag: "Client Success",
+    testimonials_tag_color: "#ceff00",
+    testimonials_title: "Results that speak\nfor themselves.",
     testimonials_title_color: "#ffffff",
     testimonials_bg_color: "#000000",
-    blogs_title: "",
+    blogs_title: "Growth Hub",
     blogs_title_color: "#ffffff",
-    blogs_btn_text: "",
-    blogs_btn_color: "#2596be",
-    blogs_bg_color: "#111111",
-    cta_heading: "",
-    cta_subheading: "",
-    cta_btn_text: "",
+    blogs_btn_text: "Read Insights",
+    blogs_btn_color: "#ceff00",
+    blogs_bg_color: "#000000",
+    cta_heading: "Ready to stop competing and start leading?",
+    cta_subheading: "Tell us where your brand is. We’ll show you where it could be.",
+    cta_btn_text: "Contact Us",
     cta_btn_link: "/contact",
-    cta_bg_color: "#2596be",
-    cta_text_color: "#ffffff",
-    hero_text_size: "text-4xl sm:text-6xl md:text-8xl lg:text-9xl",
-    marquee_text_size: "text-xl md:text-4xl",
-    help_heading_size: "text-4xl sm:text-5xl md:text-7xl",
-    help_subheading_size: "text-lg md:text-xl font-bold",
-    our_work_heading_size: "text-4xl sm:text-5xl md:text-7xl",
-    our_work_subheading_size: "text-lg md:text-xl md:text-2xl",
-    testimonials_title_size: "text-3xl sm:text-4xl md:text-6xl",
-    blogs_title_size: "text-4xl sm:text-5xl md:text-7xl",
-    cta_heading_size: "text-4xl sm:text-5xl md:text-7xl",
-    cta_subheading_size: "text-lg md:text-xl md:text-2xl",
+    cta_bg_color: "#ceff00",
+    cta_text_color: "#000000",
     page_bg_color: "#000000",
     page_text_color: "#ffffff",
-    hero_bg_color: "#000000",
-    brands_bg_color: "#000000",
-    brands_text_color: "#ffffff",
-    blogs_subheading: "",
-    blogs_subheading_size: "text-lg md:text-xl font-bold",
     phil_tag: "Our Philosophy",
-    phil_tag_color: "#2596be",
-    phil_tag_bg_color: "rgba(37, 150, 190, 0.1)",
-    phil_title: "Growth is not a campaign. It’s a discipline.",
+    phil_tag_color: "#ceff00",
+    phil_tag_bg_color: "rgba(206, 255, 0, 0.1)",
+    phil_title: "Growth is not a campaign.\nIt’s a discipline.",
     phil_title_color: "#ffffff",
-    phil_title_size: "text-4xl md:text-6xl lg:text-7xl",
-    phil_description: "",
-    phil_description_color: "#9ca3af",
-    phil_description_size: "text-lg md:text-xl",
+    phil_title_size: "text-4xl md:text-7xl",
+    phil_description: "Most agencies sell tactics. We build systems. EternaVentures was founded on the belief that a brand's market position is its most valuable — and most underbuilt — asset. Every decision we make compounds.\n\nWe work with founders, growth-stage brands, and challenger companies who understand that premium positioning isn't a luxury — it's the most efficient path to dominance. Based in Jaipur, operating across India and beyond.\n\nWe don't run campaigns. We construct ecosystems where your audience finds you inevitable.",
     phil_bg_color: "#000000",
     phil_visibility: true,
-    help_btn_radius: "9999px",
-    our_work_btn_text_color: "#ffffff",
-    our_work_btn_radius: "9999px",
-    blogs_btn_text_color: "#ffffff",
-    blogs_btn_radius: "9999px",
-    cta_btn_text_color: "#000000",
-    cta_btn_radius: "9999px",
-    help_tag: "What We Do",
-    help_tag_color: "#2596be",
     method_visibility: true,
     method_tag: "How We Work",
-    method_tag_color: "#2596be",
-    method_title: "The EternaVentures Method",
+    method_tag_color: "#ceff00",
+    method_title: "The EternaVentures\nMethod",
     method_title_color: "#ffffff",
     method_quote: "“We don’t start with deliverables. We start with the gap between where your brand is and where it should be — and build the bridge.”",
-    method_quote_color: "#c2ff00",
-    method_bg_color: "#000000",
+    method_quote_color: "#ceff00",
+    method_bg_color: "#0a0a0a",
     method_step1_title: "Audit & Immersion",
     method_step1_desc: "We spend time in your world before we touch your brand. Market landscape, competitor positioning, audience signals, and the story your brand is currently telling — whether you intended it or not.",
     method_step2_title: "Strategic Foundation",
@@ -99,10 +81,9 @@ export default function Home() {
     method_step3_desc: "We execute across capabilities simultaneously — not in silos. Brand, content, performance, influence, and experience working as one integrated system, not a list of services.",
     method_step4_title: "Measure & Compound",
     method_step4_desc: "We track what matters: brand equity, audience quality, revenue influence, and market share signals. Then we reinvest learnings into the next cycle. Growth compounds when strategy doesn’t reset every quarter.",
-    section_order: ['hero', 'philosophy', 'services', 'marquee', 'method', 'who_we_serve', 'work', 'testimonials', 'cta', 'blogs'],
     serve_visibility: true,
     serve_tag: "Who We Serve",
-    serve_tag_color: "#2596be",
+    serve_tag_color: "#ceff00",
     serve_title: "Built for brands with real ambition.",
     serve_title_color: "#ffffff",
     serve_bg_color: "#000000",
@@ -116,10 +97,15 @@ export default function Home() {
       {title: "Health & Wellness", desc: "Brands operating in high-trust, high-scrutiny categories where credibility is the product."},
       {title: "Fashion & Luxury", desc: "Labels and designers navigating the intersection of aspiration, authenticity, and culture."}
     ],
-    serve_hover_color: "#2596be",
-    serve_text_color: "#ffffff",
-    method_step_color: "#ffffff",
-    method_step_hover_color: "#2596be"
+    practices: [
+      { id: '01', title: 'Brand Architecture & Identity Systems', desc: 'We define who you are before the market defines it for you. From naming and positioning to visual identity and verbal systems.', areas: ['Positioning', 'Identity', 'Messaging Systems', 'Brand Language'] },
+      { id: '02', title: 'Narrative Engineering', desc: 'Stories don’t go viral — relevant ones do. We craft brand narratives rooted in cultural tension, audience psychology, and platform behavior.', areas: ['Content Strategy', 'Storytelling', 'Platform Behavior', 'Editorial Direction'] },
+      { id: '03', title: 'Performance & Paid Intelligence', desc: 'Media buying is arbitrage. We treat every rupee as a signal, not a spend — running performance ecosystems.', areas: ['Paid Media', 'Creative Testing', 'Analytics', 'Attribution'] },
+      { id: '04', title: 'Influence & Cultural Capital', desc: 'We don’t place ads in feeds — we place your brand in conversations. Our influence practice maps cultural networks.', areas: ['Influence Strategy', 'Community Building', 'Advocacy Programs'] },
+      { id: '05', title: 'Digital Experience Design', desc: 'Your website is your highest-leverage salesperson. We design and build digital experiences that convert attention into action.', areas: ['Web Design', 'UX', 'Conversion Optimization', 'Funnel Architecture'] },
+      { id: '06', title: 'Market Intelligence & Growth Advisory', desc: 'Before we build, we understand. Our advisory practice gives founders and leadership teams strategic clarity.', areas: ['Brand Strategy', 'Market Research', 'Competitive Intelligence', 'Growth Roadmapping'] }
+    ],
+    section_order: ['hero', 'philosophy', 'services', 'marquee', 'method', 'who_we_serve', 'work', 'testimonials', 'cta', 'blogs']
   });
   const [services, setServices] = useState<any[]>([]);
 
@@ -214,25 +200,35 @@ export default function Home() {
                 loop 
                 muted 
                 playsInline
-                className="w-full h-full object-cover opacity-40"
+                className="w-full h-full object-cover opacity-50"
               >
                 {homeContent.hero_video_url ? <source src={homeContent.hero_video_url} type="video/mp4" /> : null}
               </video>
-              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black"></div>
+              <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-black"></div>
             </div>
-            {homeContent.hero_text && homeContent.hero_text.trim() !== "" && (
-              <div className="relative z-10 text-center px-4 max-w-7xl mx-auto mt-20">
+            <div className="relative z-10 text-center px-4 max-w-7xl mx-auto mt-20">
+              {homeContent.hero_text && homeContent.hero_text.trim() !== "" && (
                 <motion.h1 
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, ease: "easeOut" }}
                   style={{ color: homeContent.hero_text_color }}
-                  className={`${homeContent.hero_text_size || 'text-6xl md:text-8xl lg:text-9xl'} font-display font-black uppercase tracking-tighter leading-[0.85] whitespace-pre-line`}
+                  className={`${homeContent.hero_text_size || 'text-6xl md:text-8xl lg:text-9xl'} font-display font-black uppercase tracking-tighter leading-[0.85] whitespace-pre-line mb-8`}
                 >
                   {homeContent.hero_text}
                 </motion.h1>
-              </div>
-            )}
+              )}
+              {homeContent.hero_description && (
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  className="max-w-3xl mx-auto text-xl md:text-2xl text-white/80 leading-relaxed font-medium"
+                >
+                  {homeContent.hero_description}
+                </motion.p>
+              )}
+            </div>
           </section>
         ) : null;
 
@@ -249,7 +245,7 @@ export default function Home() {
                     color: homeContent.phil_tag_color,
                     backgroundColor: homeContent.phil_tag_bg_color || 'transparent'
                   }}
-                  className="inline-block px-4 py-1.5 rounded-full text-sm font-bold uppercase tracking-widest mb-8"
+                  className="inline-block px-4 py-1.5 rounded-full text-sm font-bold uppercase tracking-widest mb-8 border border-[#ceff00]/20"
                 >
                   {homeContent.phil_tag}
                 </motion.span>
@@ -262,7 +258,7 @@ export default function Home() {
                     viewport={{ once: true }}
                     transition={{ delay: 0.2 }}
                     style={{ color: homeContent.phil_title_color }}
-                    className={`${homeContent.phil_title_size || 'text-4xl md:text-6xl'} font-display font-black uppercase tracking-tighter leading-[0.9] whitespace-pre-line`}
+                    className={`${homeContent.phil_title_size || 'text-4xl md:text-7xl'} font-display font-black uppercase tracking-tighter leading-[0.9] whitespace-pre-line`}
                   >
                     {homeContent.phil_title}
                   </motion.h2>
@@ -275,8 +271,8 @@ export default function Home() {
                     transition={{ delay: 0.4 }}
                   >
                     <p 
-                      style={{ color: homeContent.phil_description_color }}
-                      className={`${homeContent.phil_description_size || 'text-lg md:text-xl'} leading-relaxed opacity-90 whitespace-pre-line`}
+                      style={{ color: homeContent.phil_description_color || '#9ca3af' }}
+                      className="text-lg md:text-xl leading-relaxed opacity-90 whitespace-pre-line"
                     >
                       {homeContent.phil_description}
                     </p>
@@ -284,74 +280,75 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-[#2596be]/5 to-transparent pointer-none"></div>
           </section>
         ) : null;
 
       case 'services':
-        return ((homeContent.help_heading && homeContent.help_heading.trim() !== "") || (homeContent.help_subheading && homeContent.help_subheading.trim() !== "")) ? (
+        return (homeContent.practices || homeContent.help_heading) ? (
           <section key="services" style={{ backgroundColor: homeContent.help_bg_color, color: homeContent.help_text_color }} className="py-24 md:py-32 px-6 md:px-12">
             <div className="max-w-7xl mx-auto">
-              {homeContent.help_tag && (
-                <motion.span 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  style={{ color: homeContent.help_tag_color }}
-                  className="inline-block text-sm font-bold uppercase tracking-[0.3em] mb-12"
-                >
-                  {homeContent.help_tag}
-                </motion.span>
-              )}
               <div className="flex flex-col lg:flex-row justify-between items-start gap-12 lg:gap-24 mb-24">
                 <div className="lg:w-3/5">
+                  {homeContent.help_tag && (
+                    <motion.span 
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      style={{ color: homeContent.help_tag_color }}
+                      className="inline-block text-sm font-bold uppercase tracking-[0.3em] mb-8"
+                    >
+                      {homeContent.help_tag}
+                    </motion.span>
+                  )}
                   {homeContent.help_heading && homeContent.help_heading.trim() !== "" && (
                     <h2 className={`${homeContent.help_heading_size || 'text-5xl md:text-7xl'} font-display font-black uppercase tracking-tighter leading-[0.85] whitespace-pre-line`}>
                       {homeContent.help_heading}
                     </h2>
                   )}
                 </div>
-                <div className="lg:w-2/5 flex flex-col items-start lg:items-end lg:text-right">
+                <div className="lg:w-2/5 pt-16">
                   {homeContent.help_subheading && homeContent.help_subheading.trim() !== "" && (
-                    <p className={`${homeContent.help_subheading_size || 'text-xl font-bold'} mb-10 leading-relaxed opacity-90 whitespace-pre-line`}>
+                    <p className="text-xl md:text-2xl mb-10 leading-relaxed opacity-80 whitespace-pre-line font-medium">
                       {homeContent.help_subheading}
                     </p>
                   )}
-                  {homeContent.help_button_text && homeContent.help_button_text.trim() !== "" && (
-                    <Link 
-                      to="/services" 
-                      style={{ 
-                        backgroundColor: homeContent.help_btn_color, 
-                        color: homeContent.help_btn_text_color, 
-                        borderRadius: homeContent.help_btn_radius 
-                      }} 
-                      className="group inline-flex items-center gap-3 font-bold uppercase tracking-wider px-10 py-5 hover:opacity-90 transition-all active:scale-95"
-                    >
-                      {homeContent.help_button_text}
-                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  )}
                 </div>
               </div>
-              {services.length > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                  {services.slice(0, 6).map((service, i) => (
-                    <Link 
-                      to={`/services/${service.slug}`} 
-                      key={i} 
-                      className="group cursor-pointer text-inherit no-underline"
-                      style={{ '--hover-color': homeContent.services_hover_color } as any}
-                    >
-                      <div className="overflow-hidden mb-6 rounded-xl bg-gray-100">
-                        <img src={service.image_url || 'https://picsum.photos/seed/service/800/800'} alt={service.title} className="w-full aspect-square object-cover transform group-hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" />
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {(homeContent.practices || []).map((practice: any, i: number) => (
+                  <motion.div 
+                    key={practice.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                    className="group bg-[#0a0a0a] border border-white/5 p-8 md:p-10 rounded-2xl hover:border-[#ceff00]/50 transition-all duration-500"
+                  >
+                    <div className="flex justify-between items-start mb-8">
+                      <span className="text-4xl md:text-5xl font-display font-black text-white/10 group-hover:text-[#ceff00]/20 transition-colors">
+                        {practice.id}
+                      </span>
+                      <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#ceff00] group-hover:border-[#ceff00] transition-all duration-500">
+                        <ArrowRight className="w-5 h-5 group-hover:text-black transition-colors" />
                       </div>
-                      {service.subtitle && <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">{service.subtitle}</p>}
-                      <h3 className={`font-display font-black uppercase tracking-tighter mb-4 transition-colors group-hover:text-[var(--hover-color)] ${homeContent.serve_item_title_size || 'text-3xl'}`}>{service.title}</h3>
-                      <p className="opacity-80 leading-relaxed line-clamp-3">{service.description}</p>
-                    </Link>
-                  ))}
-                </div>
-              )}
+                    </div>
+                    <h3 className="text-2xl md:text-3xl font-display font-black uppercase tracking-tighter mb-4 leading-tight">
+                      {practice.title}
+                    </h3>
+                    <p className="text-gray-400 mb-8 leading-relaxed">
+                      {practice.desc}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {practice.areas.map((area: string, idx: number) => (
+                        <span key={idx} className="text-[10px] md:text-xs font-bold uppercase tracking-widest px-3 py-1 bg-white/5 rounded-full text-white/60">
+                          {area}
+                        </span>
+                      ))}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </section>
         ) : null;
@@ -393,7 +390,7 @@ export default function Home() {
                     viewport={{ once: true }}
                     transition={{ delay: 0.1 }}
                     style={{ color: homeContent.method_title_color }}
-                    className={`${homeContent.method_title_size || 'text-5xl md:text-7xl lg:text-8xl'} font-display font-black uppercase tracking-tighter leading-[0.85] mb-12`}
+                    className="text-5xl md:text-7xl lg:text-8xl font-display font-black uppercase tracking-tighter leading-[0.85] mb-12"
                   >
                     {homeContent.method_title}
                   </motion.h2>
@@ -405,7 +402,7 @@ export default function Home() {
                     viewport={{ once: true }}
                     transition={{ delay: 0.2 }}
                     style={{ color: homeContent.method_quote_color }}
-                    className={`${homeContent.method_quote_size || 'text-2xl md:text-3xl lg:text-4xl'} font-display font-black uppercase tracking-tight italic leading-tight`}
+                    className="text-2xl md:text-3xl lg:text-4xl font-display font-black uppercase tracking-tight italic leading-tight"
                   >
                     {homeContent.method_quote}
                   </motion.p>
@@ -424,33 +421,23 @@ export default function Home() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.1 * (i + 1) }}
-                    className="relative group h-full"
-                    style={{ '--step-hover-color': homeContent.method_step_hover_color } as any}
+                    className="relative group h-full bg-white/5 p-8 rounded-2xl hover:bg-white/10 transition-colors"
                   >
                     <div className="mb-6">
-                      <span 
-                        style={{ color: homeContent.page_text_color }}
-                        className="text-6xl font-display font-black opacity-10 group-hover:opacity-20 group-hover:text-[var(--step-hover-color)] transition-all duration-500"
-                      >
+                      <span className="text-6xl font-display font-black text-[#ceff00]/20 group-hover:text-[#ceff00]/40 transition-all duration-500">
                         {item.step}
                       </span>
                     </div>
-                    <h3 
-                      style={{ color: homeContent.method_step_color }}
-                      className={`${homeContent.method_step_title_size || 'text-2xl'} font-display font-black uppercase tracking-tight mb-4 group-hover:text-[var(--step-hover-color)] transition-colors`}
-                    >
+                    <h3 className="text-2xl font-display font-black uppercase tracking-tight mb-4 text-white">
                       {item.title}
                     </h3>
-                    <p 
-                      className={`${homeContent.method_step_desc_size || 'text-base'} text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed`}
-                    >
+                    <p className="text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed">
                       {item.desc}
                     </p>
                   </motion.div>
                 ))}
               </div>
             </div>
-            <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-[#2596be]/5 blur-[120px] rounded-full pointer-events-none"></div>
           </section>
         ) : null;
 
@@ -465,7 +452,7 @@ export default function Home() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     style={{ color: homeContent.serve_tag_color }}
-                    className={`${homeContent.serve_tag_size || 'text-sm'} inline-block font-bold uppercase tracking-[0.3em] mb-8`}
+                    className="inline-block text-sm font-bold uppercase tracking-[0.3em] mb-8"
                   >
                     {homeContent.serve_tag}
                   </motion.span>
@@ -476,13 +463,13 @@ export default function Home() {
                   viewport={{ once: true }}
                   transition={{ delay: 0.1 }}
                   style={{ color: homeContent.serve_title_color }}
-                  className={`${homeContent.serve_title_size || 'text-5xl md:text-7xl lg:text-8xl'} font-display font-black uppercase tracking-tighter leading-[0.85] w-full lg:w-3/4`}
+                  className="text-5xl md:text-7xl lg:text-8xl font-display font-black uppercase tracking-tighter leading-[0.85] w-full lg:w-3/4"
                 >
                   {homeContent.serve_title}
                 </motion.h2>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-16 gap-x-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-12 gap-x-8">
                 {homeContent.serve_items && homeContent.serve_items.map((item: any, i: number) => (
                   <motion.div
                     key={i}
@@ -491,21 +478,11 @@ export default function Home() {
                     viewport={{ once: true }}
                     transition={{ delay: 0.05 * i }}
                     className="group"
-                    style={{ '--serve-hover-color': homeContent.serve_hover_color } as any}
                   >
-                    <h3 
-                      style={{ color: homeContent.serve_text_color }}
-                      className={`${homeContent.serve_item_title_size || 'text-xl md:text-2xl'} font-display font-black uppercase tracking-tight mb-4 group-hover:text-[var(--serve-hover-color)] transition-colors duration-300 flex items-center gap-3`}
-                    >
-                      <span 
-                        style={{ backgroundColor: homeContent.serve_hover_color }}
-                        className="w-2 h-2 rounded-full scale-0 group-hover:scale-110 transition-transform duration-300"
-                      ></span>
+                    <h3 className="text-xl md:text-2xl font-display font-black uppercase tracking-tight mb-4 text-white group-hover:text-[#ceff00] transition-colors duration-300">
                       {item.title}
                     </h3>
-                    <p 
-                      className={`${homeContent.serve_item_desc_size || 'text-base'} text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed`}
-                    >
+                    <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed">
                       {item.desc}
                     </p>
                   </motion.div>
@@ -515,48 +492,34 @@ export default function Home() {
           </section>
         ) : null;
 
-      case 'marquee_logos':
-        return (homeContent.brands_logos && homeContent.brands_logos.length > 0) ? (
-          <div key="logos" style={{ backgroundColor: homeContent.brands_bg_color }} className="py-16 overflow-hidden flex whitespace-nowrap border-y border-white/5 relative">
-            <div className="flex w-max animate-[marquee_40s_linear_infinite]">
-              {[1, 2, 3, 4].map((set) => (
-                <div key={set} className="flex items-center gap-20 md:gap-40 pr-20 md:pr-40">
-                  {homeContent.brands_logos.map((logo: string, i: number) => (
-                    logo ? (
-                      <div key={`${set}-${i}`} className="h-10 md:h-14 flex items-center justify-center">
-                        <img 
-                          src={logo} 
-                          alt="Brand Logo" 
-                          className="h-full w-auto max-w-[120px] md:max-w-[180px] shrink-0 object-contain opacity-70 hover:opacity-100 hover:scale-110 transition-all duration-500 saturate-[0.8] contrast-[1.1]" 
-                        />
-                      </div>
-                    ) : null
-                  ))}
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : null;
-
       case 'work':
         return ((homeContent.our_work_heading && homeContent.our_work_heading.trim() !== "") || (homeContent.our_work_subheading && homeContent.our_work_subheading.trim() !== "")) ? (
-          <section key="work" style={{ backgroundColor: homeContent.our_work_bg_color, color: homeContent.our_work_text_color }} className="py-24 md:py-32 overflow-hidden">
-            <div className="max-w-[100rem] mx-auto px-6 md:px-12 mb-16">
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-end">
-                <div className="max-w-xl">
+          <section key="work" style={{ backgroundColor: homeContent.our_work_bg_color || '#000', color: homeContent.our_work_text_color || '#fff' }} className="py-24 md:py-32 overflow-hidden">
+            <div className="max-w-7xl mx-auto px-6 mb-20">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12">
+                <div className="max-w-2xl">
                   {homeContent.our_work_subheading && homeContent.our_work_subheading.trim() !== "" && (
-                    <p className={`${homeContent.our_work_subheading_size || 'text-xl md:text-2xl font-bold'} mb-8 whitespace-pre-line`}>
+                    <p className="text-2xl md:text-3xl font-medium mb-12 opacity-80 leading-tight">
                       {homeContent.our_work_subheading}
                     </p>
                   )}
                   {homeContent.our_work_btn_text && homeContent.our_work_btn_text.trim() !== "" && (
-                    <Link to="/projects" style={{ backgroundColor: homeContent.our_work_btn_color, color: homeContent.our_work_btn_text_color, borderRadius: homeContent.our_work_btn_radius }} className="inline-block font-bold uppercase tracking-wider px-8 py-4 hover:opacity-90 transition-opacity">
+                    <Link 
+                      to="/projects" 
+                      style={{ 
+                        backgroundColor: homeContent.our_work_btn_color, 
+                        color: "#000",
+                        borderRadius: "12px"
+                      }} 
+                      className="inline-flex items-center gap-3 font-bold uppercase tracking-wider px-10 py-5 hover:scale-105 transition-transform"
+                    >
                       {homeContent.our_work_btn_text}
+                      <ArrowRight className="w-5 h-5" />
                     </Link>
                   )}
                 </div>
                 {homeContent.our_work_heading && homeContent.our_work_heading.trim() !== "" && (
-                  <h2 className={`${homeContent.our_work_heading_size || 'text-5xl md:text-7xl'} font-display font-black uppercase tracking-tighter text-right mt-12 md:mt-0 leading-none whitespace-pre-line`}>
+                  <h2 className="text-5xl md:text-8xl font-display font-black uppercase tracking-tighter text-left md:text-right leading-[0.8] whitespace-pre-line">
                     {homeContent.our_work_heading}
                   </h2>
                 )}
@@ -565,91 +528,82 @@ export default function Home() {
             {projects.length > 0 && (
               <div className="relative w-full overflow-hidden group">
                 <div className="flex w-max animate-[marquee_40s_linear_infinite] group-hover:[animation-play-state:paused] items-center">
-                  {scrollingProjects.map((project, i) => {
-                    const aspectRatioClass = project.aspect_ratio === 'landscape' ? 'aspect-video' : project.aspect_ratio === 'portrait' ? 'aspect-[4/5]' : 'aspect-square';
-                    return (
-                      <Link to={`/projects`} key={`${project.id}-${i}`} className="w-[80vw] md:w-[40vw] lg:w-[25vw] flex-shrink-0 px-2 block">
-                        <div className={`relative ${aspectRatioClass} overflow-hidden rounded-xl bg-gray-100`}>
-                          <img src={project.image_url || 'https://picsum.photos/seed/project/800/1000'} alt={project.title} className="w-full h-full object-cover transition-all duration-500 hover:scale-110" referrerPolicy="no-referrer" />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-end p-6 pointer-events-none">
-                            <h3 className="text-white text-2xl font-display font-black uppercase tracking-wide">{project.title}</h3>
+                  {scrollingProjects.map((project, i) => (
+                    <Link to={`/projects`} key={`${project.id}-${i}`} className="w-[85vw] md:w-[45vw] lg:w-[30vw] flex-shrink-0 px-3 block">
+                      <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-neutral-900 border border-white/5">
+                        <img src={project.image_url || 'https://picsum.photos/seed/project/800/1000'} alt={project.title} className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 grayscale hover:grayscale-0" referrerPolicy="no-referrer" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent flex items-end p-8">
+                          <div>
+                            <p className="text-[#ceff00] text-xs font-bold uppercase tracking-widest mb-2">{project.category || 'Featured'}</p>
+                            <h3 className="text-white text-3xl font-display font-black uppercase tracking-tight">{project.title}</h3>
                           </div>
                         </div>
-                      </Link>
-                    );
-                  })}
+                      </div>
+                    </Link>
+                  ))}
                 </div>
               </div>
             )}
           </section>
         ) : null;
 
-      case 'testimonials':
-        return (homeContent.testimonials_title && homeContent.testimonials_title.trim() !== "") ? (
-          <Testimonials 
-            key="testimonials"
-            tag={homeContent.testimonials_tag}
-            tagColor={homeContent.testimonials_tag_color}
-            title={homeContent.testimonials_title}
-            titleColor={homeContent.testimonials_title_color}
-            titleSize={homeContent.testimonials_title_size}
-            bgColor={homeContent.testimonials_bg_color}
-          />
-        ) : null;
-
       case 'cta':
         return ((homeContent.cta_heading && homeContent.cta_heading.trim() !== "") || (homeContent.cta_subheading && homeContent.cta_subheading.trim() !== "")) ? (
-          <section key="cta" style={{ backgroundColor: homeContent.cta_bg_color, color: homeContent.cta_text_color }} className="py-24 md:py-32 px-6 md:px-12 text-center">
-            <div className="max-w-4xl mx-auto">
+          <section key="cta" style={{ backgroundColor: "#ceff00" }} className="py-24 md:py-40 px-6 md:px-12 text-center relative overflow-hidden">
+            <div className="max-w-5xl mx-auto relative z-10">
               {homeContent.cta_heading && homeContent.cta_heading.trim() !== "" && (
-                <h2 className={`${homeContent.cta_heading_size || 'text-5xl md:text-7xl'} font-display font-black uppercase tracking-tighter mb-6 whitespace-pre-line`}>
+                <h2 className="text-5xl md:text-8xl font-display font-black uppercase tracking-tighter mb-8 text-black leading-[0.85]">
                   {homeContent.cta_heading}
                 </h2>
               )}
               {homeContent.cta_subheading && homeContent.cta_subheading.trim() !== "" && (
-                <p className={`${homeContent.cta_subheading_size || 'text-xl md:text-2xl font-medium'} mb-10 opacity-90 whitespace-pre-line`}>
+                <p className="text-xl md:text-3xl text-black/80 mb-12 font-medium max-w-2xl mx-auto">
                   {homeContent.cta_subheading}
                 </p>
               )}
-              {homeContent.cta_btn_text && homeContent.cta_btn_text.trim() !== "" && (
-                <Link to={homeContent.cta_btn_link} style={{ borderRadius: homeContent.cta_btn_radius, color: homeContent.cta_btn_text_color }} className="inline-block bg-white font-bold uppercase tracking-wider px-10 py-5 hover:scale-105 transition-transform">
-                  {homeContent.cta_btn_text}
-                </Link>
-              )}
+              <div className="flex flex-col md:flex-row items-center justify-center gap-6">
+                {homeContent.cta_btn_text && homeContent.cta_btn_text.trim() !== "" && (
+                  <Link to={homeContent.cta_btn_link} className="inline-block bg-black text-[#ceff00] font-bold uppercase tracking-wider px-12 py-6 rounded-2xl hover:scale-105 transition-transform text-lg">
+                    {homeContent.cta_btn_text}
+                  </Link>
+                )}
+                <a href="mailto:hello@eternaventures.in" className="text-black font-black text-xl md:text-2xl underline underline-offset-8 decoration-2">
+                  hello@eternaventures.in
+                </a>
+              </div>
             </div>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full border-[40px] border-black/5 rounded-full scale-150"></div>
           </section>
         ) : null;
 
       case 'blogs':
         return (homeContent.blogs_title && homeContent.blogs_title.trim() !== "") ? (
-          <section key="blogs" style={{ backgroundColor: homeContent.blogs_bg_color }} className="py-24 md:py-32 px-6 md:px-12 border-t border-gray-800">
+          <section key="blogs" style={{ backgroundColor: "#000" }} className="py-24 md:py-32 px-6 md:px-12">
             <div className="max-w-7xl mx-auto">
-              <div className="flex flex-col md:flex-row-reverse justify-between items-start md:items-end mb-16 border-b border-gray-800 pb-8">
-                <h2 style={{ color: homeContent.blogs_title_color }} className={`${homeContent.blogs_title_size || 'text-5xl md:text-7xl'} font-display font-black uppercase tracking-tighter leading-none text-left md:text-right whitespace-pre-line mb-8 md:mb-0`}>
-                  {homeContent.blogs_title}
-                </h2>
-                <div className="max-w-md">
-                  {homeContent.blogs_subheading && homeContent.blogs_subheading.trim() !== "" && (
-                    <p className={`${homeContent.blogs_subheading_size || 'text-xl font-bold'} mb-6 whitespace-pre-line text-gray-300`}>
-                      {homeContent.blogs_subheading}
-                    </p>
-                  )}
-                  {homeContent.blogs_btn_text && homeContent.blogs_btn_text.trim() !== "" && (
-                    <Link to="/blogs" style={{ backgroundColor: homeContent.blogs_btn_color, color: homeContent.blogs_btn_text_color, borderRadius: homeContent.blogs_btn_radius }} className="inline-block font-bold uppercase tracking-wider px-8 py-4 hover:opacity-90 transition-opacity">
-                      {homeContent.blogs_btn_text}
-                    </Link>
-                  )}
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-12">
+                <div className="max-w-lg">
+                  <h2 className="text-5xl md:text-8xl font-display font-black uppercase tracking-tighter leading-none text-white mb-8">
+                    {homeContent.blogs_title}
+                  </h2>
+                  <Link to="/blogs" className="inline-flex items-center gap-2 text-[#ceff00] font-bold uppercase tracking-widest text-sm border-b-2 border-[#ceff00] pb-1 hover:gap-4 transition-all">
+                    {homeContent.blogs_btn_text || 'View All Insights'}
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
                 </div>
               </div>
               {blogs.length > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
                   {blogs.map((blog, i) => (
-                    <Link to={`/blogs/${blog.slug}`} key={i} className="bg-white text-black p-6 group cursor-pointer hover:-translate-y-2 transition-transform duration-300 rounded-xl block">
-                      <div className="overflow-hidden mb-6 rounded-lg">
-                        <img src={blog.thumbnail_url || 'https://picsum.photos/seed/blog/800/600'} alt={blog.title} className="w-full aspect-video object-cover transform group-hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" />
+                    <Link to={`/blogs/${blog.slug}`} key={i} className="group relative rounded-3xl overflow-hidden aspect-[4/5] border border-white/5">
+                      <img src={blog.thumbnail_url || 'https://picsum.photos/seed/blog/800/1000'} alt={blog.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60" referrerPolicy="no-referrer" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent p-8 flex flex-col justify-end">
+                        <p className="text-[#ceff00] text-xs font-bold uppercase tracking-widest mb-4">
+                          {format(new Date(blog.created_at), 'MMM d, yyyy')}
+                        </p>
+                        <h3 className="text-2xl font-display font-black uppercase tracking-tight text-white group-hover:text-[#ceff00] transition-colors">
+                          {blog.title}
+                        </h3>
                       </div>
-                      <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3">{format(new Date(blog.created_at), 'MMMM d, yyyy')}</p>
-                      <h3 className="text-2xl font-display font-black uppercase tracking-tighter leading-tight">{blog.title}</h3>
                     </Link>
                   ))}
                 </div>
