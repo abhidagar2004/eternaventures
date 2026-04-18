@@ -284,7 +284,7 @@ export default function Home() {
         ) : null;
 
       case 'services':
-        return (homeContent.help_visibility) ? (
+        return (homeContent.help_visibility !== false) ? (
           <section key="services" style={{ backgroundColor: homeContent.help_bg_color }} className="py-24 md:py-32 px-6 md:px-12">
             <div className="max-w-7xl mx-auto">
               <div className="mb-20">
