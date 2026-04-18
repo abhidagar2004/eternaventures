@@ -159,11 +159,18 @@ export default function Navbar() {
             <div className="flex items-center space-x-4">
               {config.buttons.map((btn) => {
                 if (!btn.name || !btn.href) return null;
+                const isHexBg = btn.bgColor.startsWith('#');
+                const isHexText = btn.textColor.startsWith('#');
+                
                 return (
                   <Link
                     key={btn.id}
                     to={btn.href}
-                    className={`${btn.bgColor} ${btn.textColor} px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg shadow-white/5 hover:shadow-white/10 whitespace-nowrap`}
+                    style={{ 
+                      backgroundColor: isHexBg ? btn.bgColor : undefined,
+                      color: isHexText ? btn.textColor : undefined
+                    }}
+                    className={`${!isHexBg ? btn.bgColor : ''} ${!isHexText ? btn.textColor : ''} px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg shadow-white/5 hover:shadow-white/10 whitespace-nowrap`}
                   >
                     {btn.name}
                   </Link>

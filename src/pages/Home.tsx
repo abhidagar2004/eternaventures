@@ -284,68 +284,107 @@ export default function Home() {
         ) : null;
 
       case 'services':
-        return (homeContent.practices || homeContent.help_heading) ? (
-          <section key="services" style={{ backgroundColor: homeContent.help_bg_color, color: homeContent.help_text_color }} className="py-24 md:py-32 px-6 md:px-12">
+        return (homeContent.help_visibility) ? (
+          <section key="services" style={{ backgroundColor: homeContent.help_bg_color }} className="py-24 md:py-32 px-6 md:px-12">
             <div className="max-w-7xl mx-auto">
-              <div className="flex flex-col lg:flex-row justify-between items-start gap-12 lg:gap-24 mb-24">
-                <div className="lg:w-3/5">
-                  {homeContent.help_tag && (
-                    <motion.span 
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      style={{ color: homeContent.help_tag_color }}
-                      className="inline-block text-sm font-bold uppercase tracking-[0.3em] mb-8"
-                    >
-                      {homeContent.help_tag}
-                    </motion.span>
-                  )}
-                  {homeContent.help_heading && homeContent.help_heading.trim() !== "" && (
-                    <h2 className={`${homeContent.help_heading_size || 'text-5xl md:text-7xl'} font-display font-black uppercase tracking-tighter leading-[0.85] whitespace-pre-line`}>
-                      {homeContent.help_heading}
-                    </h2>
-                  )}
-                </div>
-                <div className="lg:w-2/5 pt-16">
-                  {homeContent.help_subheading && homeContent.help_subheading.trim() !== "" && (
-                    <p className="text-xl md:text-2xl mb-10 leading-relaxed opacity-80 whitespace-pre-line font-medium">
-                      {homeContent.help_subheading}
-                    </p>
-                  )}
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {(homeContent.practices || []).map((practice: any, i: number) => (
-                  <motion.div 
-                    key={practice.id}
+              <div className="mb-20">
+                {homeContent.help_tag && (
+                  <motion.span 
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                    className="group bg-[#0a0a0a] border border-white/5 p-8 md:p-10 rounded-2xl hover:border-[#ceff00]/50 transition-all duration-500"
+                    style={{ color: homeContent.help_tag_color }}
+                    className="inline-block text-sm font-bold uppercase tracking-[0.3em] mb-8"
                   >
-                    <div className="flex justify-between items-start mb-8">
-                      <span className="text-4xl md:text-5xl font-display font-black text-white/10 group-hover:text-[#ceff00]/20 transition-colors">
-                        {practice.id}
-                      </span>
-                      <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#ceff00] group-hover:border-[#ceff00] transition-all duration-500">
-                        <ArrowRight className="w-5 h-5 group-hover:text-black transition-colors" />
-                      </div>
+                    {homeContent.help_tag}
+                  </motion.span>
+                )}
+                <motion.h2 
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 }}
+                  style={{ color: homeContent.help_text_color }}
+                  className="text-5xl md:text-7xl lg:text-8xl font-display font-black uppercase tracking-tighter leading-[0.85] mb-8 whitespace-pre-line"
+                >
+                  {homeContent.help_heading}
+                </motion.h2>
+                <motion.p 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 }}
+                  className="text-xl md:text-2xl text-gray-500 max-w-2xl font-medium"
+                >
+                  {homeContent.help_subheading}
+                </motion.p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {[
+                  {
+                    title: "Brand Architecture & Identity Systems",
+                    desc: "We define who you are before the market defines it for you. From naming and positioning to visual identity and verbal systems.",
+                    tags: ["POSITIONING", "IDENTITY", "MESSAGING SYSTEMS", "BRAND LANGUAGE"],
+                    image: "https://images.unsplash.com/photo-1572044162444-ad60f128bde7?q=80&w=800&auto=format&fit=crop"
+                  },
+                  {
+                    title: "Narrative Engineering",
+                    desc: "Stories don’t go viral — relevant ones do. We craft brand narratives rooted in cultural tension, audience psychology, and platform behavior.",
+                    tags: ["CONTENT STRATEGY", "STORYTELLING", "PLATFORM BEHAVIOR", "EDITORIAL DIRECTION"],
+                    image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=800&auto=format&fit=crop"
+                  },
+                  {
+                    title: "Performance & Paid Intelligence",
+                    desc: "Media buying is arbitrage. We treat every rupee as a signal, not a spend — running performance ecosystems that iterate in real time.",
+                    tags: ["PAID MEDIA", "CREATIVE TESTING", "ANALYTICS", "ATTRIBUTION"],
+                    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop"
+                  },
+                  {
+                    title: "Influence & Cultural Capital",
+                    desc: "We don’t place ads in feeds — we place your brand in conversations. Our influence practice maps cultural networks and identifies advocates.",
+                    tags: ["INFLUENCE STRATEGY", "COMMUNITY BUILDING", "ADVOCACY PROGRAMS"],
+                    image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=800&auto=format&fit=crop"
+                  },
+                  {
+                    title: "Digital Experience Design",
+                    desc: "Your website is your highest-leverage salesperson. We design and build digital experiences that convert attention into action.",
+                    tags: ["WEB DESIGN", "UX", "CONVERSION OPTIMIZATION", "FUNNEL ARCHITECTURE"],
+                    image: "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=800&auto=format&fit=crop"
+                  },
+                  {
+                    title: "Market Intelligence & Growth Advisory",
+                    desc: "Before we build, we understand. Our advisory practice gives founders and leadership teams strategic clarity and position to move faster.",
+                    tags: ["BRAND STRATEGY", "MARKET RESEARCH", "COMPETITIVE INTELLIGENCE", "GROWTH ROADMAPPING"],
+                    image: "https://images.unsplash.com/photo-1454165833767-0e9ed2148271?q=80&w=800&auto=format&fit=crop"
+                  }
+                ].map((item, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.05 * i }}
+                    className="group bg-[#0a0a0a] rounded-3xl p-6 border border-white/5 hover:border-[#ceff00]/30 transition-all duration-500 flex flex-col h-full"
+                  >
+                    <div className="aspect-[4/3] rounded-2xl overflow-hidden mb-8">
+                      <img 
+                        src={item.image} 
+                        alt={item.title} 
+                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110"
+                      />
                     </div>
-                    <h3 className="text-2xl md:text-3xl font-display font-black uppercase tracking-tighter mb-4 leading-tight">
-                      {practice.title}
-                    </h3>
-                    <p className="text-gray-400 mb-8 leading-relaxed">
-                      {practice.desc}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {practice.areas.map((area: string, idx: number) => (
-                        <span key={idx} className="text-[10px] md:text-xs font-bold uppercase tracking-widest px-3 py-1 bg-white/5 rounded-full text-white/60">
-                          {area}
-                        </span>
+                    <div className="flex flex-wrap gap-x-3 gap-y-1 mb-6">
+                      {item.tags.map((tag, j) => (
+                        <span key={j} className="text-[10px] font-bold tracking-widest text-[#ceff00] opacity-60 uppercase whitespace-nowrap">{tag} •</span>
                       ))}
                     </div>
+                    <h3 className="text-2xl font-display font-black uppercase tracking-tighter mb-4 text-white leading-tight">
+                      {item.title}
+                    </h3>
+                    <p className="text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed text-sm mt-auto">
+                      {item.desc}
+                    </p>
                   </motion.div>
                 ))}
               </div>
@@ -529,13 +568,13 @@ export default function Home() {
               <div className="relative w-full overflow-hidden group">
                 <div className="flex w-max animate-[marquee_40s_linear_infinite] group-hover:[animation-play-state:paused] items-center">
                   {scrollingProjects.map((project, i) => (
-                    <Link to={`/projects`} key={`${project.id}-${i}`} className="w-[85vw] md:w-[45vw] lg:w-[30vw] flex-shrink-0 px-3 block">
+                    <Link to={`/projects`} key={`${project.id}-${i}`} className="w-[80vw] md:w-[40vw] lg:w-[22vw] flex-shrink-0 px-3 block">
                       <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-neutral-900 border border-white/5">
                         <img src={project.image_url || 'https://picsum.photos/seed/project/800/1000'} alt={project.title} className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 grayscale hover:grayscale-0" referrerPolicy="no-referrer" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent flex items-end p-8">
                           <div>
                             <p className="text-[#ceff00] text-xs font-bold uppercase tracking-widest mb-2">{project.category || 'Featured'}</p>
-                            <h3 className="text-white text-3xl font-display font-black uppercase tracking-tight">{project.title}</h3>
+                            <h3 className="text-white text-3xl font-display font-black uppercase tracking-tight leading-tight">{project.title}</h3>
                           </div>
                         </div>
                       </div>
@@ -580,14 +619,16 @@ export default function Home() {
         return (homeContent.blogs_title && homeContent.blogs_title.trim() !== "") ? (
           <section key="blogs" style={{ backgroundColor: "#000" }} className="py-24 md:py-32 px-6 md:px-12">
             <div className="max-w-7xl mx-auto">
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-12">
-                <div className="max-w-lg">
-                  <h2 className="text-5xl md:text-8xl font-display font-black uppercase tracking-tighter leading-none text-white mb-8">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-24 gap-12">
+                <div className="max-w-2xl">
+                  <h2 className="text-6xl md:text-8xl lg:text-9xl font-display font-black uppercase tracking-tighter leading-[0.8] text-white">
                     {homeContent.blogs_title}
                   </h2>
-                  <Link to="/blogs" className="inline-flex items-center gap-2 text-[#ceff00] font-bold uppercase tracking-widest text-sm border-b-2 border-[#ceff00] pb-1 hover:gap-4 transition-all">
+                </div>
+                <div className="mb-4">
+                  <Link to="/blogs" className="inline-flex items-center gap-3 bg-[#ceff00] text-black font-bold uppercase tracking-widest px-8 py-4 rounded-xl hover:gap-6 transition-all">
                     {homeContent.blogs_btn_text || 'View All Insights'}
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-5 h-5" />
                   </Link>
                 </div>
               </div>
