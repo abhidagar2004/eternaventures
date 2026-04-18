@@ -229,7 +229,7 @@ export default function CaseStudies({
             <p>Error loading projects: {error}</p>
           </div>
         ) : filteredCases.length > 0 ? (
-          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
             <AnimatePresence mode="popLayout">
               {filteredCases.map((item) => (
                 <motion.div
@@ -239,9 +239,10 @@ export default function CaseStudies({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.4 }}
-                  className="group rounded-2xl overflow-hidden bg-[#111] border border-gray-800 hover:border-[#2596be]/50 transition-colors flex flex-col"
+                  className="group rounded-2xl overflow-hidden bg-[#111] border border-gray-800 hover:border-[#2596be]/50 transition-colors flex flex-col h-full"
                 >
-                  <div className="relative h-64 overflow-hidden">
+                  {/* Fixed-height image area */}
+                  <div className="relative h-56 overflow-hidden flex-shrink-0">
                     <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10" />
                     <img 
                       src={item.image_url || 'https://picsum.photos/seed/project/800/600'} 
@@ -256,32 +257,54 @@ export default function CaseStudies({
                     )}
                   </div>
                   
-                  <div className="p-8 flex-1 flex flex-col">
-                    <div className="flex justify-between items-start mb-4">
-                      <h4 className="text-2xl font-bold text-white uppercase tracking-wide">{item.title}</h4>
-                    </div>
+                  {/* Card body — flex-col fills remaining space */}
+                  <div className="p-6 flex flex-col flex-1">
+                    {/* Heading — strictly 2 lines */}
+                    <h4
+                      className="font-bold text-white uppercase tracking-wide mb-3 leading-tight"
+                      style={{
+                        fontSize: '1.125rem',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                        minHeight: '2.8rem', // reserves space for 2 lines always
+                      }}
+                    >
+                      {item.title}
+                    </h4>
                     
-                    <div className="flex-1 flex flex-col h-full">
-                      <div className={`mb-6 ${item.brochure_url ? 'line-clamp-3' : 'flex-1'}`}>
-                        <p className="text-gray-400 text-sm leading-relaxed">{item.description}</p>
-                      </div>
-                      
-                      {item.brochure_url && (
-                        <div className="mt-auto">
-                          <button 
-                            onClick={() => setSelectedProject(item)}
-                            className="w-full py-3 font-bold uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all"
-                            style={{
-                              backgroundColor: item.brochure_btn_bg_color || '#ffffff',
-                              color: item.brochure_btn_text_color || '#000000',
-                              borderRadius: item.brochure_btn_radius || '8px'
-                            }}
-                          >
-                            <FileDown size={14} /> {item.brochure_btn_text || 'Download Brochure'}
-                          </button>
-                        </div>
-                      )}
-                    </div>
+                    {/* Description — 3 lines with button, 5 lines without */}
+                    <p
+                      className="text-gray-400 text-sm leading-relaxed mb-4"
+                      style={{
+                        display: '-webkit-box',
+                        WebkitLineClamp: item.brochure_url ? 3 : 5,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                        minHeight: item.brochure_url ? '4.5em' : '7.5em', // keeps card body consistent
+                      }}
+                    >
+                      {item.description}
+                    </p>
+                    
+                    {/* Spacer pushes button to bottom */}
+                    <div className="flex-1" />
+                    
+                    {/* Brochure button — only shown if URL exists */}
+                    {item.brochure_url && (
+                      <button 
+                        onClick={() => setSelectedProject(item)}
+                        className="w-full py-3 font-bold uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all mt-2"
+                        style={{
+                          backgroundColor: item.brochure_btn_bg_color || '#ffffff',
+                          color: item.brochure_btn_text_color || '#000000',
+                          borderRadius: item.brochure_btn_radius || '8px'
+                        }}
+                      >
+                        <FileDown size={14} /> {item.brochure_btn_text || 'Download Brochure'}
+                      </button>
+                    )}
                   </div>
                 </motion.div>
               ))}

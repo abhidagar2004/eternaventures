@@ -38,11 +38,12 @@ export default function ProjectsPage() {
         title={content?.banner_heading} 
         description={content?.banner_subheading} 
         bgImage={content?.banner_bg_image}
+        bannerBgColor={content?.banner_bg_color}
         titleColor={content?.banner_heading_color}
         titleSize={content?.banner_heading_size}
         descColor={content?.banner_subheading_color}
         descSize={content?.banner_subheading_size}
-        paddingTop={content?.banner_padding_top || "200"}
+        paddingTop={content?.banner_padding_top || "160"}
         paddingBottom={content?.banner_padding_bottom || "100"}
       />
       <TrustBar 

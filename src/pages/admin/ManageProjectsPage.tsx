@@ -62,8 +62,9 @@ export default function ManageProjectsPage() {
     page_bg_color: "#000000",
     page_text_color: "#ffffff",
     font_style: "font-sans",
-    banner_padding_top: "pt-40",
-    banner_padding_bottom: "pb-24"
+    banner_padding_top: "160",
+    banner_padding_bottom: "100",
+    banner_bg_color: "#0a1628",
   });
 
   useEffect(() => {
@@ -210,6 +211,44 @@ export default function ManageProjectsPage() {
                       {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Upload Image'}
                     </button>
                   </div>
+                </div>
+              </div>
+
+              {/* Clear image field helper */}
+              <div className="flex items-center gap-3">
+                <span className="text-xs text-gray-500">To remove image and show solid color instead, clear the URL field above.</span>
+                <button
+                  type="button"
+                  onClick={() => setFormData({ ...formData, banner_bg_image: '' })}
+                  className="text-xs text-red-500 hover:text-red-700 underline"
+                >
+                  Clear Image
+                </button>
+              </div>
+
+              {/* Banner BG Color — shown when no image */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Banner Background Color <span className="text-gray-400 font-normal">(used when no image is set)</span>
+                </label>
+                <div className="flex gap-2 items-center">
+                  <input
+                    type="color"
+                    value={formData.banner_bg_color || '#0a1628'}
+                    onChange={(e) => setFormData({ ...formData, banner_bg_color: e.target.value })}
+                    className="h-10 w-10 rounded cursor-pointer border border-gray-300"
+                  />
+                  <input
+                    type="text"
+                    value={formData.banner_bg_color || ''}
+                    onChange={(e) => setFormData({ ...formData, banner_bg_color: e.target.value })}
+                    placeholder="#0a1628"
+                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                  />
+                  <div
+                    className="h-10 w-20 rounded-lg border border-gray-300 flex-shrink-0"
+                    style={{ backgroundColor: formData.banner_bg_color || '#0a1628' }}
+                  />
                 </div>
               </div>
               
