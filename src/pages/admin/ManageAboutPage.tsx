@@ -6,11 +6,12 @@ import toast from 'react-hot-toast';
 // ─── Reusable Input Components ─────────────────────────────────────────────────
 const ColorInput = ({ label, field, formData, setFormData, defaultColor = '#000000', note }: any) => (
   <div>
-    <label className="block text-sm font-medium text-gray-700 mb-2">{label}{note && <span className="ml-1 text-xs text-gray-400 font-normal">{note}</span>}</label>
+    <label className="block text-sm font-medium text-gray-700 mb-1">{label}{note && <span className="ml-1 text-xs text-gray-400 font-normal">{note}</span>}</label>
     <div className="flex gap-2 items-center">
-      <input type="color" value={formData[field] || defaultColor} onChange={(e) => setFormData({ ...formData, [field]: e.target.value })} className="h-10 w-10 rounded cursor-pointer border border-gray-300 flex-shrink-0" />
-      <input type="text" value={formData[field] || ''} onChange={(e) => setFormData({ ...formData, [field]: e.target.value })} className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]" placeholder={defaultColor} />
-      <div className="h-8 w-12 rounded border border-gray-200 flex-shrink-0" style={{ backgroundColor: formData[field] || defaultColor }} />
+      <div className="h-10 w-10 rounded-lg overflow-hidden border border-gray-200 flex-shrink-0">
+        <input type="color" value={formData[field] || defaultColor} onChange={(e) => setFormData({ ...formData, [field]: e.target.value })} className="h-12 w-12 -ml-1 -mt-1 cursor-pointer" />
+      </div>
+      <input type="text" value={formData[field] || ''} onChange={(e) => setFormData({ ...formData, [field]: e.target.value })} className="flex-1 min-w-0 border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be] text-sm uppercase font-mono" placeholder={defaultColor} />
     </div>
   </div>
 );
@@ -189,12 +190,12 @@ export default function ManageAboutPage() {
   if (isLoading) return <div className="flex items-center justify-center h-64"><Loader2 className="w-8 h-8 animate-spin text-[#2596be]" /></div>;
 
   const textSections = [
-    { title: '📌 Who We Are', headingField: 'who_we_are_heading', textField: 'who_we_are_text', bgField: 'who_we_are_bg_color', hcField: 'who_we_are_heading_color', tcField: 'who_we_are_text_color', imgField: 'who_we_are_image' },
+    { title: '📌 Who We Are', headingField: 'who_we_are_heading', textField: 'who_we_are_text', bgField: 'who_we_are_bg_color', hcField: 'who_we_are_heading_color', tcField: 'who_we_are_text_color', accentField: 'who_we_are_accent_color', imgField: 'who_we_are_image' },
     { title: '💡 What We Believe', headingField: 'what_we_believe_heading', textField: 'what_we_believe_text', bgField: 'what_we_believe_bg_color', hcField: 'what_we_believe_heading_color', tcField: 'what_we_believe_text_color', accentField: 'what_we_believe_accent_color', imgField: 'what_we_believe_image' },
-    { title: '🔗 Our Approach', headingField: 'our_approach_heading', textField: 'our_approach_text', bgField: 'our_approach_bg_color', hcField: 'our_approach_heading_color', tcField: 'our_approach_text_color', imgField: 'our_approach_image' },
+    { title: '🔗 Our Approach', headingField: 'our_approach_heading', textField: 'our_approach_text', bgField: 'our_approach_bg_color', hcField: 'our_approach_heading_color', tcField: 'our_approach_text_color', accentField: 'our_approach_accent_color', imgField: 'our_approach_image' },
     { title: '⭐ Why EternaVentures', headingField: 'why_eterna_heading', textField: 'why_eterna_text', bgField: 'why_eterna_bg_color', hcField: 'why_eterna_heading_color', tcField: 'why_eterna_text_color', accentField: 'why_eterna_accent_color', imgField: 'why_eterna_image' },
-    { title: '🤝 Who We Work With', headingField: 'who_we_work_with_heading', textField: 'who_we_work_with_text', bgField: 'who_we_work_with_bg_color', hcField: 'who_we_work_with_heading_color', tcField: 'who_we_work_with_text_color', imgField: 'who_we_work_with_image' },
-    { title: '🎯 Our Role', headingField: 'our_role_heading', textField: 'our_role_text', bgField: 'our_role_bg_color', hcField: 'our_role_heading_color', tcField: 'our_role_text_color', imgField: 'our_role_image' },
+    { title: '🤝 Who We Work With', headingField: 'who_we_work_with_heading', textField: 'who_we_work_with_text', bgField: 'who_we_work_with_bg_color', hcField: 'who_we_work_with_heading_color', tcField: 'who_we_work_with_text_color', accentField: 'who_we_work_with_accent_color', imgField: 'who_we_work_with_image' },
+    { title: '🎯 Our Role', headingField: 'our_role_heading', textField: 'our_role_text', bgField: 'our_role_bg_color', hcField: 'our_role_heading_color', tcField: 'our_role_text_color', accentField: 'our_role_accent_color', imgField: 'our_role_image' },
   ];
 
   return (
@@ -259,7 +260,7 @@ export default function ManageAboutPage() {
             </p>
             {sec.imgField && <ImageField label="Section Image (Optional)" field={sec.imgField} />}
             <TextInput label="Section Heading" field={sec.headingField} formData={formData} setFormData={setFormData} />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
               <ColorInput label="Background Color" field={sec.bgField} formData={formData} setFormData={setFormData} defaultColor="#000000" />
               <ColorInput label="Heading Color" field={sec.hcField} formData={formData} setFormData={setFormData} defaultColor="#ffffff" />
               <ColorInput label="Text Color" field={sec.tcField} formData={formData} setFormData={setFormData} defaultColor="#9ca3af" />

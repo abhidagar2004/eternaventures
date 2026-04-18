@@ -254,12 +254,12 @@ export default function AboutPage() {
 
       {/* Content Sections */}
       {[
-        { heading: c.who_we_are_heading, text: c.who_we_are_text, bg: c.who_we_are_bg_color, hc: c.who_we_are_heading_color, tc: c.who_we_are_text_color, accent: '#ceff00', img: c.who_we_are_image },
+        { heading: c.who_we_are_heading, text: c.who_we_are_text, bg: c.who_we_are_bg_color, hc: c.who_we_are_heading_color, tc: c.who_we_are_text_color, accent: c.who_we_are_accent_color, img: c.who_we_are_image },
         { heading: c.what_we_believe_heading, text: c.what_we_believe_text, bg: c.what_we_believe_bg_color, hc: c.what_we_believe_heading_color, tc: c.what_we_believe_text_color, accent: c.what_we_believe_accent_color, img: c.what_we_believe_image },
-        { heading: c.our_approach_heading, text: c.our_approach_text, bg: c.our_approach_bg_color, hc: c.our_approach_heading_color, tc: c.our_approach_text_color, accent: '#ceff00', img: c.our_approach_image },
+        { heading: c.our_approach_heading, text: c.our_approach_text, bg: c.our_approach_bg_color, hc: c.our_approach_heading_color, tc: c.our_approach_text_color, accent: c.our_approach_accent_color, img: c.our_approach_image },
         { heading: c.why_eterna_heading, text: c.why_eterna_text, bg: c.why_eterna_bg_color, hc: c.why_eterna_heading_color, tc: c.why_eterna_text_color, accent: c.why_eterna_accent_color, img: c.why_eterna_image },
-        { heading: c.who_we_work_with_heading, text: c.who_we_work_with_text, bg: c.who_we_work_with_bg_color, hc: c.who_we_work_with_heading_color, tc: c.who_we_work_with_text_color, accent: '#ceff00', img: c.who_we_work_with_image },
-        { heading: c.our_role_heading, text: c.our_role_text, bg: c.our_role_bg_color, hc: c.our_role_heading_color, tc: c.our_role_text_color, accent: '#ceff00', img: c.our_role_image },
+        { heading: c.who_we_work_with_heading, text: c.who_we_work_with_text, bg: c.who_we_work_with_bg_color, hc: c.who_we_work_with_heading_color, tc: c.who_we_work_with_text_color, accent: c.who_we_work_with_accent_color, img: c.who_we_work_with_image },
+        { heading: c.our_role_heading, text: c.our_role_text, bg: c.our_role_bg_color, hc: c.our_role_heading_color, tc: c.our_role_text_color, accent: c.our_role_accent_color, img: c.our_role_image },
       ].filter(s => s.heading && s.text).map((s, i) => (
         <ContentSection
           key={i} index={i}
