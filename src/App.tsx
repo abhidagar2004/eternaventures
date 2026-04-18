@@ -38,6 +38,8 @@ import ManageGlobalSections from './pages/admin/ManageGlobalSections';
 import ManageMedia from './pages/admin/ManageMedia';
 import ManageAdmins from './pages/admin/ManageAdmins';
 import ManageFooter from './pages/admin/ManageFooter';
+import ManageLegalPages from './pages/admin/ManageLegalPages';
+import LegalPage from './pages/LegalPage';
 
 export default function App() {
   return (
@@ -71,6 +73,7 @@ export default function App() {
             <Route path="media" element={<ManageMedia />} />
             <Route path="leads" element={<ManageLeads />} />
             <Route path="admins" element={<ManageAdmins />} />
+            <Route path="legal" element={<ManageLegalPages />} />
           </Route>
 
           {/* Public Routes */}
@@ -87,6 +90,7 @@ export default function App() {
                   <Route path="/contact" element={<ContactPage />} />
                   <Route path="/blogs" element={<BlogsPage />} />
                   <Route path="/blogs/:slug" element={<BlogPost />} />
+                  <Route path="/legal/:slug" element={<LegalPage />} />
                 </Routes>
               </main>
               <Footer />

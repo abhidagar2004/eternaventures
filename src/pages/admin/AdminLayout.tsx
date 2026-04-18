@@ -60,6 +60,7 @@ export default function AdminLayout() {
     { name: 'Services Page', path: '/admin/services-page', icon: Briefcase },
     { name: 'Projects Page', path: '/admin/projects-page', icon: FolderOpen },
     { name: 'Contact & FAQs', path: '/admin/contact-page', icon: MessageSquare },
+    { name: 'Legal Pages', path: '/admin/legal', icon: ShieldCheck },
     { name: 'Manage Admins', path: '/admin/admins', icon: ShieldCheck },
   ];
 
