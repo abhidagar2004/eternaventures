@@ -676,7 +676,7 @@ export default function Home() {
                         <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: homeContent.blogs_btn_color || '#ceff00' }}>
                           {format(new Date(blog.created_at), 'MMM d, yyyy')}
                         </p>
-                        <h3 style={{ fontFamily: `'${hFont}', sans-serif` }} className="text-2xl font-black uppercase tracking-tight text-white group-hover:text-[#ceff00] transition-colors">{blog.title}</h3>
+                        <h3 style={{ fontFamily: `'${hFont}', sans-serif`, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }} className="text-2xl font-black uppercase tracking-tight text-white group-hover:text-[#ceff00] transition-colors">{blog.title}</h3>
                       </div>
                     </Link>
                   ))}
