@@ -159,16 +159,23 @@ export default function Navbar() {
             <div className="flex items-center space-x-4">
               {config.buttons.map((btn) => {
                 if (!btn.name || !btn.href) return null;
-                const isHexBg = btn.bgColor.startsWith('#');
-                const isHexText = btn.textColor.startsWith('#');
+                const isHexBg = btn.bgColor.startsWith('#') || (btn.bgColor.startsWith('bg-[') && btn.bgColor.endsWith(']'));
+                const isHexText = btn.textColor.startsWith('#') || (btn.textColor.startsWith('text-[') && btn.textColor.endsWith(']'));
                 
+                const getHex = (val: string, type: 'bg' | 'text') => {
+                  if (val.startsWith('#')) return val;
+                  if (type === 'bg' && val.startsWith('bg-[')) return val.slice(4, -1);
+                  if (type === 'text' && val.startsWith('text-[')) return val.slice(6, -1);
+                  return undefined;
+                };
+
                 return (
                   <Link
                     key={btn.id}
                     to={btn.href}
                     style={{ 
-                      backgroundColor: isHexBg ? btn.bgColor : undefined,
-                      color: isHexText ? btn.textColor : undefined
+                      backgroundColor: getHex(btn.bgColor, 'bg'),
+                      color: getHex(btn.textColor, 'text')
                     }}
                     className={`${!isHexBg ? btn.bgColor : ''} ${!isHexText ? btn.textColor : ''} px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg shadow-white/5 hover:shadow-white/10 whitespace-nowrap`}
                   >
@@ -237,16 +244,30 @@ export default function Navbar() {
             </Link>
           ))}
           <div className="pt-4 space-y-2">
-            {config.buttons.map((btn) => (
-              <Link
-                key={btn.id}
-                to={btn.href}
-                className={`block w-full text-center ${btn.bgColor} ${btn.textColor} px-6 py-3 rounded-xl text-base font-bold`}
-                onClick={() => setIsOpen(false)}
-              >
-                {btn.name}
-              </Link>
-            ))}
+            {config.buttons.map((btn) => {
+              const isHexBg = btn.bgColor.startsWith('#') || (btn.bgColor.startsWith('bg-[') && btn.bgColor.endsWith(']'));
+              const isHexText = btn.textColor.startsWith('#') || (btn.textColor.startsWith('text-[') && btn.textColor.endsWith(']'));
+              const getHex = (val: string, type: 'bg' | 'text') => {
+                if (val.startsWith('#')) return val;
+                if (type === 'bg' && val.startsWith('bg-[')) return val.slice(4, -1);
+                if (type === 'text' && val.startsWith('text-[')) return val.slice(6, -1);
+                return undefined;
+              };
+              return (
+                <Link
+                  key={btn.id}
+                  to={btn.href}
+                  className={`block w-full text-center ${!isHexBg ? btn.bgColor : ''} ${!isHexText ? btn.textColor : ''} px-6 py-3 rounded-xl text-base font-bold`}
+                  style={{ 
+                    backgroundColor: getHex(btn.bgColor, 'bg'),
+                    color: getHex(btn.textColor, 'text')
+                  }}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {btn.name}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>
