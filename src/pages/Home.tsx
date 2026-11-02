@@ -326,10 +326,10 @@ export default function Home() {
             <div className="max-w-7xl mx-auto relative">
               {/* Desktop Vertical Center Divider */}
               <div className="hidden lg:block absolute left-1/2 top-4 bottom-4 -translate-x-1/2 w-[1px] bg-white/10 pointer-events-none">
-                <div className="absolute top-1/2 -translate-y-1/2 -left-[1px] w-[3px] h-14 bg-[#d4ff00] rounded-full"></div>
+                <div className="absolute top-1/2 -translate-y-1/2 -left-[1px] w-[3px] h-12 bg-[#d4ff00] rounded-full"></div>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
                 {/* Left Column: Badge + Heading + Desktop Mountain */}
                 <div className="flex flex-col items-start">
                   {homeContent.phil_tag && (
@@ -367,10 +367,10 @@ export default function Home() {
                             className="font-black uppercase tracking-tighter text-white leading-[1.05]"
                             style={{ fontFamily: `'${hFont}', sans-serif`, fontSize: getFontStyle(homeContent.phil_title_size, '2.25rem', '4rem') }}
                           >
-                            {beforeLines.map((line: string, idx: number) => (
+                            {beforeLines.map((line, idx) => (
                               <div key={idx}>{line.toUpperCase()}</div>
                             ))}
-                            <div className="inline-block bg-[#d4ff00] px-4 py-1 sm:py-1.5 -skew-x-12 mt-3 shadow-lg">
+                            <div className="inline-block bg-[#d4ff00] px-4 py-1 -skew-x-12 mt-3 shadow-lg">
                               <span className="inline-block skew-x-12 text-black font-black italic tracking-tight uppercase text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-none">
                                 IT’S A DISCIPLINE.
                               </span>
@@ -390,27 +390,27 @@ export default function Home() {
                     })()}
                   </motion.div>
 
-                  {/* Mobile Mountain Graphic (shown directly under heading on mobile) */}
+                  {/* Mobile Mountain Graphic (under heading on mobile) */}
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+                    initial={{ opacity: 0, scale: 0.98 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
                     className="block lg:hidden my-8 w-full max-w-md mx-auto"
                   >
                     <img
                       src={homeContent.phil_mountain_url || '/images/philosophy-mountain.png'}
                       alt="Philosophy Mountain Peak with Glowing Eclipse"
-                      className="w-full object-contain pointer-events-none drop-shadow-[0_10px_30px_rgba(212,255,0,0.15)]"
+                      className="w-full h-auto object-contain pointer-events-none select-none"
                     />
                   </motion.div>
 
-                  {/* Desktop Mountain Graphic (anchored at bottom-left on desktop) */}
+                  {/* Desktop Mountain Graphic (at bottom-left on desktop) */}
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-                    className="hidden lg:block mt-12 w-full max-w-lg"
+                    initial={{ opacity: 0, scale: 0.98 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+                    className="hidden lg:block mt-10 w-full max-w-xl"
                   >
                     <img
                       src={homeContent.phil_mountain_url || '/images/philosophy-mountain.png'}
                       alt="Philosophy Mountain Peak with Glowing Eclipse"
-                      className="w-full object-contain pointer-events-none drop-shadow-[0_10px_35px_rgba(212,255,0,0.15)]"
+                      className="w-full h-auto object-contain pointer-events-none select-none"
                     />
                   </motion.div>
                 </div>
@@ -458,8 +458,12 @@ export default function Home() {
                   >
                     {/* Item 1 */}
                     <div className="px-2 sm:px-4 first:pl-0 flex flex-col lg:flex-row items-center text-center lg:text-left gap-2.5 sm:gap-3.5 group">
-                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#0f0f0f] border border-white/15 flex items-center justify-center p-2.5 sm:p-3 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] flex-shrink-0 group-hover:border-[#d4ff00]/50 transition-colors">
-                        <Layers className="w-6 h-6 sm:w-7 sm:h-7 text-[#d4ff00]" strokeWidth={2.2} />
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#0f0f0f] border border-white/15 flex items-center justify-center p-2.5 sm:p-3 shadow-sm flex-shrink-0 group-hover:border-[#d4ff00]/50 transition-colors">
+                        <svg className="w-6 h-6 sm:w-7 sm:h-7 text-[#d4ff00]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                          <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                          <polyline points="2 17 12 22 22 17" />
+                          <polyline points="2 12 12 17 22 12" />
+                        </svg>
                       </div>
                       <span className="text-white font-bold text-xs sm:text-sm leading-tight" style={{ fontFamily: `'${hFont}', sans-serif` }}>
                         {homeContent.phil_f1_title || "Build Systems"}
@@ -468,8 +472,12 @@ export default function Home() {
 
                     {/* Item 2 */}
                     <div className="px-2 sm:px-4 flex flex-col lg:flex-row items-center text-center lg:text-left gap-2.5 sm:gap-3.5 group">
-                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#0f0f0f] border border-white/15 flex items-center justify-center p-2.5 sm:p-3 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] flex-shrink-0 group-hover:border-[#d4ff00]/50 transition-colors">
-                        <Diamond className="w-6 h-6 sm:w-7 sm:h-7 text-[#d4ff00]" strokeWidth={2.2} />
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#0f0f0f] border border-white/15 flex items-center justify-center p-2.5 sm:p-3 shadow-sm flex-shrink-0 group-hover:border-[#d4ff00]/50 transition-colors">
+                        <svg className="w-6 h-6 sm:w-7 sm:h-7 text-[#d4ff00]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M6 3h12l4 6-10 12L2 9z" />
+                          <path d="M11 3 8 9l4 12 4-12-3-6" />
+                          <path d="M2 9h20" />
+                        </svg>
                       </div>
                       <span className="text-white font-bold text-xs sm:text-sm leading-tight" style={{ fontFamily: `'${hFont}', sans-serif` }}>
                         {homeContent.phil_f2_title || "Premium Positioning"}
@@ -478,8 +486,15 @@ export default function Home() {
 
                     {/* Item 3 */}
                     <div className="px-2 sm:px-4 last:pr-0 flex flex-col lg:flex-row items-center text-center lg:text-left gap-2.5 sm:gap-3.5 group">
-                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#0f0f0f] border border-white/15 flex items-center justify-center p-2.5 sm:p-3 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] flex-shrink-0 group-hover:border-[#d4ff00]/50 transition-colors">
-                        <TrendingUp className="w-6 h-6 sm:w-7 sm:h-7 text-[#d4ff00]" strokeWidth={2.2} />
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#0f0f0f] border border-white/15 flex items-center justify-center p-2.5 sm:p-3 shadow-sm flex-shrink-0 group-hover:border-[#d4ff00]/50 transition-colors">
+                        <svg className="w-6 h-6 sm:w-7 sm:h-7 text-[#d4ff00]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="3" y="16" width="3" height="5" rx="0.8" fill="currentColor" />
+                          <rect x="8" y="12" width="3" height="9" rx="0.8" fill="currentColor" />
+                          <rect x="13" y="8" width="3" height="13" rx="0.8" fill="currentColor" />
+                          <rect x="18" y="4" width="3" height="17" rx="0.8" fill="currentColor" />
+                          <path d="M15 4h6v6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                          <path d="M21 4l-7 7" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
                       </div>
                       <span className="text-white font-bold text-xs sm:text-sm leading-tight" style={{ fontFamily: `'${hFont}', sans-serif` }}>
                         {homeContent.phil_f3_title || "Compounding Growth"}
