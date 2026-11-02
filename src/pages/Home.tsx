@@ -353,73 +353,120 @@ export default function Home() {
 
       case 'services':
         return (homeContent.help_visibility !== false) ? (
-          <section key="services" style={{ backgroundColor: homeContent.help_bg_color }} className="py-24 md:py-32 px-6 md:px-12">
+          <section key="services" style={{ backgroundColor: homeContent.help_bg_color || '#ffffff' }} className="py-24 md:py-32 px-6 md:px-12 relative overflow-hidden">
             <div className="max-w-7xl mx-auto">
-              <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 lg:gap-24 mb-24">
+              {/* Header */}
+              <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10 lg:gap-16 mb-16 md:mb-20">
                 <div className="lg:w-3/5">
                   {homeContent.help_tag && (
-                    <motion.span
+                    <motion.div
                       initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                      className="inline-block mb-8"
-                      style={tagStyle('help_tag_color', 'help_tag_size')}
+                      className="flex items-center gap-2.5 mb-4"
                     >
-                      {homeContent.help_tag}
-                    </motion.span>
+                      <span className="w-8 h-[3px] bg-[#d4ff00] rounded-full inline-block"></span>
+                      <span
+                        className="text-xs font-black tracking-widest uppercase text-black"
+                        style={{ fontFamily: `'${tFont}', sans-serif` }}
+                      >
+                        {homeContent.help_tag}
+                      </span>
+                    </motion.div>
                   )}
-                  <motion.h2
+                  <motion.div
                     initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-                    style={{ ...headingStyle('help_heading_size', 'help_text_color', '2rem', '5rem'), whiteSpace: 'pre-line' }}
                   >
-                    {homeContent.help_heading}
-                  </motion.h2>
+                    {(() => {
+                      const headingText = homeContent.help_heading || "SIX PRACTICES.\nONE INTEGRATED\nGROWTH ENGINE.";
+                      const lines = headingText.split('\n');
+                      return (
+                        <h2 
+                          className="font-black uppercase tracking-tighter text-black leading-[1.08]"
+                          style={{ fontFamily: `'${hFont}', sans-serif`, fontSize: getFontStyle(homeContent.help_heading_size, '2.25rem', '4rem') }}
+                        >
+                          {lines.map((line: string, i: number) => {
+                            const trimmed = line.trim();
+                            const isHighlight = trimmed.toUpperCase().includes('GROWTH ENGINE') || (lines.length >= 3 && i === lines.length - 1);
+                            if (isHighlight) {
+                              return (
+                                <div key={i} className="inline-block bg-[#111111] px-4 py-1 sm:py-1.5 -skew-x-12 mt-2 shadow-sm rounded-[2px]">
+                                  <span className="inline-block skew-x-12 text-[#d4ff00] font-black tracking-tight">
+                                    {trimmed}
+                                  </span>
+                                </div>
+                              );
+                            }
+                            return <div key={i}>{trimmed}</div>;
+                          })}
+                        </h2>
+                      );
+                    })()}
+                  </motion.div>
                 </div>
-                <div className="lg:w-2/5 flex flex-col items-start gap-8">
-                  <motion.p
-                    initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-                    style={bodyStyle('help_subheading_size', 'help_description_color', '#9ca3af')}
-                  >
-                    {homeContent.help_subheading}
-                  </motion.p>
+
+                <div className="lg:w-2/5 relative pl-6 sm:pl-8 border-l-2 border-[#d4ff00] flex flex-col items-start gap-6">
+                  {homeContent.help_subheading && (
+                    <motion.p
+                      initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+                      className="text-sm sm:text-[15px] md:text-base text-gray-800 leading-relaxed font-normal"
+                      style={{ fontFamily: `'${bFont}', sans-serif` }}
+                    >
+                      {homeContent.help_subheading}
+                    </motion.p>
+                  )}
                   <Link
                     to="/services"
-                    style={{ backgroundColor: homeContent.help_btn_color || '#ceff00', color: homeContent.help_btn_text_color || '#000', borderRadius: homeContent.help_btn_radius || '12px', fontFamily: `'${hFont}', sans-serif` }}
-                    className="group flex items-center gap-3 font-bold uppercase tracking-widest px-8 py-4 hover:gap-6 transition-all"
+                    style={{ backgroundColor: homeContent.help_btn_color || '#d4ff00', color: homeContent.help_btn_text_color || '#000', fontFamily: `'${hFont}', sans-serif` }}
+                    className="group inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full font-black text-sm uppercase tracking-wider hover:gap-4 transition-all shadow-sm hover:brightness-105"
                   >
-                    {homeContent.help_button_text || 'View All Practices'}
-                    <ArrowRight className="w-5 h-5" />
+                    <span>{homeContent.help_button_text || 'All Services'}</span>
+                    <ArrowRight className="w-4 h-4 stroke-[2.5]" />
                   </Link>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {/* Cards Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                 {(services.length > 0 ? services.slice(0, 6) : homeContent.practices).map((service: any, index: number) => (
                   <motion.div
                     key={service.id || index}
                     initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="group rounded-2xl p-4 -m-4 transition-colors"
+                    className="group bg-white rounded-[28px] overflow-hidden border border-gray-100 shadow-[0_10px_35px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.1)] transition-all duration-300 flex flex-col hover:-translate-y-1.5"
                   >
-                    <Link to={`/services/${service.slug || ''}`} className="block">
-                      <div className="overflow-hidden mb-6 rounded-2xl bg-[#111]">
+                    <Link to={`/services/${service.slug || ''}`} className="flex flex-col h-full">
+                      {/* Card Image */}
+                      <div className="w-full aspect-[16/10] overflow-hidden bg-gray-100 relative">
                         <img
                           src={service.image_url || service.image || 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=1000'}
                           alt={service.title}
-                          className="w-full aspect-square object-cover transform group-hover:scale-105 transition-transform duration-700"
+                          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
                           referrerPolicy="no-referrer"
                         />
                       </div>
-                      {(service.subtitle || service.areas) && (
-                        <p className="text-xs font-bold uppercase tracking-widest mb-3 opacity-60" style={{ color: homeContent.help_text_color, fontFamily: `'${tFont}', sans-serif` }}>
-                          {service.subtitle || (service.areas ? service.areas.join(' • ') : '')}
-                        </p>
-                      )}
-                      <h3 className="text-3xl font-black uppercase tracking-tighter mb-4 transition-colors group-hover:text-[#ceff00]" style={{ color: homeContent.help_text_color, fontFamily: `'${hFont}', sans-serif` }}>
-                        {service.title}
-                      </h3>
-                      <p className="leading-relaxed opacity-70 mb-6 line-clamp-2" style={{ color: homeContent.help_text_color, fontFamily: `'${bFont}', sans-serif` }}>
-                        {service.description || service.desc}
-                      </p>
-                      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest group-hover:gap-4 transition-all" style={{ color: homeContent.help_details_color || '#000000', fontFamily: `'${tFont}', sans-serif` }}>
-                        Details <ArrowRight className="w-4 h-4" />
+
+                      {/* Card Content */}
+                      <div className="p-7 sm:p-8 flex flex-col flex-1 justify-between">
+                        <div>
+                          <h3 
+                            className="text-lg sm:text-xl font-black uppercase tracking-tight text-black mb-3 leading-snug group-hover:text-black transition-colors"
+                            style={{ fontFamily: `'${hFont}', sans-serif` }}
+                          >
+                            {service.title}
+                          </h3>
+                          <p 
+                            className="text-xs sm:text-sm text-gray-600 leading-relaxed font-normal mb-6"
+                            style={{ fontFamily: `'${bFont}', sans-serif` }}
+                          >
+                            {service.description || service.desc}
+                          </p>
+                        </div>
+
+                        <div 
+                          className="inline-flex items-center gap-2 text-xs sm:text-sm font-black uppercase tracking-wider text-black group-hover:gap-3 transition-all mt-auto"
+                          style={{ fontFamily: `'${tFont}', sans-serif` }}
+                        >
+                          <span>Explore Service</span>
+                          <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+                        </div>
                       </div>
                     </Link>
                   </motion.div>
