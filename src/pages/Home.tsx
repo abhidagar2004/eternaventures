@@ -353,70 +353,79 @@ export default function Home() {
 
       case 'services':
         return (homeContent.help_visibility !== false) ? (
-          <section key="services" style={{ backgroundColor: homeContent.help_bg_color || '#ffffff' }} className="py-24 md:py-32 px-6 md:px-12 relative overflow-hidden">
+          <section key="services" style={{ backgroundColor: homeContent.help_bg_color || '#ffffff' }} className="py-20 md:py-28 px-6 md:px-12 relative overflow-hidden">
             <div className="max-w-7xl mx-auto">
               {/* Header */}
-              <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10 lg:gap-16 mb-16 md:mb-20">
+              <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 lg:gap-16 mb-14 md:mb-16">
                 <div className="lg:w-3/5">
-                  {homeContent.help_tag && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                      className="flex items-center gap-2.5 mb-4"
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                    className="flex items-center gap-2.5 mb-3"
+                  >
+                    <span className="w-8 h-[3px] bg-[#d4ff00] rounded-full inline-block"></span>
+                    <span
+                      className="text-xs font-black tracking-widest uppercase text-black"
+                      style={{ fontFamily: `'${tFont}', sans-serif` }}
                     >
-                      <span className="w-8 h-[3px] bg-[#d4ff00] rounded-full inline-block"></span>
-                      <span
-                        className="text-xs font-black tracking-widest uppercase text-black"
-                        style={{ fontFamily: `'${tFont}', sans-serif` }}
-                      >
-                        {homeContent.help_tag}
-                      </span>
-                    </motion.div>
-                  )}
+                      {homeContent.help_tag || 'OUR SERVICES'}
+                    </span>
+                  </motion.div>
+
                   <motion.div
                     initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
                   >
                     {(() => {
-                      const headingText = homeContent.help_heading || "SIX PRACTICES.\nONE INTEGRATED\nGROWTH ENGINE.";
-                      const lines = headingText.split('\n');
+                      const rawHeading = homeContent.help_heading || "SIX PRACTICES.\nONE INTEGRATED\nGROWTH ENGINE.";
+                      const growthEngineRegex = /GROWTH ENGINE\.?/i;
+
+                      if (growthEngineRegex.test(rawHeading)) {
+                        const beforePart = rawHeading.replace(growthEngineRegex, '').trim();
+                        const beforeLines = beforePart.split('\n').map(l => l.trim()).filter(Boolean);
+
+                        return (
+                          <h2 
+                            className="font-black uppercase tracking-tighter text-black leading-[1.05]"
+                            style={{ fontFamily: `'${hFont}', sans-serif`, fontSize: getFontStyle(homeContent.help_heading_size, '2.25rem', '3.75rem') }}
+                          >
+                            {beforeLines.map((line, idx) => (
+                              <div key={idx}>{line}</div>
+                            ))}
+                            <div className="inline-block bg-[#111111] px-4 py-1 sm:py-1.5 -skew-x-12 mt-2 shadow-sm rounded-[2px]">
+                              <span className="inline-block skew-x-12 text-[#d4ff00] font-black tracking-tight">
+                                GROWTH ENGINE.
+                              </span>
+                            </div>
+                          </h2>
+                        );
+                      }
+
+                      const lines = rawHeading.split('\n');
                       return (
                         <h2 
-                          className="font-black uppercase tracking-tighter text-black leading-[1.08]"
-                          style={{ fontFamily: `'${hFont}', sans-serif`, fontSize: getFontStyle(homeContent.help_heading_size, '2.25rem', '4rem') }}
+                          className="font-black uppercase tracking-tighter text-black leading-[1.05]"
+                          style={{ fontFamily: `'${hFont}', sans-serif`, fontSize: getFontStyle(homeContent.help_heading_size, '2.25rem', '3.75rem') }}
                         >
-                          {lines.map((line: string, i: number) => {
-                            const trimmed = line.trim();
-                            const isHighlight = trimmed.toUpperCase().includes('GROWTH ENGINE') || (lines.length >= 3 && i === lines.length - 1);
-                            if (isHighlight) {
-                              return (
-                                <div key={i} className="inline-block bg-[#111111] px-4 py-1 sm:py-1.5 -skew-x-12 mt-2 shadow-sm rounded-[2px]">
-                                  <span className="inline-block skew-x-12 text-[#d4ff00] font-black tracking-tight">
-                                    {trimmed}
-                                  </span>
-                                </div>
-                              );
-                            }
-                            return <div key={i}>{trimmed}</div>;
-                          })}
+                          {lines.map((line: string, i: number) => (
+                            <div key={i}>{line.trim()}</div>
+                          ))}
                         </h2>
                       );
                     })()}
                   </motion.div>
                 </div>
 
-                <div className="lg:w-2/5 relative pl-6 sm:pl-8 border-l-2 border-[#d4ff00] flex flex-col items-start gap-6">
-                  {homeContent.help_subheading && (
-                    <motion.p
-                      initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-                      className="text-sm sm:text-[15px] md:text-base text-gray-800 leading-relaxed font-normal"
-                      style={{ fontFamily: `'${bFont}', sans-serif` }}
-                    >
-                      {homeContent.help_subheading}
-                    </motion.p>
-                  )}
+                <div className="lg:w-2/5 relative pl-6 sm:pl-8 border-l-2 border-[#d4ff00] flex flex-col items-start gap-5">
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+                    className="text-sm sm:text-[15px] md:text-base text-gray-800 leading-relaxed font-normal"
+                    style={{ fontFamily: `'${bFont}', sans-serif` }}
+                  >
+                    {homeContent.help_subheading || "A connected set of capabilities that work together to build stronger brands, create meaningful demand, and drive sustainable growth."}
+                  </motion.p>
                   <Link
                     to="/services"
                     style={{ backgroundColor: homeContent.help_btn_color || '#d4ff00', color: homeContent.help_btn_text_color || '#000', fontFamily: `'${hFont}', sans-serif` }}
-                    className="group inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full font-black text-sm uppercase tracking-wider hover:gap-4 transition-all shadow-sm hover:brightness-105"
+                    className="group inline-flex items-center gap-2.5 px-7 py-3 rounded-full font-black text-sm tracking-wide hover:gap-3.5 transition-all shadow-sm hover:brightness-105"
                   >
                     <span>{homeContent.help_button_text || 'All Services'}</span>
                     <ArrowRight className="w-4 h-4 stroke-[2.5]" />
@@ -425,16 +434,16 @@ export default function Home() {
               </div>
 
               {/* Cards Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-7">
                 {(services.length > 0 ? services.slice(0, 6) : homeContent.practices).map((service: any, index: number) => (
                   <motion.div
                     key={service.id || index}
                     initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="group bg-white rounded-[28px] overflow-hidden border border-gray-100 shadow-[0_10px_35px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.1)] transition-all duration-300 flex flex-col hover:-translate-y-1.5"
+                    className="group bg-white rounded-[24px] overflow-hidden border border-gray-100 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_40px_rgba(0,0,0,0.08)] transition-all duration-300 flex flex-col hover:-translate-y-1"
                   >
                     <Link to={`/services/${service.slug || ''}`} className="flex flex-col h-full">
-                      {/* Card Image */}
-                      <div className="w-full aspect-[16/10] overflow-hidden bg-gray-100 relative">
+                      {/* Compact Landscape Image */}
+                      <div className="w-full h-44 sm:h-48 overflow-hidden bg-gray-100 relative">
                         <img
                           src={service.image_url || service.image || 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=1000'}
                           alt={service.title}
@@ -444,16 +453,16 @@ export default function Home() {
                       </div>
 
                       {/* Card Content */}
-                      <div className="p-7 sm:p-8 flex flex-col flex-1 justify-between">
+                      <div className="p-6 sm:p-7 flex flex-col flex-1 justify-between">
                         <div>
                           <h3 
-                            className="text-lg sm:text-xl font-black uppercase tracking-tight text-black mb-3 leading-snug group-hover:text-black transition-colors"
+                            className="text-base sm:text-lg font-black uppercase tracking-tight text-black mb-2.5 leading-snug group-hover:text-black transition-colors"
                             style={{ fontFamily: `'${hFont}', sans-serif` }}
                           >
                             {service.title}
                           </h3>
                           <p 
-                            className="text-xs sm:text-sm text-gray-600 leading-relaxed font-normal mb-6"
+                            className="text-xs sm:text-[13px] text-gray-600 leading-relaxed font-normal mb-5 line-clamp-3"
                             style={{ fontFamily: `'${bFont}', sans-serif` }}
                           >
                             {service.description || service.desc}
@@ -461,7 +470,7 @@ export default function Home() {
                         </div>
 
                         <div 
-                          className="inline-flex items-center gap-2 text-xs sm:text-sm font-black uppercase tracking-wider text-black group-hover:gap-3 transition-all mt-auto"
+                          className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-black group-hover:gap-3 transition-all mt-auto"
                           style={{ fontFamily: `'${tFont}', sans-serif` }}
                         >
                           <span>Explore Service</span>

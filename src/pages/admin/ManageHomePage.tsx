@@ -36,6 +36,7 @@ export default function ManageHomePage() {
     help_btn_color: "#2596be",
     help_btn_text_color: "#ffffff",
     help_details_color: "#000000",
+    help_visibility: true,
     brands_visibility: true,
     brands_logos: [] as string[],
     brands_bg_color: "#000000",
@@ -748,242 +749,163 @@ export default function ManageHomePage() {
             </div>
           </div>
 
-          <div>
-            <h2 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b">"What We Do" (Services Section)</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="md:col-span-1">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Tag Text</label>
+                    {/* Services Section */}
+          <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+            <div className="flex items-center justify-between pb-4 mb-6 border-b border-gray-100">
+              <div>
+                <h2 className="text-xl font-bold text-gray-900">Services Section ("Our Services")</h2>
+                <p className="text-xs text-gray-500 mt-1">Manage header, badge, buttons, and colors for the 6 services cards on the home page.</p>
+              </div>
+              <label className="flex items-center gap-2 cursor-pointer">
                 <input
-                  type="text"
-                  value={formData.help_tag}
-                  onChange={(e) => setFormData({ ...formData, help_tag: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                  type="checkbox"
+                  checked={formData.help_visibility !== false}
+                  onChange={(e) => setFormData({ ...formData, help_visibility: e.target.checked })}
+                  className="rounded border-gray-300 text-[#2596be] focus:ring-[#2596be] h-5 w-5"
                 />
-              </div>
-              <div className="md:col-span-1">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Tag Color</label>
-                <div className="flex gap-2">
-                  <input
-                    type="color"
-                    value={formData.help_tag_color}
-                    onChange={(e) => setFormData({ ...formData, help_tag_color: e.target.value })}
-                    className="h-10 w-10 rounded cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={formData.help_tag_color}
-                    onChange={(e) => setFormData({ ...formData, help_tag_color: e.target.value })}
-                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                  />
+                <span className="text-sm font-semibold text-gray-700">Visible</span>
+              </label>
+            </div>
+
+            <div className="space-y-6">
+              {/* Header Content */}
+              <div>
+                <h3 className="text-sm font-bold uppercase tracking-wider text-gray-700 mb-3">Header Text & Tag</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-600 mb-1">Tagline / Label</label>
+                    <input
+                      type="text"
+                      value={formData.help_tag}
+                      onChange={(e) => setFormData({ ...formData, help_tag: e.target.value })}
+                      placeholder="OUR SERVICES"
+                      className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-600 mb-1">Heading Size</label>
+                    <input
+                      type="text"
+                      value={formData.help_heading_size}
+                      onChange={(e) => setFormData({ ...formData, help_heading_size: e.target.value })}
+                      placeholder="e.g. text-4xl md:text-6xl"
+                      className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                    />
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="block text-xs font-semibold text-gray-600 mb-1">
+                      Main Heading <span className="text-gray-400 font-normal">("GROWTH ENGINE." will automatically appear in the highlighted angled box)</span>
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={formData.help_heading}
+                      onChange={(e) => setFormData({ ...formData, help_heading: e.target.value })}
+                      placeholder={"SIX PRACTICES.\nONE INTEGRATED\nGROWTH ENGINE."}
+                      className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be] font-mono text-sm"
+                    />
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="block text-xs font-semibold text-gray-600 mb-1">Subheading Description</label>
+                    <textarea
+                      rows={2}
+                      value={formData.help_subheading}
+                      onChange={(e) => setFormData({ ...formData, help_subheading: e.target.value })}
+                      placeholder="A connected set of capabilities that work together to build stronger brands..."
+                      className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                    />
+                  </div>
                 </div>
               </div>
-              <div className="md:col-span-1">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Tag Size (Tailwind)</label>
-                <input
-                  type="text"
-                  value={formData.help_tag_size}
-                  onChange={(e) => setFormData({ ...formData, help_tag_size: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                  placeholder="e.g. text-sm"
-                />
-              </div>
-              <div className="md:col-span-1">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Heading</label>
-                <textarea
-                  rows={2}
-                  value={formData.help_heading}
-                  onChange={(e) => setFormData({ ...formData, help_heading: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                />
-              </div>
-              <div className="md:col-span-1">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Heading Size</label>
-                <input
-                  type="text"
-                  value={formData.help_heading_size}
-                  onChange={(e) => setFormData({ ...formData, help_heading_size: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                />
-              </div>
-              <div className="md:col-span-1">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Subheading</label>
-                <textarea
-                  rows={2}
-                  value={formData.help_subheading}
-                  onChange={(e) => setFormData({ ...formData, help_subheading: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                />
-              </div>
-              <div className="md:col-span-1">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Subheading Color</label>
-                <div className="flex gap-2">
-                  <input
-                    type="color"
-                    value={formData.help_description_color}
-                    onChange={(e) => setFormData({ ...formData, help_description_color: e.target.value })}
-                    className="h-10 w-10 rounded cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={formData.help_description_color}
-                    onChange={(e) => setFormData({ ...formData, help_description_color: e.target.value })}
-                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                  />
+
+              {/* Action Button */}
+              <div className="pt-4 border-t border-gray-100">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-gray-700 mb-3">Header Button ("All Services")</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-600 mb-1">Button Text</label>
+                    <input
+                      type="text"
+                      value={formData.help_button_text}
+                      onChange={(e) => setFormData({ ...formData, help_button_text: e.target.value })}
+                      placeholder="All Services"
+                      className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-600 mb-1">Button Background Color</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={formData.help_btn_color || '#d4ff00'}
+                        onChange={(e) => setFormData({ ...formData, help_btn_color: e.target.value })}
+                        className="h-10 w-10 rounded cursor-pointer"
+                      />
+                      <input
+                        type="text"
+                        value={formData.help_btn_color || '#d4ff00'}
+                        onChange={(e) => setFormData({ ...formData, help_btn_color: e.target.value })}
+                        className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be] uppercase text-sm"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-600 mb-1">Button Text Color</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={formData.help_btn_text_color || '#000000'}
+                        onChange={(e) => setFormData({ ...formData, help_btn_text_color: e.target.value })}
+                        className="h-10 w-10 rounded cursor-pointer"
+                      />
+                      <input
+                        type="text"
+                        value={formData.help_btn_text_color || '#000000'}
+                        onChange={(e) => setFormData({ ...formData, help_btn_text_color: e.target.value })}
+                        className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be] uppercase text-sm"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="md:col-span-1">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Subheading Size</label>
-                <input
-                  type="text"
-                  value={formData.help_subheading_size}
-                  onChange={(e) => setFormData({ ...formData, help_subheading_size: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                />
-              </div>
-              <div className="md:col-span-1">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Subheading Size (Tailwind)</label>
-                <input
-                  type="text"
-                  value={formData.help_subheading_size}
-                  onChange={(e) => setFormData({ ...formData, help_subheading_size: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                />
-              </div>
-              <div className="md:col-span-1">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Subheading Color</label>
-                <div className="flex gap-2">
-                  <input
-                    type="color"
-                    value={formData.help_description_color}
-                    onChange={(e) => setFormData({ ...formData, help_description_color: e.target.value })}
-                    className="h-10 w-10 rounded cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={formData.help_description_color}
-                    onChange={(e) => setFormData({ ...formData, help_description_color: e.target.value })}
-                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Button Text</label>
-                <input
-                  type="text"
-                  value={formData.help_button_text}
-                  onChange={(e) => setFormData({ ...formData, help_button_text: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Button Color</label>
-                <div className="flex gap-2">
-                  <input
-                    type="color"
-                    value={formData.help_btn_color}
-                    onChange={(e) => setFormData({ ...formData, help_btn_color: e.target.value })}
-                    className="h-10 w-10 rounded cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={formData.help_btn_color}
-                    onChange={(e) => setFormData({ ...formData, help_btn_color: e.target.value })}
-                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Button Text Color</label>
-                <div className="flex gap-2">
-                  <input
-                    type="color"
-                    value={formData.help_btn_text_color}
-                    onChange={(e) => setFormData({ ...formData, help_btn_text_color: e.target.value })}
-                    className="h-10 w-10 rounded cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={formData.help_btn_text_color}
-                    onChange={(e) => setFormData({ ...formData, help_btn_text_color: e.target.value })}
-                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Card "Details" Link Color</label>
-                <div className="flex gap-2">
-                  <input
-                    type="color"
-                    value={formData.help_details_color || '#000000'}
-                    onChange={(e) => setFormData({ ...formData, help_details_color: e.target.value })}
-                    className="h-10 w-10 rounded cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={formData.help_details_color || '#000000'}
-                    onChange={(e) => setFormData({ ...formData, help_details_color: e.target.value })}
-                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Button Radius (e.g. 8px, 9999px)</label>
-                <input
-                  type="text"
-                  value={formData.help_btn_radius}
-                  onChange={(e) => setFormData({ ...formData, help_btn_radius: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Background Color</label>
-                <div className="flex gap-2">
-                  <input
-                    type="color"
-                    value={formData.help_bg_color}
-                    onChange={(e) => setFormData({ ...formData, help_bg_color: e.target.value })}
-                    className="h-10 w-10 rounded cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={formData.help_bg_color}
-                    onChange={(e) => setFormData({ ...formData, help_bg_color: e.target.value })}
-                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Text Color</label>
-                <div className="flex gap-2">
-                  <input
-                    type="color"
-                    value={formData.help_text_color}
-                    onChange={(e) => setFormData({ ...formData, help_text_color: e.target.value })}
-                    className="h-10 w-10 rounded cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={formData.help_text_color}
-                    onChange={(e) => setFormData({ ...formData, help_text_color: e.target.value })}
-                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Service Card Hover Color</label>
-                <div className="flex gap-2">
-                  <input
-                    type="color"
-                    value={formData.serve_hover_color}
-                    onChange={(e) => setFormData({ ...formData, serve_hover_color: e.target.value })}
-                    className="h-10 w-10 rounded cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={formData.serve_hover_color}
-                    onChange={(e) => setFormData({ ...formData, serve_hover_color: e.target.value })}
-                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                  />
+
+              {/* Colors */}
+              <div className="pt-4 border-t border-gray-100">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-gray-700 mb-3">Section Styling</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-600 mb-1">Section Background Color</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={formData.help_bg_color || '#ffffff'}
+                        onChange={(e) => setFormData({ ...formData, help_bg_color: e.target.value })}
+                        className="h-10 w-10 rounded cursor-pointer"
+                      />
+                      <input
+                        type="text"
+                        value={formData.help_bg_color || '#ffffff'}
+                        onChange={(e) => setFormData({ ...formData, help_bg_color: e.target.value })}
+                        className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be] uppercase text-sm"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-600 mb-1">Card "Explore Service" Link Color</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={formData.help_details_color || '#000000'}
+                        onChange={(e) => setFormData({ ...formData, help_details_color: e.target.value })}
+                        className="h-10 w-10 rounded cursor-pointer"
+                      />
+                      <input
+                        type="text"
+                        value={formData.help_details_color || '#000000'}
+                        onChange={(e) => setFormData({ ...formData, help_details_color: e.target.value })}
+                        className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be] uppercase text-sm"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
