@@ -88,6 +88,10 @@ export default function ManageHomePage() {
     phil_description_size: "text-lg md:text-xl",
     phil_bg_color: "#000000",
     phil_visibility: true,
+    phil_f1_title: "Build Systems",
+    phil_f2_title: "Premium Positioning",
+    phil_f3_title: "Compounding Growth",
+    phil_mountain_url: "/images/philosophy-mountain.png",
     help_btn_radius: "9999px",
     our_work_btn_text_color: "#ffffff",
     our_work_btn_radius: "9999px",
@@ -604,152 +608,142 @@ export default function ManageHomePage() {
           </div>
 
           {/* Philosophy Section */}
-          <div>
-            <div className="flex justify-between items-center mb-4 pb-2 border-b">
-              <h2 className="text-lg font-bold text-gray-900">Philosophy Section</h2>
-              <label className="flex items-center cursor-pointer">
-                <div className="relative">
-                  <input 
-                    type="checkbox" 
-                    className="sr-only" 
-                    checked={formData.phil_visibility}
-                    onChange={(e) => setFormData({ ...formData, phil_visibility: e.target.checked })}
-                  />
-                  <div className={`block w-10 h-6 rounded-full transition-colors ${formData.phil_visibility ? 'bg-[#2596be]' : 'bg-gray-300'}`}></div>
-                  <div className={`absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${formData.phil_visibility ? 'transform translate-x-4' : ''}`}></div>
-                </div>
-                <span className="ml-3 text-sm font-medium text-gray-700">Visible</span>
+          <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+            <div className="flex items-center justify-between pb-4 mb-6 border-b border-gray-100">
+              <div>
+                <h2 className="text-xl font-bold text-gray-900">Philosophy Section ("Our Philosophy")</h2>
+                <p className="text-xs text-gray-500 mt-1">Manage title, badging, philosophy description, mountain graphic, and 3 pillars.</p>
+              </div>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={formData.phil_visibility !== false}
+                  onChange={(e) => setFormData({ ...formData, phil_visibility: e.target.checked })}
+                  className="rounded border-gray-300 text-[#2596be] focus:ring-[#2596be] h-5 w-5"
+                />
+                <span className="text-sm font-semibold text-gray-700">Visible</span>
               </label>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Tag Text</label>
-                <input
-                  type="text"
-                  value={formData.phil_tag}
-                  onChange={(e) => setFormData({ ...formData, phil_tag: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                />
-              </div>
+
+            <div className="space-y-6">
+              {/* Header & Title */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Tag Color</label>
-                <div className="flex gap-2">
-                  <input
-                    type="color"
-                    value={formData.phil_tag_color}
-                    onChange={(e) => setFormData({ ...formData, phil_tag_color: e.target.value })}
-                    className="h-10 w-10 rounded cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={formData.phil_tag_color}
-                    onChange={(e) => setFormData({ ...formData, phil_tag_color: e.target.value })}
-                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                  />
+                <h3 className="text-sm font-bold uppercase tracking-wider text-gray-700 mb-3">Header & Title</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-600 mb-1">Tagline Pill</label>
+                    <input
+                      type="text"
+                      value={formData.phil_tag}
+                      onChange={(e) => setFormData({ ...formData, phil_tag: e.target.value })}
+                      placeholder="OUR PHILOSOPHY"
+                      className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-600 mb-1">Title Size</label>
+                    <input
+                      type="text"
+                      value={formData.phil_title_size}
+                      onChange={(e) => setFormData({ ...formData, phil_title_size: e.target.value })}
+                      placeholder="e.g. text-4xl md:text-6xl"
+                      className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                    />
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="block text-xs font-semibold text-gray-600 mb-1">
+                      Main Heading <span className="text-gray-400 font-normal">("IT'S A DISCIPLINE." will automatically appear in the neon lime badge)</span>
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={formData.phil_title}
+                      onChange={(e) => setFormData({ ...formData, phil_title: e.target.value })}
+                      placeholder={"GROWTH IS NOT A\nCAMPAIGN.\nIT'S A DISCIPLINE."}
+                      className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be] font-mono text-sm"
+                    />
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="block text-xs font-semibold text-gray-600 mb-1">Philosophy Description</label>
+                    <textarea
+                      rows={5}
+                      value={formData.phil_description}
+                      onChange={(e) => setFormData({ ...formData, phil_description: e.target.value })}
+                      className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                    />
+                  </div>
                 </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Tag Background Color</label>
-                <input
-                  type="text"
-                  value={formData.phil_tag_bg_color}
-                  onChange={(e) => setFormData({ ...formData, phil_tag_bg_color: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                  placeholder="rgba(37, 150, 190, 0.1)"
-                />
-              </div>
-              <div className="md:col-span-1">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
-                <textarea
-                  rows={2}
-                  value={formData.phil_title}
-                  onChange={(e) => setFormData({ ...formData, phil_title: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                />
-              </div>
-              <div className="md:col-span-1">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Title Size</label>
-                <input
-                  type="text"
-                  value={formData.phil_title_size}
-                  onChange={(e) => setFormData({ ...formData, phil_title_size: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Title Color</label>
-                <div className="flex gap-2">
-                  <input
-                    type="color"
-                    value={formData.phil_title_color}
-                    onChange={(e) => setFormData({ ...formData, phil_title_color: e.target.value })}
-                    className="h-10 w-10 rounded cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={formData.phil_title_color}
-                    onChange={(e) => setFormData({ ...formData, phil_title_color: e.target.value })}
-                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                  />
+
+              {/* 3 Pillars / Feature Titles */}
+              <div className="pt-4 border-t border-gray-100">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-gray-700 mb-3">3 Feature Pillars</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-600 mb-1">Pillar 1 (Layers)</label>
+                    <input
+                      type="text"
+                      value={formData.phil_f1_title || 'Build Systems'}
+                      onChange={(e) => setFormData({ ...formData, phil_f1_title: e.target.value })}
+                      className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-600 mb-1">Pillar 2 (Diamond)</label>
+                    <input
+                      type="text"
+                      value={formData.phil_f2_title || 'Premium Positioning'}
+                      onChange={(e) => setFormData({ ...formData, phil_f2_title: e.target.value })}
+                      className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-600 mb-1">Pillar 3 (Growth)</label>
+                    <input
+                      type="text"
+                      value={formData.phil_f3_title || 'Compounding Growth'}
+                      onChange={(e) => setFormData({ ...formData, phil_f3_title: e.target.value })}
+                      className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                    />
+                  </div>
                 </div>
               </div>
-              <div className="md:col-span-1">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Philosophy Description</label>
-                <textarea
-                  rows={4}
-                  value={formData.phil_description}
-                  onChange={(e) => setFormData({ ...formData, phil_description: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                />
-              </div>
-              <div className="md:col-span-1">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Description Color</label>
-                <div className="flex gap-2">
-                  <input
-                    type="color"
-                    value={formData.phil_description_color}
-                    onChange={(e) => setFormData({ ...formData, phil_description_color: e.target.value })}
-                    className="h-10 w-10 rounded cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={formData.phil_description_color}
-                    onChange={(e) => setFormData({ ...formData, phil_description_color: e.target.value })}
-                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                  />
-                </div>
-              </div>
-              <div className="md:col-span-1">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Description Size</label>
-                <input
-                  type="text"
-                  value={formData.phil_description_size}
-                  onChange={(e) => setFormData({ ...formData, phil_description_size: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                  placeholder="e.g. text-lg md:text-xl"
-                />
-              </div>
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Section Background Color</label>
-                <div className="flex gap-2">
-                  <input
-                    type="color"
-                    value={formData.phil_bg_color}
-                    onChange={(e) => setFormData({ ...formData, phil_bg_color: e.target.value })}
-                    className="h-10 w-10 rounded cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={formData.phil_bg_color}
-                    onChange={(e) => setFormData({ ...formData, phil_bg_color: e.target.value })}
-                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
-                  />
+
+              {/* Graphic & Background */}
+              <div className="pt-4 border-t border-gray-100">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-gray-700 mb-3">Graphic & Colors</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-600 mb-1">Mountain Peak Image Path / URL</label>
+                    <input
+                      type="text"
+                      value={formData.phil_mountain_url || '/images/philosophy-mountain.png'}
+                      onChange={(e) => setFormData({ ...formData, phil_mountain_url: e.target.value })}
+                      className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-600 mb-1">Section Background Color</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={formData.phil_bg_color || '#000000'}
+                        onChange={(e) => setFormData({ ...formData, phil_bg_color: e.target.value })}
+                        className="h-10 w-10 rounded cursor-pointer"
+                      />
+                      <input
+                        type="text"
+                        value={formData.phil_bg_color || '#000000'}
+                        onChange={(e) => setFormData({ ...formData, phil_bg_color: e.target.value })}
+                        className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be] uppercase text-sm"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-                    {/* Services Section */}
+          {/* Services Section */}
           <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
             <div className="flex items-center justify-between pb-4 mb-6 border-b border-gray-100">
               <div>

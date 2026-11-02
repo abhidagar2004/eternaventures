@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { ArrowRight, Mail } from 'lucide-react';
+import { ArrowRight, Mail, Layers, Diamond, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { format } from 'date-fns';
@@ -142,6 +142,10 @@ const DEFAULT_CONTENT = {
   phil_description_size: "text-base md:text-lg",
   phil_bg_color: "#000000",
   phil_visibility: true,
+  phil_f1_title: "Build Systems",
+  phil_f2_title: "Premium Positioning",
+  phil_f3_title: "Compounding Growth",
+  phil_mountain_url: "/images/philosophy-mountain.png",
   method_visibility: true,
   method_tag: "How We Work",
   method_tag_color: "#ceff00",
@@ -318,33 +322,170 @@ export default function Home() {
 
       case 'philosophy':
         return (homeContent.phil_visibility && homeContent.phil_title) ? (
-          <section key="phil" style={{ backgroundColor: homeContent.phil_bg_color }} className="py-24 md:py-32 px-6 md:px-12 relative overflow-hidden">
-            <div className="max-w-7xl mx-auto">
-              {homeContent.phil_tag && (
-                <motion.span
-                  initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                  className="inline-block px-4 py-1.5 rounded-full mb-8 border border-[#ceff00]/20"
-                  style={{ ...tagStyle('phil_tag_color'), backgroundColor: homeContent.phil_tag_bg_color || 'transparent' }}
-                >
-                  {homeContent.phil_tag}
-                </motion.span>
-              )}
-              <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start">
-                <div className="lg:w-1/2">
-                  <motion.h2
-                    initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-                    style={{ ...headingStyle('phil_title_size', 'phil_title_color', '2rem', '4.5rem'), whiteSpace: 'pre-line' }}
+          <section key="phil" style={{ backgroundColor: homeContent.phil_bg_color || '#000000' }} className="py-20 md:py-28 lg:py-32 px-6 md:px-12 relative overflow-hidden text-white">
+            <div className="max-w-7xl mx-auto relative">
+              {/* Desktop Vertical Center Divider */}
+              <div className="hidden lg:block absolute left-1/2 top-4 bottom-4 -translate-x-1/2 w-[1px] bg-white/10 pointer-events-none">
+                <div className="absolute top-1/2 -translate-y-1/2 -left-[1px] w-[3px] h-14 bg-[#d4ff00] rounded-full"></div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+                {/* Left Column: Badge + Heading + Desktop Mountain */}
+                <div className="flex flex-col items-start">
+                  {homeContent.phil_tag && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                      className="inline-flex items-center px-4 py-1.5 rounded-full border border-[#d4ff00] mb-6 md:mb-8"
+                    >
+                      <span
+                        className="text-[#d4ff00] text-xs font-black tracking-widest uppercase"
+                        style={{ fontFamily: `'${tFont}', sans-serif` }}
+                      >
+                        {homeContent.phil_tag}
+                      </span>
+                    </motion.div>
+                  )}
+
+                  <motion.div
+                    initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
+                    className="w-full"
                   >
-                    {homeContent.phil_title}
-                  </motion.h2>
+                    {(() => {
+                      const rawTitle = homeContent.phil_title || "GROWTH IS NOT A\nCAMPAIGN.\nIT'S A DISCIPLINE.";
+                      const disciplineRegex = /(IT['’]?S\s+A\s+DISCIPLINE\.?)/i;
+
+                      if (disciplineRegex.test(rawTitle)) {
+                        const parts = rawTitle.split(disciplineRegex);
+                        const before = parts[0].trim();
+                        let beforeLines = before.split('\n').map((l: string) => l.trim()).filter(Boolean);
+                        if (beforeLines.length === 1 && /growth is not a campaign/i.test(beforeLines[0])) {
+                          beforeLines = ["GROWTH IS NOT A", "CAMPAIGN."];
+                        }
+
+                        return (
+                          <h2 
+                            className="font-black uppercase tracking-tighter text-white leading-[1.05]"
+                            style={{ fontFamily: `'${hFont}', sans-serif`, fontSize: getFontStyle(homeContent.phil_title_size, '2.25rem', '4rem') }}
+                          >
+                            {beforeLines.map((line: string, idx: number) => (
+                              <div key={idx}>{line.toUpperCase()}</div>
+                            ))}
+                            <div className="inline-block bg-[#d4ff00] px-4 py-1 sm:py-1.5 -skew-x-12 mt-3 shadow-lg">
+                              <span className="inline-block skew-x-12 text-black font-black italic tracking-tight uppercase text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-none">
+                                IT’S A DISCIPLINE.
+                              </span>
+                            </div>
+                          </h2>
+                        );
+                      }
+
+                      return (
+                        <h2 
+                          className="font-black uppercase tracking-tighter text-white leading-[1.05]"
+                          style={{ fontFamily: `'${hFont}', sans-serif`, fontSize: getFontStyle(homeContent.phil_title_size, '2.25rem', '4rem') }}
+                        >
+                          {rawTitle.split('\n').map((l: string, i: number) => <div key={i}>{l}</div>)}
+                        </h2>
+                      );
+                    })()}
+                  </motion.div>
+
+                  {/* Mobile Mountain Graphic (shown directly under heading on mobile) */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+                    className="block lg:hidden my-8 w-full max-w-md mx-auto"
+                  >
+                    <img
+                      src={homeContent.phil_mountain_url || '/images/philosophy-mountain.png'}
+                      alt="Philosophy Mountain Peak with Glowing Eclipse"
+                      className="w-full object-contain pointer-events-none drop-shadow-[0_10px_30px_rgba(212,255,0,0.15)]"
+                    />
+                  </motion.div>
+
+                  {/* Desktop Mountain Graphic (anchored at bottom-left on desktop) */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+                    className="hidden lg:block mt-12 w-full max-w-lg"
+                  >
+                    <img
+                      src={homeContent.phil_mountain_url || '/images/philosophy-mountain.png'}
+                      alt="Philosophy Mountain Peak with Glowing Eclipse"
+                      className="w-full object-contain pointer-events-none drop-shadow-[0_10px_35px_rgba(212,255,0,0.15)]"
+                    />
+                  </motion.div>
                 </div>
-                <div className="lg:w-1/2">
-                  <motion.p
-                    initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
-                    style={{ ...bodyStyle('phil_description_size', 'phil_description_color', '#9ca3af'), whiteSpace: 'pre-line', opacity: 0.9 }}
+
+                {/* Right Column: Paragraphs + Features */}
+                <div className="flex flex-col justify-between h-full lg:pl-6 xl:pl-10">
+                  {/* Paragraphs */}
+                  <motion.div
+                    initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+                    className="space-y-6 text-gray-300 text-sm sm:text-base leading-relaxed"
+                    style={{ fontFamily: `'${bFont}', sans-serif` }}
                   >
-                    {homeContent.phil_description}
-                  </motion.p>
+                    {(() => {
+                      const desc = homeContent.phil_description || "";
+                      const paragraphs = desc.split('\n\n').filter(Boolean);
+                      return paragraphs.map((p: string, idx: number) => {
+                        if (/ecosystems/i.test(p)) {
+                          const parts = p.split(/(ecosystems)/i);
+                          return (
+                            <p key={idx} className="opacity-95">
+                              {parts.map((part, pIdx) =>
+                                part.toLowerCase() === 'ecosystems' ? (
+                                  <strong key={pIdx} className="text-white font-bold">{part}</strong>
+                                ) : (
+                                  part
+                                )
+                              )}
+                            </p>
+                          );
+                        }
+                        return <p key={idx} className="opacity-90">{p}</p>;
+                      });
+                    })()}
+                  </motion.div>
+
+                  {/* Mobile Horizontal Divider */}
+                  <div className="lg:hidden w-full h-[1px] bg-white/10 relative my-8">
+                    <div className="w-16 h-[3px] bg-[#d4ff00] rounded-full mx-auto absolute inset-x-0 -top-[1px]"></div>
+                  </div>
+
+                  {/* 3 Pillars / Feature Items */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
+                    className="pt-8 lg:pt-10 lg:mt-10 lg:border-t lg:border-white/10 grid grid-cols-3 divide-x divide-white/10"
+                  >
+                    {/* Item 1 */}
+                    <div className="px-2 sm:px-4 first:pl-0 flex flex-col lg:flex-row items-center text-center lg:text-left gap-2.5 sm:gap-3.5 group">
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#0f0f0f] border border-white/15 flex items-center justify-center p-2.5 sm:p-3 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] flex-shrink-0 group-hover:border-[#d4ff00]/50 transition-colors">
+                        <Layers className="w-6 h-6 sm:w-7 sm:h-7 text-[#d4ff00]" strokeWidth={2.2} />
+                      </div>
+                      <span className="text-white font-bold text-xs sm:text-sm leading-tight" style={{ fontFamily: `'${hFont}', sans-serif` }}>
+                        {homeContent.phil_f1_title || "Build Systems"}
+                      </span>
+                    </div>
+
+                    {/* Item 2 */}
+                    <div className="px-2 sm:px-4 flex flex-col lg:flex-row items-center text-center lg:text-left gap-2.5 sm:gap-3.5 group">
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#0f0f0f] border border-white/15 flex items-center justify-center p-2.5 sm:p-3 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] flex-shrink-0 group-hover:border-[#d4ff00]/50 transition-colors">
+                        <Diamond className="w-6 h-6 sm:w-7 sm:h-7 text-[#d4ff00]" strokeWidth={2.2} />
+                      </div>
+                      <span className="text-white font-bold text-xs sm:text-sm leading-tight" style={{ fontFamily: `'${hFont}', sans-serif` }}>
+                        {homeContent.phil_f2_title || "Premium Positioning"}
+                      </span>
+                    </div>
+
+                    {/* Item 3 */}
+                    <div className="px-2 sm:px-4 last:pr-0 flex flex-col lg:flex-row items-center text-center lg:text-left gap-2.5 sm:gap-3.5 group">
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#0f0f0f] border border-white/15 flex items-center justify-center p-2.5 sm:p-3 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] flex-shrink-0 group-hover:border-[#d4ff00]/50 transition-colors">
+                        <TrendingUp className="w-6 h-6 sm:w-7 sm:h-7 text-[#d4ff00]" strokeWidth={2.2} />
+                      </div>
+                      <span className="text-white font-bold text-xs sm:text-sm leading-tight" style={{ fontFamily: `'${hFont}', sans-serif` }}>
+                        {homeContent.phil_f3_title || "Compounding Growth"}
+                      </span>
+                    </div>
+                  </motion.div>
                 </div>
               </div>
             </div>
