@@ -35,6 +35,7 @@ export default function ManageHomePage() {
     help_subheading_size: "text-xl font-bold",
     help_btn_color: "#2596be",
     help_btn_text_color: "#ffffff",
+    help_details_color: "#000000",
     brands_visibility: true,
     brands_logos: [] as string[],
     brands_bg_color: "#000000",
@@ -904,6 +905,23 @@ export default function ManageHomePage() {
                     type="text"
                     value={formData.help_btn_text_color}
                     onChange={(e) => setFormData({ ...formData, help_btn_text_color: e.target.value })}
+                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Card "Details" Link Color</label>
+                <div className="flex gap-2">
+                  <input
+                    type="color"
+                    value={formData.help_details_color || '#000000'}
+                    onChange={(e) => setFormData({ ...formData, help_details_color: e.target.value })}
+                    className="h-10 w-10 rounded cursor-pointer"
+                  />
+                  <input
+                    type="text"
+                    value={formData.help_details_color || '#000000'}
+                    onChange={(e) => setFormData({ ...formData, help_details_color: e.target.value })}
                     className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2596be]"
                   />
                 </div>

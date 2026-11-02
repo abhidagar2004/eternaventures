@@ -81,6 +81,7 @@ const DEFAULT_CONTENT = {
   help_text_color: "#ffffff",
   help_btn_color: "#ceff00",
   help_btn_text_color: "#000000",
+  help_details_color: "#000000",
   help_btn_radius: "12px",
   help_button_text: "View All Practices",
   help_visibility: true,
@@ -417,7 +418,7 @@ export default function Home() {
                       <p className="leading-relaxed opacity-70 mb-6 line-clamp-2" style={{ color: homeContent.help_text_color, fontFamily: `'${bFont}', sans-serif` }}>
                         {service.description || service.desc}
                       </p>
-                      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest group-hover:gap-4 transition-all" style={{ color: homeContent.help_btn_color, fontFamily: `'${tFont}', sans-serif` }}>
+                      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest group-hover:gap-4 transition-all" style={{ color: homeContent.help_details_color || '#000000', fontFamily: `'${tFont}', sans-serif` }}>
                         Details <ArrowRight className="w-4 h-4" />
                       </div>
                     </Link>
