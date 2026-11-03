@@ -765,7 +765,7 @@ export default function Home() {
               {/* 4 Cards Grid with Horizontal Connector */}
               <div className="relative">
                 {/* Horizontal Connector Line & Glowing Nodes (Desktop) */}
-                <div className="hidden lg:block absolute top-[28%] left-0 right-0 h-[1px] bg-white/10 z-0 pointer-events-none">
+                <div className="hidden lg:block absolute top-[78px] left-0 right-0 h-[1px] bg-white/10 z-0 pointer-events-none">
                   <div className="absolute left-[24.2%] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#d4ff00] shadow-[0_0_10px_#d4ff00]"></div>
                   <div className="absolute left-[49.5%] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#d4ff00] shadow-[0_0_10px_#d4ff00]"></div>
                   <div className="absolute left-[74.8%] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#d4ff00] shadow-[0_0_10px_#d4ff00]"></div>
@@ -804,26 +804,37 @@ export default function Home() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: 0.1 * (i + 1) }}
-                      className="group bg-[#0e0e0e] border border-white/10 hover:border-[#d4ff00]/40 rounded-[24px] p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
+                      className="group bg-[#0d0d0d] border border-white/10 hover:border-[#d4ff00]/40 rounded-[28px] p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 shadow-[0_10px_30px_rgba(0,0,0,0.5)] relative overflow-hidden"
                     >
-                      {/* Top 3D Visual Asset with fully visible graphics and glowing step number */}
-                      <div className="w-full mb-5 overflow-hidden rounded-xl">
-                        <img
-                          src={item.image}
-                          alt={item.title}
-                          className="w-full h-auto object-contain pointer-events-none select-none transform group-hover:scale-105 transition-transform duration-500"
-                        />
+                      {/* Top Visual Row: Step Number on Left + 3D Illustration on Right */}
+                      <div className="flex items-end justify-between min-h-[110px] sm:min-h-[120px] mb-5 sm:mb-6">
+                        {/* Step Number in HTML on the Card */}
+                        <span className="text-3xl sm:text-4xl font-black text-[#d4ff00] tracking-tight leading-none select-none pb-1">
+                          {item.step}
+                        </span>
+
+                        {/* 3D Graphic with generous space on top and side */}
+                        <div className="w-28 h-24 sm:w-36 sm:h-28 flex items-center justify-end">
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            className="max-w-full max-h-full object-contain pointer-events-none select-none drop-shadow-[0_10px_20px_rgba(0,0,0,0.6)] transform group-hover:scale-105 transition-transform duration-500"
+                          />
+                        </div>
                       </div>
 
                       {/* Content */}
                       <div className="flex-1 flex flex-col justify-start">
-                        {/* Step Title */}
+                        {/* Step Title (WHITE) */}
                         <h3
-                          className="font-black uppercase tracking-tight text-white text-base sm:text-lg mb-3 leading-snug group-hover:text-[#d4ff00] transition-colors"
+                          className="font-black uppercase tracking-tight text-white text-base sm:text-lg leading-snug group-hover:text-white transition-colors"
                           style={{ fontFamily: `'${hFont}', sans-serif` }}
                         >
                           {item.title}
                         </h3>
+
+                        {/* Neon Dash (Between Title and Description) */}
+                        <div className="w-5 h-[2px] bg-[#d4ff00] my-3 sm:my-3.5"></div>
 
                         {/* Step Description */}
                         <p
