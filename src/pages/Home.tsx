@@ -814,7 +814,7 @@ export default function Home() {
                         </span>
 
                         {/* 3D Graphic with generous space on top and side */}
-                        <div className="w-28 h-24 sm:w-36 sm:h-28 flex items-center justify-end">
+                        <div className="w-32 h-24 sm:w-40 sm:h-28 flex items-center justify-end">
                           <img
                             src={item.image}
                             alt={item.title}
