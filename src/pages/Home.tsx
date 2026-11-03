@@ -696,12 +696,16 @@ export default function Home() {
                     initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
                   >
                     {(() => {
-                      const rawTitle = homeContent.method_title || "THE ETERNA\nVENTURES METHOD";
+                      const rawTitle = (homeContent.method_title || "THE ETERNA\nVENTURES METHOD").replace(/\\n/g, '\n');
                       const methodRegex = /METHOD/i;
 
                       if (methodRegex.test(rawTitle)) {
                         const before = rawTitle.replace(methodRegex, '').trim();
                         let beforeLines = before.split('\n').map((l: string) => l.trim()).filter(Boolean);
+
+                        if (beforeLines.length === 1 && /THE\s+ETERNA\s+VENTURES/i.test(beforeLines[0])) {
+                          beforeLines = ["THE ETERNA", "VENTURES"];
+                        }
 
                         return (
                           <h2
@@ -711,9 +715,9 @@ export default function Home() {
                             {beforeLines.map((line, idx) => {
                               if (idx === beforeLines.length - 1) {
                                 return (
-                                  <div key={idx} className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                                    <span>{line}</span>
-                                    <div className="inline-block bg-[#d4ff00] px-3.5 sm:px-4 py-1 -skew-x-12 shadow-lg">
+                                  <div key={idx} className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 sm:mt-1.5">
+                                    <span className="whitespace-nowrap">{line}</span>
+                                    <div className="inline-block bg-[#d4ff00] px-3.5 sm:px-4 py-0.5 sm:py-1 -skew-x-12 shadow-lg">
                                       <span className="inline-block skew-x-12 text-black font-black italic tracking-tight uppercase">
                                         METHOD
                                       </span>
@@ -802,28 +806,20 @@ export default function Home() {
                       transition={{ delay: 0.1 * (i + 1) }}
                       className="group bg-[#0e0e0e] border border-white/10 hover:border-[#d4ff00]/40 rounded-[24px] p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
                     >
-                      {/* Top 3D Visual Asset */}
-                      <div className="w-full h-24 sm:h-26 flex items-center justify-center mb-5 overflow-hidden">
+                      {/* Top 3D Visual Asset with fully visible graphics and glowing step number */}
+                      <div className="w-full mb-5 overflow-hidden rounded-xl">
                         <img
                           src={item.image}
                           alt={item.title}
-                          className="max-h-full object-contain pointer-events-none select-none transform group-hover:scale-105 transition-transform duration-500"
+                          className="w-full h-auto object-contain pointer-events-none select-none transform group-hover:scale-105 transition-transform duration-500"
                         />
                       </div>
 
                       {/* Content */}
-                      <div>
-                        {/* Step Number */}
-                        <div className="text-2xl sm:text-3xl font-black text-[#d4ff00] tracking-tight mb-2">
-                          {item.step}
-                        </div>
-
-                        {/* Neon Dash */}
-                        <div className="w-6 h-[2px] bg-[#d4ff00] mb-3.5"></div>
-
+                      <div className="flex-1 flex flex-col justify-start">
                         {/* Step Title */}
                         <h3
-                          className="font-black uppercase tracking-tight text-white text-base sm:text-lg mb-3 leading-snug group-hover:text-white transition-colors"
+                          className="font-black uppercase tracking-tight text-white text-base sm:text-lg mb-3 leading-snug group-hover:text-[#d4ff00] transition-colors"
                           style={{ fontFamily: `'${hFont}', sans-serif` }}
                         >
                           {item.title}
