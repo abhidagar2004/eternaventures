@@ -322,14 +322,14 @@ export default function Home() {
 
       case 'philosophy':
         return (homeContent.phil_visibility && homeContent.phil_title) ? (
-          <section key="phil" style={{ backgroundColor: homeContent.phil_bg_color || '#000000' }} className="py-20 md:py-28 lg:py-32 px-6 md:px-12 relative overflow-hidden text-white">
+          <section key="phil" style={{ backgroundColor: homeContent.phil_bg_color || '#000000' }} className="py-20 md:py-24 lg:py-28 px-6 md:px-12 relative overflow-hidden text-white">
             <div className="max-w-7xl mx-auto relative">
               {/* Desktop Vertical Center Divider */}
               <div className="hidden lg:block absolute left-1/2 top-4 bottom-4 -translate-x-1/2 w-[1px] bg-white/10 pointer-events-none">
                 <div className="absolute top-1/2 -translate-y-1/2 -left-[1px] w-[3px] h-12 bg-[#d4ff00] rounded-full"></div>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                 {/* Left Column: Badge + Heading + Desktop Mountain */}
                 <div className="flex flex-col items-start">
                   {homeContent.phil_tag && (
@@ -405,7 +405,7 @@ export default function Home() {
                   {/* Desktop Mountain Graphic (at bottom-left on desktop) */}
                   <motion.div
                     initial={{ opacity: 0, scale: 0.98 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-                    className="hidden lg:block mt-10 w-full max-w-xl"
+                    className="hidden lg:block mt-8 w-full max-w-lg"
                   >
                     <img
                       src={homeContent.phil_mountain_url || '/images/philosophy-mountain.png'}
@@ -415,8 +415,8 @@ export default function Home() {
                   </motion.div>
                 </div>
 
-                {/* Right Column: Paragraphs + Features */}
-                <div className="flex flex-col justify-between h-full lg:pl-6 xl:pl-10">
+                {/* Right Column: Paragraphs + Features (tightly grouped, no awkward gap!) */}
+                <div className="flex flex-col lg:pl-6 xl:pl-10">
                   {/* Paragraphs */}
                   <motion.div
                     initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
@@ -451,13 +451,13 @@ export default function Home() {
                     <div className="w-16 h-[3px] bg-[#d4ff00] rounded-full mx-auto absolute inset-x-0 -top-[1px]"></div>
                   </div>
 
-                  {/* 3 Pillars / Feature Items */}
+                  {/* 3 Pillars / Feature Items (aligned directly below paragraphs with comfortable spacing) */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
-                    className="pt-8 lg:pt-10 lg:mt-10 lg:border-t lg:border-white/10 grid grid-cols-3 divide-x divide-white/10"
+                    className="mt-8 sm:mt-10 grid grid-cols-3 divide-x divide-white/10"
                   >
                     {/* Item 1 */}
-                    <div className="px-2 sm:px-4 first:pl-0 flex flex-col lg:flex-row items-center text-center lg:text-left gap-2.5 sm:gap-3.5 group">
+                    <div className="px-2 sm:px-3 first:pl-0 flex flex-col lg:flex-row items-center text-center lg:text-left gap-2.5 sm:gap-3.5 group">
                       <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#0f0f0f] border border-white/15 flex items-center justify-center p-2.5 sm:p-3 shadow-sm flex-shrink-0 group-hover:border-[#d4ff00]/50 transition-colors">
                         <svg className="w-6 h-6 sm:w-7 sm:h-7 text-[#d4ff00]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                           <polygon points="12 2 2 7 12 12 22 7 12 2" />
@@ -471,7 +471,7 @@ export default function Home() {
                     </div>
 
                     {/* Item 2 */}
-                    <div className="px-2 sm:px-4 flex flex-col lg:flex-row items-center text-center lg:text-left gap-2.5 sm:gap-3.5 group">
+                    <div className="px-2 sm:px-3 flex flex-col lg:flex-row items-center text-center lg:text-left gap-2.5 sm:gap-3.5 group">
                       <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#0f0f0f] border border-white/15 flex items-center justify-center p-2.5 sm:p-3 shadow-sm flex-shrink-0 group-hover:border-[#d4ff00]/50 transition-colors">
                         <svg className="w-6 h-6 sm:w-7 sm:h-7 text-[#d4ff00]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M6 3h12l4 6-10 12L2 9z" />
@@ -485,7 +485,7 @@ export default function Home() {
                     </div>
 
                     {/* Item 3 */}
-                    <div className="px-2 sm:px-4 last:pr-0 flex flex-col lg:flex-row items-center text-center lg:text-left gap-2.5 sm:gap-3.5 group">
+                    <div className="px-2 sm:px-3 last:pr-0 flex flex-col lg:flex-row items-center text-center lg:text-left gap-2.5 sm:gap-3.5 group">
                       <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#0f0f0f] border border-white/15 flex items-center justify-center p-2.5 sm:p-3 shadow-sm flex-shrink-0 group-hover:border-[#d4ff00]/50 transition-colors">
                         <svg className="w-6 h-6 sm:w-7 sm:h-7 text-[#d4ff00]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
                           <rect x="3" y="16" width="3" height="5" rx="0.8" fill="currentColor" />
