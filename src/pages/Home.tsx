@@ -147,23 +147,23 @@ const DEFAULT_CONTENT = {
   phil_f3_title: "Compounding Growth",
   phil_mountain_url: "/images/philosophy-mountain.png",
   method_visibility: true,
-  method_tag: "How We Work",
-  method_tag_color: "#ceff00",
+  method_tag: "OUR APPROACH",
+  method_tag_color: "#d4ff00",
   method_title: "The EternaVentures\nMethod",
   method_title_color: "#ffffff",
   method_title_size: "text-4xl md:text-6xl lg:text-7xl",
-  method_quote: "\u201CWe don\u2019t start with deliverables. We start with the gap between where your brand is and where it should be \u2014 and build the bridge.\u201D",
+  method_quote: "“ We don’t just execute tactics — we build an integrated growth system that moves your brand forward, compounding over time. ”",
   method_quote_color: "#ceff00",
   method_quote_size: "text-xl md:text-2xl lg:text-3xl",
   method_bg_color: "#0a0a0a",
-  method_step1_title: "Audit & Immersion",
-  method_step1_desc: "We spend time in your world before we touch your brand. Market landscape, competitor positioning, audience signals, and the story your brand is currently telling — whether you intended it or not.",
-  method_step2_title: "Strategic Foundation",
-  method_step2_desc: "Every action we take is grounded in a positioning document that the whole team — ours and yours — can build from. Clear differentiation, defined audience tiers, and a growth thesis we can defend.",
-  method_step3_title: "Build & Activate",
-  method_step3_desc: "We execute across capabilities simultaneously — not in silos. Brand, content, performance, influence, and experience working as one integrated system, not a list of services.",
-  method_step4_title: "Measure & Compound",
-  method_step4_desc: "We track what matters: brand equity, audience quality, revenue influence, and market share signals. Then we reinvest learnings into the next cycle. Growth compounds when strategy doesn't reset every quarter.",
+  method_step1_title: "AUDIT & DISCOVERY",
+  method_step1_desc: "Understand your brand, market, audience, and growth opportunities with depth and clarity.",
+  method_step2_title: "STRATEGIC FOUNDATION",
+  method_step2_desc: "Define the right positioning, brand strategy, and growth plan to create a focused path forward.",
+  method_step3_title: "BUILD & ACTIVATE",
+  method_step3_desc: "Bring the strategy to life across brand, content, media, and digital experiences.",
+  method_step4_title: "MEASURED COMPOUND GROWTH",
+  method_step4_desc: "Track performance, learn fast, and keep optimizing to drive stronger, more sustainable results.",
   serve_visibility: true,
   serve_tag: "Who We Serve",
   serve_tag_color: "#ceff00",
@@ -673,49 +673,173 @@ export default function Home() {
 
       case 'method':
         return homeContent.method_visibility ? (
-          <section key="method" style={{ backgroundColor: homeContent.method_bg_color }} className="py-24 md:py-32 px-6 md:px-12 relative overflow-hidden text-white">
+          <section key="method" style={{ backgroundColor: homeContent.method_bg_color || '#0a0a0a' }} className="py-20 md:py-28 px-6 md:px-12 relative overflow-hidden text-white">
             <div className="max-w-7xl mx-auto">
-              <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 mb-24">
-                <div className="lg:w-1/2">
-                  {homeContent.method_tag && (
-                    <motion.span initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                      className="inline-block mb-8" style={tagStyle('method_tag_color')}>
-                      {homeContent.method_tag}
-                    </motion.span>
-                  )}
-                  <motion.h2
+              {/* Header */}
+              <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10 lg:gap-16 mb-16 md:mb-20">
+                {/* Left Side: Tag + Heading with METHOD badge */}
+                <div className="lg:w-3/5">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                    className="flex items-center gap-2.5 mb-4"
+                  >
+                    <span className="w-8 h-[3px] bg-[#d4ff00] rounded-full inline-block"></span>
+                    <span
+                      className="text-xs font-black tracking-widest uppercase text-white"
+                      style={{ fontFamily: `'${tFont}', sans-serif` }}
+                    >
+                      {homeContent.method_tag || 'OUR APPROACH'}
+                    </span>
+                  </motion.div>
+
+                  <motion.div
                     initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-                    style={{ ...headingStyle('method_title_size', 'method_title_color', '2rem', '4.5rem'), whiteSpace: 'pre-line' }}
-                    className="mb-12"
                   >
-                    {homeContent.method_title}
-                  </motion.h2>
+                    {(() => {
+                      const rawTitle = homeContent.method_title || "THE ETERNA\nVENTURES METHOD";
+                      const methodRegex = /METHOD/i;
+
+                      if (methodRegex.test(rawTitle)) {
+                        const before = rawTitle.replace(methodRegex, '').trim();
+                        let beforeLines = before.split('\n').map((l: string) => l.trim()).filter(Boolean);
+
+                        return (
+                          <h2
+                            className="font-black uppercase tracking-tighter text-white leading-[1.05]"
+                            style={{ fontFamily: `'${hFont}', sans-serif`, fontSize: getFontStyle(homeContent.method_title_size, '2.5rem', '4.25rem') }}
+                          >
+                            {beforeLines.map((line, idx) => {
+                              if (idx === beforeLines.length - 1) {
+                                return (
+                                  <div key={idx} className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                                    <span>{line}</span>
+                                    <div className="inline-block bg-[#d4ff00] px-3.5 sm:px-4 py-1 -skew-x-12 shadow-lg">
+                                      <span className="inline-block skew-x-12 text-black font-black italic tracking-tight uppercase">
+                                        METHOD
+                                      </span>
+                                    </div>
+                                  </div>
+                                );
+                              }
+                              return <div key={idx}>{line}</div>;
+                            })}
+                          </h2>
+                        );
+                      }
+
+                      return (
+                        <h2
+                          className="font-black uppercase tracking-tighter text-white leading-[1.05]"
+                          style={{ fontFamily: `'${hFont}', sans-serif`, fontSize: getFontStyle(homeContent.method_title_size, '2.5rem', '4.25rem') }}
+                        >
+                          {rawTitle.split('\n').map((l: string, i: number) => <div key={i}>{l}</div>)}
+                        </h2>
+                      );
+                    })()}
+                  </motion.div>
                 </div>
-                <div className="lg:w-1/2 flex items-center">
-                  <motion.p
+
+                {/* Right Side: Quote with vertical divider */}
+                <div className="lg:w-2/5 relative pl-6 sm:pl-8 border-l-2 border-white/10 lg:py-2">
+                  <motion.div
                     initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-                    style={{ fontFamily: `'${hFont}', sans-serif`, fontSize: getFontStyle(homeContent.method_quote_size, '1.25rem', '2.25rem'), color: homeContent.method_quote_color, fontWeight: 700, lineHeight: '1.2', fontStyle: 'italic' }}
+                    className="flex items-start gap-3"
                   >
-                    {homeContent.method_quote}
-                  </motion.p>
+                    <span className="text-[#d4ff00] text-3xl font-serif font-black leading-none -mt-1 select-none">“</span>
+                    <p
+                      className="text-white italic text-base sm:text-lg md:text-[19px] leading-relaxed font-normal"
+                      style={{ fontFamily: `'${bFont}', sans-serif` }}
+                    >
+                      {homeContent.method_quote?.replace(/^[“"']+|[”"']+$/g, '').trim() ||
+                        "We don’t just execute tactics — we build an integrated growth system that moves your brand forward, compounding over time."}
+                      <span className="text-[#d4ff00] text-3xl font-serif font-black leading-none ml-1.5 select-none">”</span>
+                    </p>
+                  </motion.div>
                 </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                {[
-                  { title: homeContent.method_step1_title, desc: homeContent.method_step1_desc, step: "01" },
-                  { title: homeContent.method_step2_title, desc: homeContent.method_step2_desc, step: "02" },
-                  { title: homeContent.method_step3_title, desc: homeContent.method_step3_desc, step: "03" },
-                  { title: homeContent.method_step4_title, desc: homeContent.method_step4_desc, step: "04" }
-                ].map((item, i) => (
-                  <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 * (i + 1) }}
-                    className="relative group h-full bg-white/5 p-8 rounded-2xl hover:bg-white/10 transition-colors">
-                    <div className="mb-6">
-                      <span className="text-6xl font-display font-black text-[#ceff00]/20 group-hover:text-[#ceff00]/40 transition-all duration-500">{item.step}</span>
-                    </div>
-                    <h3 style={{ fontFamily: `'${hFont}', sans-serif`, fontSize: getFontStyle(homeContent.method_step_title_size, '1.25rem', '1.5rem') }} className="font-black uppercase tracking-tight mb-4 text-white">{item.title}</h3>
-                    <p style={{ fontFamily: `'${bFont}', sans-serif` }} className="text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed">{item.desc}</p>
-                  </motion.div>
-                ))}
+
+              {/* 4 Cards Grid with Horizontal Connector */}
+              <div className="relative">
+                {/* Horizontal Connector Line & Glowing Nodes (Desktop) */}
+                <div className="hidden lg:block absolute top-[28%] left-0 right-0 h-[1px] bg-white/10 z-0 pointer-events-none">
+                  <div className="absolute left-[24.2%] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#d4ff00] shadow-[0_0_10px_#d4ff00]"></div>
+                  <div className="absolute left-[49.5%] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#d4ff00] shadow-[0_0_10px_#d4ff00]"></div>
+                  <div className="absolute left-[74.8%] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#d4ff00] shadow-[0_0_10px_#d4ff00]"></div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+                  {[
+                    {
+                      step: "01",
+                      title: homeContent.method_step1_title || "AUDIT & DISCOVERY",
+                      desc: homeContent.method_step1_desc || "Understand your brand, market, audience, and growth opportunities with depth and clarity.",
+                      image: "/images/method-step-1.png"
+                    },
+                    {
+                      step: "02",
+                      title: homeContent.method_step2_title || "STRATEGIC FOUNDATION",
+                      desc: homeContent.method_step2_desc || "Define the right positioning, brand strategy, and growth plan to create a focused path forward.",
+                      image: "/images/method-step-2.png"
+                    },
+                    {
+                      step: "03",
+                      title: homeContent.method_step3_title || "BUILD & ACTIVATE",
+                      desc: homeContent.method_step3_desc || "Bring the strategy to life across brand, content, media, and digital experiences.",
+                      image: "/images/method-step-3.png"
+                    },
+                    {
+                      step: "04",
+                      title: homeContent.method_step4_title || "MEASURED COMPOUND GROWTH",
+                      desc: homeContent.method_step4_desc || "Track performance, learn fast, and keep optimizing to drive stronger, more sustainable results.",
+                      image: "/images/method-step-4.png"
+                    }
+                  ].map((item, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.1 * (i + 1) }}
+                      className="group bg-[#0e0e0e] border border-white/10 hover:border-[#d4ff00]/40 rounded-[24px] p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
+                    >
+                      {/* Top 3D Visual Asset */}
+                      <div className="w-full h-24 sm:h-26 flex items-center justify-center mb-5 overflow-hidden">
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="max-h-full object-contain pointer-events-none select-none transform group-hover:scale-105 transition-transform duration-500"
+                        />
+                      </div>
+
+                      {/* Content */}
+                      <div>
+                        {/* Step Number */}
+                        <div className="text-2xl sm:text-3xl font-black text-[#d4ff00] tracking-tight mb-2">
+                          {item.step}
+                        </div>
+
+                        {/* Neon Dash */}
+                        <div className="w-6 h-[2px] bg-[#d4ff00] mb-3.5"></div>
+
+                        {/* Step Title */}
+                        <h3
+                          className="font-black uppercase tracking-tight text-white text-base sm:text-lg mb-3 leading-snug group-hover:text-white transition-colors"
+                          style={{ fontFamily: `'${hFont}', sans-serif` }}
+                        >
+                          {item.title}
+                        </h3>
+
+                        {/* Step Description */}
+                        <p
+                          className="text-gray-400 text-xs sm:text-[13px] leading-relaxed font-normal"
+                          style={{ fontFamily: `'${bFont}', sans-serif` }}
+                        >
+                          {item.desc}
+                        </p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
               </div>
             </div>
           </section>
