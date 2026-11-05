@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { ArrowRight, Mail, Layers, Diamond, TrendingUp } from 'lucide-react';
+import { ArrowRight, Mail, Layers, Diamond, TrendingUp, BarChart3, Compass, Rocket, Target, Sparkles, Heart, Gem } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { format } from 'date-fns';
@@ -53,6 +53,22 @@ const getFontStyle = (sizeStr?: string, defaultMobile?: string, defaultDesktop?:
     return `clamp(${mobile}, 4vw, ${desktop})`;
   }
   return mobile;
+};
+
+// Icon resolver for "Who We Serve / Work With" section
+const getServeIcon = (title: string, index: number) => {
+  const t = (title || '').toLowerCase();
+  if (t.includes('challenger') || t.includes('consumer') || t.includes('growth')) return BarChart3;
+  if (t.includes('hospitality') || t.includes('retail')) return Compass;
+  if (t.includes('professional') || t.includes('service')) return Layers;
+  if (t.includes('startup') || t.includes('founder')) return Rocket;
+  if (t.includes('funnel') || t.includes('performance') || t.includes('real estate')) return Target;
+  if (t.includes('culture') || t.includes('entertainment') || t.includes('strategy')) return Sparkles;
+  if (t.includes('health') || t.includes('wellness')) return Heart;
+  if (t.includes('fashion') || t.includes('luxury')) return Gem;
+
+  const defaultIcons = [BarChart3, Compass, Layers, Rocket, Target, Sparkles, Heart, Gem];
+  return defaultIcons[index % defaultIcons.length];
 };
 
 // ─── Default content ──────────────────────────────────────────────────────────
@@ -165,21 +181,22 @@ const DEFAULT_CONTENT = {
   method_step4_title: "MEASURED COMPOUND GROWTH",
   method_step4_desc: "Track performance, learn fast, and keep optimizing to drive stronger, more sustainable results.",
   serve_visibility: true,
-  serve_tag: "Who We Serve",
-  serve_tag_color: "#ceff00",
-  serve_title: "Built for brands with real ambition.",
+  serve_tag: "WHO WE WORK WITH",
+  serve_tag_color: "#d4ff00",
+  serve_title: "BUILT FOR BRANDS\nWITH REAL AMBITION.",
+  serve_subheading: "We partner with forward-thinking brands across industries — from challengers to category leaders — who are serious about building, scaling, and leading in their space.",
   serve_title_color: "#ffffff",
   serve_title_size: "text-4xl md:text-6xl lg:text-7xl",
   serve_bg_color: "#000000",
   serve_items: [
-    {title: "Consumer Brands", desc: "D2C, FMCG, and lifestyle brands competing for shelf space and mind share in an attention economy."},
-    {title: "Retail & Hospitality", desc: "Physical and experiential brands that need premium positioning to justify premium pricing."},
-    {title: "Professional Services", desc: "Firms where reputation is revenue — law, finance, consulting, healthcare, education."},
-    {title: "Startups & Founders", desc: "Early-stage ventures that need to punch above their weight before funding gives them the right to."},
-    {title: "Real Estate & Infrastructure", desc: "Developers and platforms where trust is built long before a transaction is signed."},
-    {title: "Culture & Entertainment", desc: "Artists, labels, media companies, and experience brands building audiences for the long term."},
-    {title: "Health & Wellness", desc: "Brands operating in high-trust, high-scrutiny categories where credibility is the product."},
-    {title: "Fashion & Luxury", desc: "Labels and designers navigating the intersection of aspiration, authenticity, and culture."}
+    { title: "CHALLENGER BRANDS", desc: "Bold, high-growth ventures looking to disrupt or claim market share." },
+    { title: "ETHICAL HOSPITALITY", desc: "Experiential hospitality and lifestyle brands with modern sensibilities." },
+    { title: "PROFESSIONAL SERVICES", desc: "High-trust firms where reputation drives relationships and demand." },
+    { title: "STARTUPS & FOUNDERS", desc: "Ambitious teams turning early traction into long-term market leadership." },
+    { title: "FULL-FUNNEL PERFORMANCE", desc: "Integrated creative, media, and tech that drive real, measurable bottom-line outcomes." },
+    { title: "CULTURE-FIRST STRATEGY", desc: "Brands looking to tap into culture, community, and active brand participation." },
+    { title: "HEALTH & WELLNESS", desc: "Wellness, lifestyle, and healthcare brands focusing on trust and improving human lives." },
+    { title: "FASHION & LUXURY", desc: "Creative and lifestyle brands operating at the intersection of taste, culture, and desire." }
   ],
   practices: [
     { id: '01', title: 'Brand Architecture & Identity Systems', desc: 'We define who you are before the market defines it for you.', areas: ['Positioning', 'Identity', 'Messaging Systems', 'Brand Language'] },
@@ -854,35 +871,136 @@ export default function Home() {
 
       case 'who_we_serve':
         return homeContent.serve_visibility ? (
-          <section key="serve" style={{ backgroundColor: homeContent.serve_bg_color }} className="py-24 md:py-32 px-6 md:px-12 relative overflow-hidden">
+          <section key="serve" style={{ backgroundColor: homeContent.serve_bg_color || '#000000' }} className="py-20 md:py-28 px-6 md:px-12 relative overflow-hidden text-white">
             <div className="max-w-7xl mx-auto">
-              <div className="mb-20">
-                {homeContent.serve_tag && (
-                  <motion.span initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                    className="inline-block mb-8" style={tagStyle('serve_tag_color', 'serve_tag_size')}>
-                    {homeContent.serve_tag}
-                  </motion.span>
-                )}
-                <motion.h2
-                  initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-                  style={{ ...headingStyle('serve_title_size', 'serve_title_color', '2rem', '4.5rem') }}
-                  className="w-full lg:w-3/4"
-                >
-                  {homeContent.serve_title}
-                </motion.h2>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-12 gap-x-8">
-                {homeContent.serve_items?.map((item: any, i: number) => (
-                  <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.05 * i }}
-                    className="group border-t pt-8" style={{ borderColor: homeContent.serve_tag_color + '33' }}>
-                    <h3 style={{ fontFamily: `'${hFont}', sans-serif`, fontSize: getFontStyle(homeContent.serve_item_title_size, '1.125rem', '1.375rem'), color: homeContent.serve_title_color || '#fff', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.02em' }} className="mb-4 group-hover:opacity-70 transition-opacity">
-                      {item.title}
-                    </h3>
-                    <p style={{ fontFamily: `'${bFont}', sans-serif`, fontSize: getFontStyle(homeContent.serve_item_desc_size, '0.875rem', '1rem'), color: homeContent.serve_text_color || '#9ca3af' }} className="leading-relaxed">
-                      {item.desc}
-                    </p>
+              {/* Header: Tag + 2-Column Heading & Subheading */}
+              <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10 lg:gap-16 mb-16 md:mb-20">
+                {/* Left Side: Tag + Heading with AMBITION badge */}
+                <div className="lg:w-3/5">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                    className="flex items-center gap-2.5 mb-4"
+                  >
+                    <span className="w-8 h-[3px] bg-[#d4ff00] rounded-full inline-block"></span>
+                    <span
+                      className="text-xs font-black tracking-widest uppercase text-white"
+                      style={{ fontFamily: `'${tFont}', sans-serif` }}
+                    >
+                      {homeContent.serve_tag || 'WHO WE WORK WITH'}
+                    </span>
                   </motion.div>
-                ))}
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
+                  >
+                    {(() => {
+                      const rawTitle = (homeContent.serve_title || "BUILT FOR BRANDS\nWITH REAL AMBITION.").replace(/\\n/g, '\n');
+                      const ambitionRegex = /AMBITION\.?/i;
+
+                      if (ambitionRegex.test(rawTitle)) {
+                        const before = rawTitle.replace(ambitionRegex, '').trim();
+                        let beforeLines = before.split('\n').map((l: string) => l.trim()).filter(Boolean);
+
+                        if (beforeLines.length === 1 && /BUILT\s+FOR\s+BRANDS\s+WITH\s+REAL/i.test(beforeLines[0])) {
+                          beforeLines = ["BUILT FOR BRANDS", "WITH REAL"];
+                        }
+
+                        return (
+                          <h2
+                            className="font-black uppercase tracking-tighter text-white leading-[1.05]"
+                            style={{ fontFamily: `'${hFont}', sans-serif`, fontSize: getFontStyle(homeContent.serve_title_size, '2.25rem', '4rem') }}
+                          >
+                            {beforeLines.map((line, idx) => {
+                              if (idx === beforeLines.length - 1) {
+                                return (
+                                  <div key={idx} className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 sm:mt-1.5">
+                                    <span className="whitespace-nowrap">{line}</span>
+                                    <div className="inline-block bg-[#d4ff00] px-3.5 sm:px-4 py-0.5 sm:py-1 -skew-x-12 shadow-lg">
+                                      <span className="inline-block skew-x-12 text-black font-black italic tracking-tight uppercase">
+                                        AMBITION.
+                                      </span>
+                                    </div>
+                                  </div>
+                                );
+                              }
+                              return <div key={idx}>{line}</div>;
+                            })}
+                          </h2>
+                        );
+                      }
+
+                      return (
+                        <h2
+                          className="font-black uppercase tracking-tighter text-white leading-[1.05]"
+                          style={{ fontFamily: `'${hFont}', sans-serif`, fontSize: getFontStyle(homeContent.serve_title_size, '2.25rem', '4.25rem') }}
+                        >
+                          {rawTitle.split('\n').map((l: string, i: number) => <div key={i}>{l}</div>)}
+                        </h2>
+                      );
+                    })()}
+                  </motion.div>
+                </div>
+
+                {/* Right Side: Paragraph with vertical divider */}
+                <div className="lg:w-2/5 relative pl-6 sm:pl-8 border-l-2 border-white/10 lg:py-2">
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+                    className="text-gray-300 text-sm sm:text-base md:text-[15px] leading-relaxed font-normal"
+                    style={{ fontFamily: `'${bFont}', sans-serif` }}
+                  >
+                    {homeContent.serve_subheading || "We partner with forward-thinking brands across industries — from challengers to category leaders — who are serious about building, scaling, and leading in their space."}
+                  </motion.p>
+                </div>
+              </div>
+
+              {/* 8 Cards Grid (2 rows of 4) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+                {(homeContent.serve_items?.length > 0 ? homeContent.serve_items : [
+                  { title: "CHALLENGER BRANDS", desc: "Bold, high-growth ventures looking to disrupt or claim market share." },
+                  { title: "ETHICAL HOSPITALITY", desc: "Experiential hospitality and lifestyle brands with modern sensibilities." },
+                  { title: "PROFESSIONAL SERVICES", desc: "High-trust firms where reputation drives relationships and demand." },
+                  { title: "STARTUPS & FOUNDERS", desc: "Ambitious teams turning early traction into long-term market leadership." },
+                  { title: "FULL-FUNNEL PERFORMANCE", desc: "Integrated creative, media, and tech that drive real, measurable bottom-line outcomes." },
+                  { title: "CULTURE-FIRST STRATEGY", desc: "Brands looking to tap into culture, community, and active brand participation." },
+                  { title: "HEALTH & WELLNESS", desc: "Wellness, lifestyle, and healthcare brands focusing on trust and improving human lives." },
+                  { title: "FASHION & LUXURY", desc: "Creative and lifestyle brands operating at the intersection of taste, culture, and desire." }
+                ]).map((item: any, i: number) => {
+                  const IconComp = getServeIcon(item.title, i);
+                  return (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, y: 25 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.04 * i }}
+                      className="group bg-[#0e0e0e] border border-white/10 hover:border-[#d4ff00]/40 rounded-[22px] p-6 sm:p-7 flex flex-col justify-start transition-all duration-300 hover:-translate-y-1.5 shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
+                    >
+                      {/* Top Icon in glowing neon */}
+                      <div className="mb-4 text-[#d4ff00]">
+                        <IconComp className="w-6 h-6 sm:w-7 sm:h-7 stroke-[2.2] drop-shadow-[0_0_8px_rgba(212,255,0,0.35)]" />
+                      </div>
+
+                      {/* Item Title */}
+                      <h3
+                        className="font-black uppercase tracking-tight text-white text-sm sm:text-[15px] leading-snug group-hover:text-white transition-colors"
+                        style={{ fontFamily: `'${hFont}', sans-serif` }}
+                      >
+                        {item.title}
+                      </h3>
+
+                      {/* Neon Dash */}
+                      <div className="w-5 h-[2px] bg-[#d4ff00] my-3 sm:my-3.5"></div>
+
+                      {/* Item Description */}
+                      <p
+                        className="text-gray-400 text-xs sm:text-[13px] leading-relaxed font-normal"
+                        style={{ fontFamily: `'${bFont}', sans-serif` }}
+                      >
+                        {item.desc}
+                      </p>
+                    </motion.div>
+                  );
+                })}
               </div>
             </div>
           </section>

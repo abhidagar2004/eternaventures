@@ -130,6 +130,7 @@ export default function ManageHomePage() {
     serve_tag_color: "#2596be",
     serve_tag_size: "text-sm",
     serve_title: "",
+    serve_subheading: "",
     serve_title_color: "#ffffff",
     serve_title_size: "text-5xl md:text-7xl lg:text-8xl",
     serve_bg_color: "#000000",
@@ -1794,6 +1795,16 @@ export default function ManageHomePage() {
                   value={formData.serve_title}
                   onChange={(e) => setFormData({ ...formData, serve_title: e.target.value })}
                   className="w-full border border-gray-300 rounded-lg px-4 py-2"
+                />
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Section Subheading / Right Description</label>
+                <textarea
+                  rows={2}
+                  value={formData.serve_subheading || ""}
+                  onChange={(e) => setFormData({ ...formData, serve_subheading: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2"
+                  placeholder="Enter the right-hand description paragraph"
                 />
               </div>
               <div>
