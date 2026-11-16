@@ -7,7 +7,6 @@
 .practice-highlight > span { display: inline-block; transform: skew(12deg); }
 .practice-highlight-inverse { background: #000; color: var(--practice-acid); }
 .practices-hero { padding-top: 80px; min-height: 500px; position: relative; overflow: hidden; }
-.practices-hero-art { position: absolute !important; right: 0; bottom: 0; width: 65%; }
 .practices-hero-content { position: relative; z-index: 1; padding-top: 35px; padding-bottom: 36px; pointer-events: none; }
 .practices-hero-content a { pointer-events: auto; }
 .practice-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 2px; margin-bottom: 18px !important; }
@@ -108,7 +107,6 @@
   .practices-hero-content { padding-top: 32px; padding-bottom: 280px; }
   .practices-page h1 { font-size: clamp(37px, 9vw, 53px); }
   .practice-intro { max-width: 350px; font-size: 14px; }
-  .practices-hero-art { width: 120%; right: -5%; }
   .practice-stats { padding: 25px 0; }
   .practice-stats > div { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 0; }
   .practice-stats > div > div:nth-child(3) { border-left: 0; }
@@ -149,4 +147,13 @@
   .practice-cta > div > div { border-left: 0; border-top: 1px solid #333; padding: 22px 0 0; }
   .practice-cta h2 { font-size: 36px; }
   .practice-cta p { font-size: 17px; }
+}
+
+/* Supplied full-width banner: artwork stays behind the live hero copy. */
+.practices-banner { position: absolute; inset: 80px 0 0; width: 100%; height: calc(100% - 80px); object-fit: cover; object-position: center; }
+@media (max-width: 800px) {
+  .practices-banner { inset: 64px 0 0; height: calc(100% - 64px); object-position: 58% center; }
+}
+@media (max-width: 600px) {
+  .practices-banner { inset: auto 0 0; height: 300px; object-position: right center; }
 }
