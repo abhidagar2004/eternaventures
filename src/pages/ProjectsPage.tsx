@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowDownRight, ArrowLeft, ArrowRight, ArrowUpRight, Download, Star } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, Download, Star } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import ReferenceArtwork from '../components/ReferenceArtwork';
+import HeroButton from '../components/HeroButton';
 import ProjectDialog from '../components/ProjectDialog';
 import { DEFAULT_PROJECTS, DEFAULT_PROJECT_REVIEWS, LOCAL_PROJECT_IMAGES, PROJECT_PAGE_DEFAULTS, type Project, type ProjectReview } from '../data/projects';
 import './ProjectsPage.css';
@@ -56,8 +57,8 @@ export default function ProjectsPage() {
   const visibleReviews = Array.from({ length: Math.min(3, reviews.length) }, (_, index) => reviews[(reviewStart + index) % reviews.length]);
   return <div className="projects-page">
     <section className="projects-hero" aria-labelledby="projects-title">
-      <ReferenceArtwork className="projects-hero-art" src="/images/projects-reference.png" sourceWidth={767} sourceHeight={2051} x={394} y={43} width={373} height={356} priority alt="Three charcoal sculptural panels crossed by a bright lime plane" />
-      <div className="project-container projects-hero-content"><div><p className="projects-eyebrow">SELECTED WORK / ETERNAVENTURES</p><h1 id="projects-title">{heroWords.slice(0, heroSplit).join(' ')}<br /><span className="project-highlight"><span>{heroWords.slice(heroSplit).join(' ')}</span></span></h1><p className="projects-intro">{intro}</p><a className="projects-hero-link" href="#featured-projects">EXPLORE PROJECTS <ArrowDownRight size={21} aria-hidden="true" /></a></div></div>
+      <div className="projects-hero-visual"><ReferenceArtwork className="projects-hero-art" src="/images/projects-reference.png" sourceWidth={767} sourceHeight={2051} x={394} y={43} width={373} height={356} priority alt="Three charcoal sculptural panels crossed by a bright lime plane" /></div>
+      <div className="project-container projects-hero-content"><div><p className="projects-eyebrow">SELECTED WORK / ETERNAVENTURES</p><h1 id="projects-title">{heroWords.slice(0, heroSplit).join(' ')}<br /><span className="project-highlight"><span>{heroWords.slice(heroSplit).join(' ')}</span></span></h1><p className="projects-intro">{intro}</p><HeroButton href="#featured-projects">EXPLORE PROJECTS</HeroButton></div></div>
     </section>
     <section className="projects-stats" aria-label="Agency results"><div className="project-container">{[1, 2, 3, 4].map(index => <div key={index}><strong>{content[`numbers_stat${index}_value`]}</strong><span>{content[`numbers_stat${index}_label`]}</span></div>)}</div></section>
     <section className="projects-catalog" id="featured-projects" aria-labelledby="featured-title"><div className="project-container"><div className="projects-section-heading"><h2 id="featured-title"><Heading text={content.our_work_heading} inverse /></h2><Link to="/contact">{content.our_work_cta_text} <ArrowUpRight size={20} aria-hidden="true" /></Link></div><div className="projects-filters" aria-label="Filter projects by category">{categories.map(category => <button type="button" key={category} aria-pressed={filter === category} onClick={() => setFilter(category)}>{category}</button>)}</div>

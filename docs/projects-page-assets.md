@@ -6,4 +6,4 @@
 
 The projects page continues reading projects, statistics, editable section copy, reviews, and brochure form labels from the existing Supabase tables. Project details open in a native dialog. Brochure requests use the existing `leads` submission flow and provide the configured brochure link after a successful request.
 
-The legacy “Our Work” hero heading and introduction use the new supplied reference copy; other custom hero copy remains editable. Footer layout and settings are unchanged.
+The legacy “Our Work” hero heading and introduction use the new supplied reference copy; other custom hero copy remains editable. Footer layout is shared across all public routes through `Footer.css`. Services and projects banners use the same 500px desktop height as the courses banner, with matching neon rectangular buttons provided by `HeroButton`.

@@ -1,0 +1,5 @@
+.hero-banner-button { display: inline-flex; align-items: center; justify-content: center; align-self: flex-start; gap: 13px; padding: 11px 22px; min-height: 48px; border: 1px solid #d4ff00; border-radius: 0; background: #d4ff00; color: #000; font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif; font-size: 18px; font-weight: 800; line-height: 1.2; text-transform: uppercase; text-decoration: none; transition: background .2s, transform .2s; }
+.hero-banner-button:hover { background: #e2ff4d; transform: translateY(-2px); }
+.hero-banner-button:focus-visible { outline: 3px solid #9dbd00; outline-offset: 4px; }
+.hero-banner-button svg { flex-shrink: 0; }
+@media (prefers-reduced-motion: reduce) { .hero-banner-button { transition: none; } }

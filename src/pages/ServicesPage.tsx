@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowDownRight, ArrowUpRight, BarChart3, Layers, Target, Zap } from 'lucide-react';
+import { ArrowUpRight, BarChart3, Layers, Target, Zap } from 'lucide-react';
 import ReferenceArtwork from '../components/ReferenceArtwork';
+import HeroButton from '../components/HeroButton';
 import './ServicesPage.css';
 
 const practices = [
@@ -30,7 +31,7 @@ export default function ServicesPage() {
   return <div className="practices-page">
     <section className="practices-hero" aria-labelledby="services-title">
       <img className="practices-banner" src="/images/services-arch-banner.png" alt="Charcoal architectural arch crossed by a chartreuse beam" fetchPriority="high" />
-      <div className="practice-container practices-hero-content"><p className="practice-eyebrow"><span>SERVICES</span> / &nbsp;01 – 06</p><h1 id="services-title">WE DON’T SELL<br />SERVICES.<br /><Highlight>WE CONSTRUCT<br />ECOSYSTEMS.</Highlight></h1><p className="practice-intro">Six integrated practices engineered to build category-defining brands, drive measurable growth, and create lasting market advantage.</p><a className="practice-hero-link" href="#practices">EXPLORE THE PRACTICES <ArrowDownRight size={18} /></a></div>
+      <div className="practice-container practices-hero-content"><p className="practice-eyebrow"><span>SERVICES</span> / &nbsp;01 – 06</p><h1 id="services-title">WE DON’T SELL<br />SERVICES.<br /><Highlight>WE CONSTRUCT<br />ECOSYSTEMS.</Highlight></h1><p className="practice-intro">Six integrated practices engineered to build category-defining brands, drive measurable growth, and create lasting market advantage.</p><HeroButton href="#practices">EXPLORE THE PRACTICES</HeroButton></div>
     </section>
     <div className="practice-stats"><div className="practice-container">{[['6', 'INTEGRATED PRACTICES'], ['$45M+', 'CAPITAL MOBILIZED'], ['8.4X', 'AVERAGE ROAS'], ['100%', 'EXECUTION OWNERSHIP']].map(([value, label]) => <div key={label}><strong>{value}</strong><span>{label}</span></div>)}</div></div>
     <section id="practices" className="practice-catalog" aria-labelledby="practices-title"><div className="practice-container">

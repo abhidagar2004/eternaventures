@@ -5,17 +5,16 @@
 .project-highlight { display: inline-block; padding: 0 14px 7px; margin: 6px 3px 0; background: var(--project-acid); color: #000; transform: skew(-11deg); }
 .project-highlight > span { display: inline-block; transform: skew(11deg); }
 .project-highlight-inverse { background: #000; color: var(--project-acid); }
-.projects-hero { padding-top: 80px; position: relative; overflow: hidden; background: #000; color: #fff; }
-.projects-hero-art { position: absolute !important; right: 0; top: 80px; width: 55%; height: auto; }
+.projects-hero { padding-top: 80px; height: 500px; position: relative; overflow: hidden; background: #000; color: #fff; }
+.projects-hero-visual { position: absolute; right: 0; top: 80px; width: 55%; height: calc(100% - 80px); display: flex; align-items: center; justify-content: center; }
+.projects-hero-art { flex: 0 0 auto; height: 100%; width: auto; }
 .projects-hero:after { content: ''; position: absolute; inset: 80px 0 0; background: linear-gradient(90deg, #000 0%, #000 27%, #0009 43%, transparent 65%); pointer-events: none; }
-.projects-hero-content { min-height: clamp(440px, 46vw, 660px); position: relative; z-index: 1; display: flex; align-items: center; padding: 45px 0 55px; }
+.projects-hero-content { height: 100%; position: relative; z-index: 1; display: flex; align-items: center; padding: 24px 0; }
 .projects-hero-content > div { max-width: 750px; }
 .projects-eyebrow { font-size: 13px; font-weight: 700; margin-bottom: 20px !important; }
-.projects-hero h1 { font-size: clamp(58px, 6.4vw, 92px); line-height: .98; }
+.projects-hero h1 { font-size: clamp(54px, 5.6vw, 80px); line-height: .98; }
 .projects-hero h1 .project-highlight { font-style: italic; padding: 2px 18px 10px; margin-left: -3px; }
-.projects-intro { font-size: 17px; font-weight: 600; line-height: 1.5; margin-top: 28px !important; max-width: 540px; }
-.projects-hero-link { display: inline-flex; align-items: center; gap: 14px; font-size: 17px; font-weight: 700; padding: 4px 0 9px; margin-top: 28px; border-bottom: 2px solid var(--project-acid); }
-.projects-hero-link:hover { color: var(--project-acid); }
+.projects-intro { font-size: 16px; font-weight: 500; line-height: 1.5; margin: 20px 0 22px !important; max-width: 540px; }
 .projects-stats { background: #fff; padding: 32px 0; border-bottom: 1px solid #e3e3e3; }
 .projects-stats > div { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .projects-stats > div > div { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; padding: 0 12px; }
@@ -107,7 +106,6 @@
   .projects-hero-content > div { max-width: 600px; }
   .projects-intro { max-width: 420px; font-size: 15px; }
   .projects-eyebrow { font-size: 12px; }
-  .projects-hero-link { font-size: 15px; }
   .projects-grid { gap: 24px; }
   .project-card-body { padding: 20px; }
   .project-card-body > p { font-size: 14px; }
@@ -122,9 +120,8 @@
 @media (max-width: 800px) {
   .project-container { width: calc(100% - 40px); }
   .projects-hero { padding-top: 64px; }
-  .projects-hero-art { top: 64px; height: auto; width: 55%; }
+  .projects-hero-visual { top: 64px; height: calc(100% - 64px); }
   .projects-hero:after { inset: 64px 0 0; }
-  .projects-hero-content { min-height: 440px; }
   .projects-hero h1 { font-size: 60px; }
   .projects-intro { max-width: 360px; font-size: 14px; }
   .projects-stats { padding: 27px 0; }
@@ -149,14 +146,14 @@
   .projects-cta a { font-size: 19px; padding: 12px 19px; }
 }
 @media (max-width: 600px) {
-  .projects-hero-content { min-height: 710px; padding: 35px 0 340px; align-items: flex-start; }
-  .projects-hero-art { top: auto; bottom: 0; width: 100%; height: auto; }
+  .projects-hero { height: 690px; }
+  .projects-hero-content { padding: 28px 0 300px; align-items: flex-start; }
+  .projects-hero-visual { top: auto; bottom: 0; width: 100%; height: 300px; }
   .projects-hero:after { background: linear-gradient(#000 0%, #000 44%, transparent 67%); }
   .projects-hero h1 { font-size: clamp(40px, 11vw, 65px); }
   .projects-eyebrow { font-size: 11px; margin-bottom: 18px !important; }
   .projects-hero h1 .project-highlight { padding-left: 13px; padding-right: 13px; }
   .projects-intro { margin-top: 23px !important; max-width: 350px; }
-  .projects-hero-link { margin-top: 22px; font-size: 14px; }
   .projects-stats > div { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 0; }
   .projects-stats > div > div:nth-child(3) { border-left: 0; }
   .projects-stats strong { font-size: 33px; }
