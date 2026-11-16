@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabase';
 import { HOME_AUDIENCES, HOME_DEFAULTS, HOME_ORDER, HOME_PRACTICES, isImageMedia, resolveHomeContent } from '../data/home';
 import { DEFAULT_INSIGHTS, insightImage, type Insight } from '../data/insights';
 import { DEFAULT_PROJECTS, DEFAULT_PROJECT_REVIEWS, LOCAL_PROJECT_IMAGES, type ProjectReview } from '../data/projects';
+import MovingRow from '../components/MovingRow';
 import './Home.css';
 
 type HomeProject = { id: string; title: string; image_url: string };
@@ -14,11 +15,6 @@ const defaultProjects = DEFAULT_PROJECTS.map(project => ({...project, image_url:
 const homeProjectImage = (url: string) => url.endsWith('/7.jpg') ? '/images/project-valia.jpg' : url.endsWith('/41.jpg') ? '/images/project-amrita.jpg' : LOCAL_PROJECT_IMAGES[url] || url;
 function Highlight({ children, inverse = false }: { children: ReactNode; inverse?: boolean }) { return <span className={`home-highlight${inverse ? ' home-highlight-inverse' : ''}`}><span>{children}</span></span>; }
 function FinalWords({ text, count = 1, inverse = false }: {text: string; count?: number; inverse?: boolean}) { const words = text.trim().split(/\s+/); return <>{words.slice(0, -count).join(' ')} <Highlight inverse={inverse}>{words.slice(-count).join(' ')}</Highlight></>; }
-function MovingRow({children, label, className = ''}: {children: ReactNode; label: string; className?: string}) {
-  return <div className={`home-moving-row ${className}`} role="region" aria-label={label}>
-    <div className="home-moving-viewport" tabIndex={0}><div className="home-moving-track"><div className="home-moving-group">{children}</div><div className="home-moving-group home-moving-copy" aria-hidden="true" inert>{children}</div></div></div>
-  </div>;
-}
 function Hero({content}: {content: HomeSettings}) {
   const video = useRef<HTMLVideoElement>(null);
   const [reduced, setReduced] = useState(true);
