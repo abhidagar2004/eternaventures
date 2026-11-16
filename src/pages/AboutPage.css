@@ -1,0 +1,120 @@
+.about-studio-page { --about-acid: #d4ff00; padding-top: 80px; background: #fff; color: #080808; }
+.about-container { width: calc(100% - 96px); max-width: 1280px; margin: 0 auto; }
+.about-studio-page h1, .about-studio-page h2, .about-studio-page h3, .about-studio-page p { margin: 0; }
+.about-studio-page h1, .about-studio-page h2, .about-studio-page h3 { font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif; font-weight: 800; line-height: 1; letter-spacing: -.025em; text-transform: uppercase; }
+.about-studio-hero { padding: 36px 0 24px; }
+.about-studio-intro { display: grid; grid-template-columns: .95fr 1.05fr; align-items: center; gap: 26px; margin-bottom: 30px; }
+.about-studio-copy { min-width: 0; position: relative; z-index: 1; }
+.about-studio-eyebrow { display: flex; align-items: center; gap: 20px; font-size: 13px; font-weight: 800; line-height: 1.4; margin-bottom: 23px !important; }
+.about-studio-eyebrow > span { height: 1px; flex: 1; background: #555; }
+.about-studio-page h1 { font-size: clamp(58px, 7vw, 100px); line-height: .9; letter-spacing: -.045em; }
+.about-studio-highlight { display: inline-block; transform: skew(-8deg); padding: 1px 13px 7px; margin: 6px 3px 0; color: var(--about-acid); background: #000; }
+.about-studio-highlight > span { display: inline-block; transform: skew(8deg); }
+.about-studio-page h1 .about-studio-highlight { margin-left: -8px; margin-top: 10px; padding-bottom: 12px; }
+.about-studio-introduction { font-size: clamp(18px, 1.9vw, 25px); font-weight: 500; line-height: 1.4; margin-top: 25px !important; max-width: 575px; }
+.about-studio-art { width: 100%; min-width: 0; }
+.about-studio-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 24px 0; border-top: 1px solid #555; border-bottom: 1px solid #555; }
+.about-studio-stats > div { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 0 14px; text-align: center; }
+.about-studio-stats > div + div { border-left: 1px solid #777; }
+.about-studio-stats strong { font-size: clamp(32px, 3.9vw, 52px); font-weight: 900; line-height: 1; letter-spacing: -1.3px; }
+.about-studio-stats span { font-size: 14px; font-weight: 600; text-transform: uppercase; line-height: 1.35; }
+.about-studio-beliefs { background: linear-gradient(135deg, #090909, #000); color: #fff; padding: 54px 0; }
+.about-beliefs-grid { display: grid; grid-template-columns: .9fr 1.9fr; gap: 38px; align-items: center; }
+.about-section-index { display: flex; align-items: center; gap: 16px; font-size: 15px; font-weight: 700; line-height: 1.4; text-transform: uppercase; margin-bottom: 12px !important; }
+.about-section-index > span { height: 1px; background: #888; flex: 1; }
+.about-beliefs-summary { font-size: 21px; line-height: 1.4; margin-top: 22px !important; }
+.about-belief-statement { border-left: 1px solid #aaa; padding-left: 32px; font-size: clamp(39px, 4.95vw, 70px); line-height: 1.03 !important; letter-spacing: -.035em !important; }
+.about-belief-statement > span { display: block; }
+.about-studio-acid { color: var(--about-acid); }
+.about-studio-approach { padding: 58px 0 52px; }
+.about-section-label { font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 24px !important; }
+.about-section-label:before { content: ''; display: block; width: 46px; height: 2px; background: #111; margin-bottom: 18px; }
+.about-studio-approach h2 { font-size: clamp(39px, 4.9vw, 68px); }
+.about-studio-approach h2 .about-studio-highlight { font-style: italic; margin-top: 0; }
+.about-approach-description { font-size: 18px; line-height: 1.5; margin: 18px 0 30px !important; }
+.about-disciplines { list-style: none; margin: 0; padding: 0; border-top: 1px solid #333; }
+.about-disciplines li { display: grid; grid-template-columns: 70px .9fr 1.3fr; align-items: center; gap: 34px; padding: 17px 0; border-bottom: 1px solid #333; }
+.about-discipline-number { font-size: 15px; line-height: 1.5; border-right: 1px solid #777; }
+.about-disciplines h3 { font-size: 35px; }
+.about-disciplines p { font-size: 20px; line-height: 1.4; }
+.about-studio-clarity { padding: 50px 0; background: #f3f3f3; }
+.about-clarity-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 64px; }
+.about-short-rule { display: block; width: 46px; height: 2px; background: #111; margin-bottom: 18px; }
+.about-studio-clarity h2 { font-family: Inter, Arial, sans-serif; font-size: clamp(48px, 4.7vw, 64px); font-weight: 900; line-height: .95; letter-spacing: -.05em; }
+.about-studio-clarity .about-why-label { font-family: Inter, Arial, sans-serif; font-size: 14px; font-weight: 800; letter-spacing: 1.3px; margin: 26px 0 12px; }
+.about-studio-clarity p { font-size: 18px; line-height: 1.45; max-width: 510px; }
+.about-clarity-details { border-left: 1px solid #444; padding-left: 60px; }
+.about-clarity-details > div + div { padding-top: 30px; margin-top: 30px; border-top: 1px solid #777; }
+.about-clarity-details h3 { font-size: 34px; margin-bottom: 12px; }
+.about-studio-mission { background: linear-gradient(110deg, #d4ff00, #d9ff14 55%, #d4ff00); color: #000; padding: 40px 0 44px; text-align: center; }
+.about-studio-mission h2 { font-family: Inter, Arial, sans-serif; font-size: clamp(32px, 3.8vw, 50px); font-weight: 900; letter-spacing: -.045em; line-height: 1.1; }
+.about-studio-mission p { font-size: 17px; line-height: 1.5; margin: 14px auto 24px; max-width: 1000px; }
+.about-mission-actions { display: flex; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap; }
+.about-mission-actions > a:first-child { display: inline-flex; align-items: center; justify-content: center; gap: 14px; background: #000; color: #fff; padding: 14px 28px; border-radius: 99px; font-size: 14px; font-weight: 700; text-transform: uppercase; line-height: 1.4; letter-spacing: .5px; }
+.about-mission-actions > a:first-child:hover { background: #292929; }
+.about-mission-email { display: inline-flex; gap: 10px; align-items: center; font-size: 17px; font-weight: 600; text-decoration: underline; text-underline-offset: 5px; }
+.about-studio-page a:focus-visible { outline: 3px solid #6c8300; outline-offset: 5px; }
+@media (max-width: 1100px) {
+  .about-studio-intro { gap: 22px; }
+  .about-studio-eyebrow { font-size: 11px; gap: 14px; margin-bottom: 20px !important; }
+  .about-beliefs-grid { gap: 26px; }
+  .about-section-index { font-size: 12px; gap: 12px; }
+  .about-beliefs-summary { font-size: 18px; }
+  .about-belief-statement { padding-left: 24px; }
+  .about-studio-stats span { font-size: 12px; }
+  .about-clarity-grid { gap: 40px; }
+  .about-clarity-details { padding-left: 36px; }
+  .about-disciplines li { gap: 25px; grid-template-columns: 55px .9fr 1.3fr; }
+  .about-disciplines h3 { font-size: 30px; }
+  .about-disciplines p { font-size: 17px; }
+}
+@media (max-width: 800px) {
+  .about-studio-page { padding-top: 64px; }
+  .about-container { width: calc(100% - 40px); }
+  .about-studio-intro { grid-template-columns: 1fr; gap: 24px; }
+  .about-studio-copy { max-width: 650px; }
+  .about-studio-page h1 { font-size: clamp(58px, 11.8vw, 90px); }
+  .about-studio-introduction { font-size: 22px; }
+  .about-studio-art { max-width: 650px; justify-self: center; }
+  .about-beliefs-grid { grid-template-columns: 1fr; gap: 30px; }
+  .about-beliefs-context { max-width: 620px; }
+  .about-section-index { font-size: 14px; }
+  .about-beliefs-summary { font-size: 20px; }
+  .about-belief-statement { border-left: 0; border-top: 1px solid #777; padding: 26px 0 0; font-size: clamp(40px, 6.7vw, 62px); }
+  .about-studio-approach h2 { font-size: 45px; line-height: 1.08; }
+  .about-clarity-grid { gap: 30px; }
+  .about-clarity-details { padding-left: 28px; }
+  .about-studio-clarity p { font-size: 16px; }
+  .about-clarity-details h3 { font-size: 29px; }
+}
+@media (max-width: 600px) {
+  .about-studio-hero { padding: 28px 0 24px; }
+  .about-studio-page h1 { font-size: clamp(45px, 11.8vw, 70px); }
+  .about-studio-eyebrow { font-size: 10px; gap: 12px; }
+  .about-studio-page h1 .about-studio-highlight { padding: 1px 10px 8px; margin-left: -3px; }
+  .about-studio-introduction { font-size: 18px; margin-top: 22px !important; }
+  .about-studio-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 0; padding: 24px 0; }
+  .about-studio-stats > div:nth-child(3) { border-left: 0; }
+  .about-studio-stats strong { font-size: 36px; }
+  .about-studio-stats span { font-size: 11px; }
+  .about-studio-beliefs, .about-studio-approach, .about-studio-clarity { padding: 36px 0; }
+  .about-beliefs-summary { font-size: 18px; }
+  .about-belief-statement { font-size: clamp(29px, 6.9vw, 42px); line-height: 1.08 !important; }
+  .about-section-label { font-size: 12px; margin-bottom: 20px !important; }
+  .about-studio-approach h2 { font-size: clamp(33px, 8vw, 44px); }
+  .about-studio-approach h2 .about-studio-highlight { margin-top: 8px; }
+  .about-approach-description { font-size: 16px; margin-bottom: 24px !important; }
+  .about-disciplines li { grid-template-columns: 34px 1fr; gap: 12px 20px; padding: 17px 0; }
+  .about-disciplines h3 { font-size: 29px; }
+  .about-disciplines p { grid-column: 2; font-size: 15px; }
+  .about-clarity-grid { grid-template-columns: 1fr; gap: 28px; }
+  .about-studio-clarity h2 { font-size: 55px; }
+  .about-clarity-details { border-left: 0; border-top: 1px solid #888; padding: 28px 0 0; }
+  .about-clarity-details > div + div { padding-top: 26px; margin-top: 26px; }
+  .about-clarity-details h3 { font-size: 31px; }
+  .about-studio-mission { padding: 32px 0 36px; }
+  .about-studio-mission h2 { font-size: 33px; }
+  .about-studio-mission p { font-size: 16px; }
+  .about-mission-actions { flex-direction: column; gap: 24px; }
+  .about-mission-email { font-size: 16px; }
+}
