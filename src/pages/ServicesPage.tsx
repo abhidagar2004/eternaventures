@@ -4,9 +4,7 @@ import {
   BarChart3, 
   Layers, 
   Target, 
-  Zap, 
-  ArrowRight,
-  TrendingUp
+  Zap
 } from 'lucide-react';
 
 interface Practice {
@@ -103,36 +101,36 @@ export default function ServicesPage() {
   });
 
   return (
-    <div className="bg-black text-white font-sans selection:bg-[#ceff00] selection:text-black min-h-screen">
+    <div className="bg-black text-white font-sans selection:bg-[#CFF701] selection:text-black min-h-screen">
       
       {/* ─── SECTION 1: HERO (Dark Background #000000) ─────────────────────────── */}
-      <section className="pt-32 pb-20 px-6 md:px-12 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <section className="pt-28 md:pt-36 pb-12 md:pb-16 px-6 md:px-12 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
           {/* Left Hero Text */}
           <div className="lg:col-span-7">
-            <span className="text-[#ceff00] text-xs font-mono font-bold tracking-widest uppercase block mb-4">
+            <span className="text-[#CFF701] text-xs font-mono font-bold tracking-widest uppercase block mb-4">
               SERVICES
             </span>
 
-            <h1 className="text-4xl sm:text-6xl md:text-7xl font-display font-black tracking-tighter uppercase leading-[0.95] text-white mb-6">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[70px] font-display font-black tracking-tighter uppercase leading-[0.92] text-white mb-6">
               WE DON’T SELL <br />
               SERVICES. <br />
-              <span className="inline-block bg-[#ceff00] text-black px-3 py-0.5 mt-1">
+              <span className="inline-block bg-[#CFF701] text-black px-4 py-1 -skew-x-6 origin-left transform mt-2 mb-1.5">
                 WE CONSTRUCT
               </span> <br />
-              <span className="inline-block bg-[#ceff00] text-black px-3 py-0.5 mt-1">
+              <span className="inline-block bg-[#CFF701] text-black px-4 py-1 -skew-x-6 origin-left transform">
                 ECOSYSTEMS.
               </span>
             </h1>
 
-            <p className="text-gray-400 text-sm sm:text-base max-w-xl mb-8 leading-relaxed font-normal">
-              Six integrated practices engineered to build category-defining brands, drive measurable growth, and create lasting market advantage.
+            <p className="text-gray-300 text-sm md:text-base max-w-lg mb-8 leading-relaxed font-normal">
+              Six integrated practices engineered to build category defining brands, drive measurable growth, and create lasting market advantage.
             </p>
 
             <a
               href="#practices"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#ceff00] text-black text-xs font-bold uppercase tracking-wider hover:bg-[#d8ff33] transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_25px_rgba(206,255,0,0.3)]"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#CFF701] text-black text-xs font-bold uppercase tracking-wider hover:bg-[#d9ff1a] transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_25px_rgba(207,247,1,0.3)]"
             >
               <span>EXPLORE OUR SERVICES</span>
               <span className="text-sm font-bold">→</span>
@@ -140,46 +138,43 @@ export default function ServicesPage() {
           </div>
 
           {/* Right Hero 3D Sculpture */}
-          <div className="lg:col-span-5 flex items-center justify-center">
-            <div className="relative w-full max-w-[420px] aspect-square flex items-center justify-center">
-              <img
-                src="/images/hero-3d-loop.png"
-                alt="EternaVentures Ecosystem Loop"
-                className="w-full h-full object-contain filter drop-shadow-[0_20px_50px_rgba(206,255,0,0.2)] animate-pulse"
-                style={{ animationDuration: '6s' }}
-              />
-            </div>
+          <div className="lg:col-span-5 flex items-center justify-center lg:justify-end">
+            <img
+              src="/images/hero-3d-loop.png"
+              alt="EternaVentures Ecosystem"
+              className="w-full max-w-[440px] lg:max-w-[500px] h-auto object-contain"
+            />
           </div>
 
         </div>
       </section>
 
       {/* ─── STATS BAR ───────────────────────────────────────────────────────── */}
-      <div className="border-t border-b border-white/10 bg-black">
-        <div className="max-w-7xl mx-auto px-6 py-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/10">
+      <div className="border-t border-[#333333] bg-black">
+        <div className="max-w-7xl mx-auto px-6 py-6 md:py-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-[#333333]">
             <div className="py-4 md:py-0 md:px-8 text-center">
-              <div className="text-3xl md:text-4xl font-display font-black text-[#ceff00] mb-1">6</div>
-              <div className="text-[11px] font-mono font-bold tracking-wider text-gray-400 uppercase">INTEGRATED PRACTICES</div>
+              <div className="text-3xl md:text-4xl font-display font-black text-[#CFF701] mb-1">6</div>
+              <div className="text-[10px] md:text-[11px] font-mono font-bold tracking-wider text-gray-400 uppercase">INTEGRATED PRACTICES</div>
             </div>
             <div className="py-4 md:py-0 md:px-8 text-center">
-              <div className="text-3xl md:text-4xl font-display font-black text-[#ceff00] mb-1">$45M+</div>
-              <div className="text-[11px] font-mono font-bold tracking-wider text-gray-400 uppercase">CAPITAL ENABLED</div>
+              <div className="text-3xl md:text-4xl font-display font-black text-[#CFF701] mb-1">$45M+</div>
+              <div className="text-[10px] md:text-[11px] font-mono font-bold tracking-wider text-gray-400 uppercase">CAPITAL ENABLED</div>
             </div>
             <div className="py-4 md:py-0 md:px-8 text-center">
-              <div className="text-3xl md:text-4xl font-display font-black text-[#ceff00] mb-1">8.4X</div>
-              <div className="text-[11px] font-mono font-bold tracking-wider text-gray-400 uppercase">AVERAGE ROAS</div>
+              <div className="text-3xl md:text-4xl font-display font-black text-[#CFF701] mb-1">8.4X</div>
+              <div className="text-[10px] md:text-[11px] font-mono font-bold tracking-wider text-gray-400 uppercase">AVERAGE ROAS</div>
             </div>
             <div className="py-4 md:py-0 md:px-8 text-center">
-              <div className="text-3xl md:text-4xl font-display font-black text-[#ceff00] mb-1">100%</div>
-              <div className="text-[11px] font-mono font-bold tracking-wider text-gray-400 uppercase">EXECUTION OWNERSHIP</div>
+              <div className="text-3xl md:text-4xl font-display font-black text-[#CFF701] mb-1">100%</div>
+              <div className="text-[10px] md:text-[11px] font-mono font-bold tracking-wider text-gray-400 uppercase">EXECUTION OWNERSHIP</div>
             </div>
           </div>
         </div>
       </div>
 
       {/* ─── SECTION 2: SIX PRACTICES (White Background #ffffff) ─────────────── */}
-      <section id="practices" className="bg-white text-black py-24 px-6 md:px-12">
+      <section id="practices" className="bg-white text-black py-20 md:py-24 px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
           
           {/* Section Header */}
@@ -188,7 +183,7 @@ export default function ServicesPage() {
               <h2 className="text-3xl sm:text-5xl md:text-6xl font-display font-black uppercase tracking-tighter leading-[0.95] text-black">
                 SIX PRACTICES. <br />
                 ONE INTEGRATED <br />
-                <span className="inline-block bg-[#ceff00] text-black px-3 py-0.5 mt-1">
+                <span className="inline-block bg-[#CFF701] text-black px-4 py-1 -skew-x-6 origin-left transform mt-1.5">
                   GROWTH ENGINE.
                 </span>
               </h2>
@@ -208,7 +203,7 @@ export default function ServicesPage() {
                 onClick={() => setActiveFilter(tab)}
                 className={`px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition-all duration-200 ${
                   activeFilter === tab
-                    ? 'bg-[#ceff00] text-black shadow-sm'
+                    ? 'bg-[#CFF701] text-black shadow-sm font-black'
                     : 'bg-white text-gray-800 border border-gray-300 hover:border-black'
                 }`}
               >
@@ -253,7 +248,7 @@ export default function ServicesPage() {
                     <div className="space-y-2 mb-8">
                       {practice.bullets.map((bullet, idx) => (
                         <div key={idx} className="flex items-center gap-2.5 text-xs sm:text-sm text-gray-800 font-medium">
-                          <span className="w-4 h-0.5 bg-[#ceff00] flex-shrink-0" />
+                          <span className="w-4 h-0.5 bg-[#CFF701] flex-shrink-0" />
                           <span>{bullet}</span>
                         </div>
                       ))}
@@ -279,13 +274,13 @@ export default function ServicesPage() {
       </section>
 
       {/* ─── SECTION 3: THE ETERNAVENTURES METHOD (Black Background #000000) ── */}
-      <section className="bg-black text-white py-24 px-6 md:px-12 border-t border-b border-white/10">
+      <section className="bg-black text-white py-20 md:py-24 px-6 md:px-12 border-t border-b border-white/10">
         <div className="max-w-7xl mx-auto">
           
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-3xl sm:text-5xl font-display font-black uppercase tracking-tight text-white mb-4">
               THE ETERNAVENTURES{' '}
-              <span className="inline-block bg-[#ceff00] text-black px-2.5 py-0.5">
+              <span className="inline-block bg-[#CFF701] text-black px-3 py-0.5 -skew-x-6 origin-left transform">
                 METHOD
               </span>
             </h2>
@@ -322,7 +317,7 @@ export default function ServicesPage() {
                 className="p-6 sm:p-7 rounded-2xl bg-[#0e0e0e] border border-[#222] hover:border-gray-700 transition-colors flex flex-col justify-between"
               >
                 <div>
-                  <span className="text-[#ceff00] text-sm font-mono font-bold block mb-4">
+                  <span className="text-[#CFF701] text-sm font-mono font-bold block mb-4">
                     {method.step}
                   </span>
                   <h4 className="text-base font-display font-bold uppercase tracking-tight text-white mb-3">
@@ -340,13 +335,13 @@ export default function ServicesPage() {
       </section>
 
       {/* ─── SECTION 4: WHY CATEGORY LEADERS PARTNER WITH US (White Background) ─ */}
-      <section className="bg-white text-black py-24 px-6 md:px-12">
+      <section className="bg-white text-black py-20 md:py-24 px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
           
           <div className="max-w-3xl mb-16">
             <h2 className="text-3xl sm:text-5xl font-display font-black uppercase tracking-tight text-black mb-3">
               WHY CATEGORY LEADERS <br />
-              <span className="inline-block bg-[#ceff00] text-black px-2.5 py-0.5">
+              <span className="inline-block bg-[#CFF701] text-black px-3 py-0.5 -skew-x-6 origin-left transform mt-1">
                 PARTNER WITH US.
               </span>
             </h2>
@@ -357,7 +352,7 @@ export default function ServicesPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 text-[#b3db00]">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 text-[#CFF701]">
                 <BarChart3 className="w-7 h-7 stroke-[2.5]" />
               </div>
               <div>
@@ -371,7 +366,7 @@ export default function ServicesPage() {
             </div>
 
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 text-[#b3db00]">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 text-[#CFF701]">
                 <Layers className="w-7 h-7 stroke-[2.5]" />
               </div>
               <div>
@@ -385,7 +380,7 @@ export default function ServicesPage() {
             </div>
 
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 text-[#b3db00]">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 text-[#CFF701]">
                 <Target className="w-7 h-7 stroke-[2.5]" />
               </div>
               <div>
@@ -399,7 +394,7 @@ export default function ServicesPage() {
             </div>
 
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 text-[#b3db00]">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 text-[#CFF701]">
                 <Zap className="w-7 h-7 stroke-[2.5]" />
               </div>
               <div>
@@ -418,7 +413,7 @@ export default function ServicesPage() {
             <div className="flex-1">
               <h4 className="text-xl sm:text-2xl font-display font-black uppercase tracking-tight text-black leading-tight">
                 WATCH OUR COMPLETE <br />
-                <span className="inline-block bg-[#ceff00] text-black px-2 py-0.5 mt-1">
+                <span className="inline-block bg-[#CFF701] text-black px-2.5 py-0.5 -skew-x-6 origin-left transform mt-1">
                   GROWTH PLAYBOOKS.
                 </span>
               </h4>
@@ -442,14 +437,14 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* ─── SECTION 5: READY TO OWN YOUR MARKET POSITION? (Neon Yellow #ceff00) ── */}
-      <section className="bg-[#ceff00] text-black py-20 px-6 md:px-12">
+      {/* ─── SECTION 5: READY TO OWN YOUR MARKET POSITION? (Neon Yellow #CFF701) ── */}
+      <section className="bg-[#CFF701] text-black py-20 px-6 md:px-12">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
           <div className="lg:col-span-7">
             <h2 className="text-4xl sm:text-6xl md:text-7xl font-display font-black uppercase tracking-tighter leading-[0.92] text-black">
               READY TO OWN YOUR <br />
-              <span className="inline-block border-4 border-black px-3 py-1 mt-2 shadow-[4px_4px_0px_#000000]">
+              <span className="inline-block border-4 border-black px-3 py-1 -skew-x-6 origin-left transform mt-2 shadow-[4px_4px_0px_#000000]">
                 MARKET POSITION?
               </span>
             </h2>
