@@ -178,33 +178,33 @@ export default function ServicesPage() {
         <div className="max-w-7xl mx-auto">
           
           {/* Section Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
-            <div>
-              <h2 className="text-3xl sm:text-5xl md:text-6xl font-display font-black uppercase tracking-tighter leading-[0.95] text-black">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center mb-16">
+            <div className="lg:col-span-7">
+              <h2 className="text-5xl sm:text-6xl lg:text-[74px] font-display font-black uppercase tracking-tighter leading-[0.92] text-black">
                 SIX PRACTICES. <br />
                 ONE INTEGRATED <br />
-                <span className="inline-block bg-[#CFF701] text-black px-4 py-1 -skew-x-6 origin-left transform mt-1.5">
+                <span className="inline-block bg-[#CFF701] text-black px-4 py-1.5 -skew-x-6 origin-left transform mt-2 font-display font-black">
                   GROWTH ENGINE.
                 </span>
               </h2>
             </div>
-            <div className="md:max-w-md md:border-l md:border-gray-200 md:pl-8">
-              <p className="text-gray-600 text-sm leading-relaxed font-normal">
+            <div className="lg:col-span-5 border-l-2 border-black pl-6 sm:pl-8 py-2">
+              <p className="text-lg sm:text-xl lg:text-[22px] leading-[1.38] text-black font-normal font-sans">
                 A cohesive set of six practices that work together across brand, demand, influence, product, and market strategy to drive outsized, compounding growth.
               </p>
             </div>
           </div>
 
           {/* Filter Pills */}
-          <div className="flex flex-wrap items-center gap-2.5 mb-14">
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-14">
             {['ALL PRACTICES', 'BRAND', 'GROWTH', 'INFLUENCE', 'PRODUCT', 'INTELLIGENCE'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveFilter(tab)}
-                className={`px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition-all duration-200 ${
+                className={`px-6 sm:px-7 py-2.5 rounded-full text-xs sm:text-sm font-bold tracking-wider uppercase transition-all duration-200 ${
                   activeFilter === tab
                     ? 'bg-[#CFF701] text-black shadow-sm font-black'
-                    : 'bg-white text-gray-800 border border-gray-300 hover:border-black'
+                    : 'bg-white text-black border border-gray-300 hover:border-black font-bold'
                 }`}
               >
                 {tab}
