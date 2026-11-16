@@ -4,7 +4,7 @@ The home page follows the supplied compact studio hero, lime statement marquee, 
 
 The existing `homepage_content.hero_video_url` field accepts either a video URL or an image URL; the Admin label and upload accept both. Video uses muted inline playback, a pause/play button, and the local studio poster when missing, blocked or failing. Reduced-motion preference starts with the static poster; users can explicitly play. Images with standard extensions render directly. Existing CMS visibility and custom section order remain supported; the previous seeded order migrates to the latest reference order. Seeded text resolves to concise reference copy; later custom edits remain visible.
 
-Marquee, projects, logos and testimonials use seamless duplicate tracks. Every row has a pause/resume control and pauses on hover/focus; reduced-motion preference disables autoplay and duplicate content. Manual horizontal scrolling remains available. Duplicate content is inert and hidden from assistive technology.
+Marquee, projects, logos and testimonials use seamless duplicate tracks. Rows pause on hover/focus; reduced-motion preference disables autoplay and duplicate content. Manual horizontal scrolling remains available. Duplicate content is inert and hidden from assistive technology.
 
 Existing article routes, service routes, projects, testimonials, client logos and background video remain connected to Supabase. No database schema changes are required.
 
@@ -40,3 +40,5 @@ Final prompt: Premium architectural editorial photograph of curved translucent g
 Hero artwork: 2172 x 724. Narrative, influence and intelligence photographs: 1672 x 941 each. Existing high-resolution project images are reused for the two legacy low-resolution home thumbnails.
 
 Validation: TypeScript and production build pass; media type, CMS copy preservation, section order, visibility and local image URL checks pass. Browser visual QA was interrupted by active user input and blocked by automatic approval review; final desktop/mobile appearance remains unverified in-browser.
+
+The philosophy section uses the original user-supplied 2172 x 724 wave terrain image, saved as `public/images/home-philosophy-waves.png`, across the complete section background. Visible pause controls were removed from all moving rows at the user?s request; the hero video retains its control. Hover/focus and reduced-motion behavior remain.
