@@ -208,7 +208,7 @@ export default function ManageHomePage() {
       const file = e.target.files[0];
       const url = await uploadImage(file);
       setFormData({ ...formData, hero_video_url: url });
-      toast.success('Video uploaded successfully');
+      toast.success('Background media uploaded successfully');
     } catch (error: any) {
       toast.error(error.message);
     } finally {
@@ -444,7 +444,7 @@ export default function ManageHomePage() {
             <h2 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b">Hero Section</h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Background Video URL</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Background Video or Image URL</label>
                 <div className="flex gap-4">
                   <input
                     type="text"
@@ -455,7 +455,7 @@ export default function ManageHomePage() {
                   <div className="relative">
                     <input
                       type="file"
-                      accept="video/*"
+                      accept="video/*,image/*"
                       onChange={handleVideoUpload}
                       disabled={uploading}
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
@@ -465,7 +465,7 @@ export default function ManageHomePage() {
                       disabled={uploading}
                       className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg border border-gray-300 hover:bg-gray-200 flex items-center gap-2"
                     >
-                      {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Upload Video'}
+                      {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Upload Media'}
                     </button>
                   </div>
                 </div>
