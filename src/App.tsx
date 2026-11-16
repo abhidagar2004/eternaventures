@@ -16,10 +16,13 @@ import ContactPage from './pages/ContactPage';
 import BlogsPage from './pages/BlogsPage';
 import BlogPost from './pages/BlogPost';
 import ServiceDetail from './pages/ServiceDetail';
+import Courses from './pages/Courses';
+import CourseWatch from './pages/CourseWatch';
 import AdminLayout from './pages/admin/AdminLayout';
 import Login from './pages/admin/Login';
 import ResetPassword from './pages/admin/ResetPassword';
 import Dashboard from './pages/admin/Dashboard';
+import ManageCourses from './pages/admin/ManageCourses';
 import ManageBlogs from './pages/admin/ManageBlogs';
 import AddEditBlog from './pages/admin/AddEditBlog';
 import ManageNavbar from './pages/admin/ManageNavbar';
@@ -46,7 +49,7 @@ export default function App() {
     <Router>
       <ScrollToTop />
       <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
-      <div className="min-h-screen bg-black text-white font-sans selection:bg-[#2596be] selection:text-white flex flex-col overflow-x-hidden">
+      <div className="min-h-screen bg-black text-white font-sans selection:bg-[#d4ff00] selection:text-black flex flex-col overflow-x-hidden">
         <Routes>
           {/* Admin Routes */}
           <Route path="/admin/login" element={<Login />} />
@@ -54,6 +57,7 @@ export default function App() {
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<ManageLeads />} />
             <Route path="overview" element={<Dashboard />} />
+            <Route path="courses" element={<ManageCourses />} />
             <Route path="blogs" element={<ManageBlogs />} />
             <Route path="blogs/new" element={<AddEditBlog />} />
             <Route path="blogs/:id" element={<AddEditBlog />} />
@@ -85,6 +89,8 @@ export default function App() {
                   <Route path="/" element={<Home />} />
                   <Route path="/services" element={<ServicesPage />} />
                   <Route path="/services/:slug" element={<ServiceDetail />} />
+                  <Route path="/courses" element={<Courses />} />
+                  <Route path="/courses/:slug" element={<CourseWatch />} />
                   <Route path="/projects" element={<ProjectsPage />} />
                   <Route path="/about" element={<AboutPage />} />
                   <Route path="/contact" element={<ContactPage />} />

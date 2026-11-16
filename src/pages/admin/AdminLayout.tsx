@@ -1,7 +1,21 @@
 import { useEffect, useState } from 'react';
 import { Outlet, Navigate, Link, useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
-import { LayoutDashboard, FileText, Briefcase, Tags, MessageSquare, Users, LogOut, Loader2, Home, FolderOpen, ShieldCheck, Layout } from 'lucide-react';
+import { 
+  LayoutDashboard, 
+  FileText, 
+  Briefcase, 
+  Tags, 
+  MessageSquare, 
+  Users, 
+  LogOut, 
+  Loader2, 
+  Home, 
+  FolderOpen, 
+  ShieldCheck, 
+  Layout, 
+  GraduationCap 
+} from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 
 export default function AdminLayout() {
@@ -46,6 +60,7 @@ export default function AdminLayout() {
   const navItems = [
     { name: 'Overview', path: '/admin/overview', icon: LayoutDashboard },
     { name: 'Leads', path: '/admin', icon: Users },
+    { name: 'Courses / LMS', path: '/admin/courses', icon: GraduationCap },
     { name: 'Manage Navbar', path: '/admin/navbar', icon: LayoutDashboard },
     { name: 'Manage Footer', path: '/admin/footer', icon: Layout },
     { name: 'Media Library', path: '/admin/media', icon: FolderOpen },

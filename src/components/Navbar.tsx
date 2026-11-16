@@ -52,10 +52,10 @@ export default function Navbar() {
   const [config, setConfig] = useState<NavbarConfig>({
     logo: {
       type: 'text',
-      text1: '',
+      text1: 'Eterna',
       color1: '#ffffff',
-      text2: '',
-      color2: '#2596be',
+      text2: 'Ventures',
+      color2: '#d4ff00',
       height: 40,
       width: 150
     },
@@ -63,10 +63,18 @@ export default function Navbar() {
       navbar_bg: 'bg-black/95',
       link_color: '#d1d5db',
       link_hover_color: '#ffffff',
-      link_active_color: '#2596be'
+      link_active_color: '#d4ff00'
     },
-    links: [],
-    buttons: []
+    links: [
+      { id: '1', name: 'Services', href: '/services' },
+      { id: 'c1', name: 'Courses', href: '/courses' },
+      { id: '2', name: 'Projects', href: '/projects' },
+      { id: '3', name: 'About', href: '/about' },
+      { id: '4', name: 'Blogs', href: '/blogs' }
+    ],
+    buttons: [
+      { id: 'b1', name: 'Book a Call', href: '/contact', bgColor: 'bg-[#d4ff00]', textColor: 'text-black' }
+    ]
   });
 
   useEffect(() => {
@@ -99,7 +107,18 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => location.pathname === path || (path !== '/' && location.pathname.startsWith(path));
+
+  // Ensure Courses is always present in nav links
+  const effectiveLinks = [...(config.links || [])];
+  if (!effectiveLinks.some(l => l.href === '/courses')) {
+    const servicesIndex = effectiveLinks.findIndex(l => l.href === '/services');
+    if (servicesIndex !== -1) {
+      effectiveLinks.splice(servicesIndex + 1, 0, { id: 'nav-courses', name: 'Courses', href: '/courses' });
+    } else {
+      effectiveLinks.unshift({ id: 'nav-courses', name: 'Courses', href: '/courses' });
+    }
+  }
 
   return (
     <nav className={`fixed w-full z-50 transition-all duration-300 ${config.styling.navbar_bg} backdrop-blur-md border-b border-white/5`}>
@@ -123,7 +142,7 @@ export default function Navbar() {
                 <span className="text-xl md:text-2xl font-bold tracking-tight transition-transform group-hover:scale-105" style={{ color: config.logo.color1 }}>
                   {config.logo.text1}
                 </span>
-                <span className="text-xl md:text-2xl font-bold tracking-tight transition-transform group-hover:scale-105" style={{ color: config.logo.color2 }}>
+                <span className="text-xl md:text-2xl font-bold tracking-tight transition-transform group-hover:scale-105" style={{ color: config.logo.color2 || '#d4ff00' }}>
                   {config.logo.text2}
                 </span>
               </>
@@ -133,7 +152,7 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
             <div className="flex items-center space-x-8 mr-4">
-              {config.links.map((link) => {
+              {effectiveLinks.map((link) => {
                 if (!link.name || !link.href) return null;
                 return (
                   <Link
@@ -141,7 +160,7 @@ export default function Navbar() {
                     to={link.href}
                     className="text-sm font-semibold transition-all duration-200 whitespace-nowrap"
                     style={{ 
-                      color: isActive(link.href) ? config.styling.link_active_color : config.styling.link_color 
+                      color: isActive(link.href) ? (config.styling.link_active_color || '#d4ff00') : config.styling.link_color 
                     }}
                     onMouseEnter={(e) => {
                       if (!isActive(link.href)) e.currentTarget.style.color = config.styling.link_hover_color;
@@ -219,7 +238,7 @@ export default function Navbar() {
             </div>
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="w-10 h-10 flex items-center justify-center text-white hover:text-[#2596be] transition-colors bg-white/5 rounded-full border border-white/10 active:scale-90"
+              className="w-10 h-10 flex items-center justify-center text-white hover:text-[#d4ff00] transition-colors bg-white/5 rounded-full border border-white/10 active:scale-90"
             >
               {isOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -230,13 +249,13 @@ export default function Navbar() {
       {/* Mobile menu */}
       <div className={`md:hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
         <div className="px-4 pt-2 pb-6 space-y-1 bg-black/95 border-t border-white/5">
-          {config.links.map((link) => (
+          {effectiveLinks.map((link) => (
             <Link
               key={link.id}
               to={link.href}
               className="block px-3 py-4 text-base font-semibold"
               style={{ 
-                color: isActive(link.href) ? config.styling.link_active_color : config.styling.link_color 
+                color: isActive(link.href) ? (config.styling.link_active_color || '#d4ff00') : config.styling.link_color 
               }}
               onClick={() => setIsOpen(false)}
             >
