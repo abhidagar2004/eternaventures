@@ -1,0 +1,147 @@
+.course-watch { --watch-acid: #d4ff00; background: #fff; color: #080808; padding-top: 80px; }
+.watch-container { width: calc(100% - 96px); max-width: 1320px; margin: 0 auto; }
+.course-watch h1, .course-watch h2, .course-watch p { margin: 0; }
+.watch-breadcrumb { background: #000; color: #fff; border-top: 1px solid #333; border-bottom: 1px solid #555; }
+.watch-breadcrumb > div { display: flex; justify-content: space-between; align-items: center; min-height: 62px; gap: 20px; }
+.watch-breadcrumb > div > div { display: flex; align-items: center; gap: 20px; }
+.watch-breadcrumb > div > div:first-child { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; }
+.watch-breadcrumb a { display: inline-flex; align-items: center; gap: 8px; }
+.watch-top-actions { gap: 10px !important; }
+.watch-top-actions a, .watch-top-actions button { border: 1px solid #555; border-radius: 5px; padding: 9px 12px; background: #181818; font-size: 12px; cursor: pointer; }
+.watch-top-actions a > svg:first-child { color: #ff1717; }
+.watch-heading { background: #000; color: #fff; padding: 30px 0 32px; }
+.watch-eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px !important; }
+.watch-eyebrow > span { display: inline-block; padding: 0 16px; }
+.watch-eyebrow strong { color: var(--watch-acid); }
+.watch-heading h1 { font-size: clamp(38px, 4.8vw, 66px); line-height: 1.02; font-weight: 900; letter-spacing: -.045em; text-transform: uppercase; }
+.watch-highlight { display: inline-block; transform: skew(-13deg); background: var(--watch-acid); color: #000; padding: 1px 17px 6px; margin: 7px 0 0 -10px; }
+.watch-highlight > span { display: inline-block; transform: skew(13deg); }
+.watch-course-meta { font-size: 13px; font-weight: 700; text-transform: uppercase; margin-top: 19px !important; }
+.watch-course-meta > span { padding: 0 14px; }
+.watch-content { padding: 40px 0 48px; }
+.watch-layout { display: grid; grid-template-columns: minmax(0, 1.9fr) minmax(295px, 1fr); align-items: start; gap: 24px; }
+.watch-main { min-width: 0; }
+.watch-player { position: relative; overflow: hidden; aspect-ratio: 1.55; background: #111; color: #fff; border-radius: 15px; }
+.watch-player iframe { display: block; width: 100%; height: 100%; border: 0; position: absolute; inset: 0; }
+.watch-poster-art { position: absolute; width: 100%; height: 100%; object-fit: cover; inset: 0; }
+.watch-poster-shade { position: absolute; inset: 0; background: linear-gradient(90deg, #000c, #0008 36%, transparent 80%); }
+.watch-poster-copy { position: relative; height: 100%; padding: 9% 6%; display: flex; align-items: flex-start; flex-direction: column; }
+.watch-poster-copy > p:first-child { color: var(--watch-acid); font-family: 'Barlow Condensed', sans-serif; font-size: 19px; font-weight: 700; margin-bottom: 12px; }
+.watch-poster-copy h2 { max-width: 64%; font-size: clamp(28px, 3.4vw, 46px); font-weight: 800; line-height: 1.02; letter-spacing: -.035em; text-transform: uppercase; margin-bottom: 24px; }
+.watch-unavailable { font-size: 14px; margin-bottom: 16px !important; }
+.watch-poster-button { display: inline-flex; align-items: center; gap: 10px; justify-content: center; padding: 10px 15px; border: 1px solid #fff; background: #0005; border-radius: 6px; font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; margin: 0 0 12px; cursor: pointer; }
+.watch-poster-button:hover { color: #d4ff00; border-color: #d4ff00; }
+.watch-poster-signature { position: absolute; bottom: 8%; left: 6%; font-size: 10px; font-weight: 700; letter-spacing: 2px; }
+.watch-player-help { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; margin: 10px 0 0; }
+.watch-lesson-actions { border: 1px solid #c3c5ca; border-radius: 9px; padding: 17px; margin-top: 20px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; }
+.watch-lesson-actions > div:first-child { flex: 1 1 210px; }
+.watch-lesson-actions p { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+.watch-lesson-actions p > span { padding: 0 12px; }
+.watch-lesson-actions h2 { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 23px; line-height: 1.05; text-transform: uppercase; letter-spacing: -.02em; }
+.watch-navigation { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; }
+.watch-navigation button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 9px 10px; border: 1px solid #777; border-radius: 7px; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; min-height: 36px; white-space: nowrap; }
+.watch-navigation button:disabled { background: #eff0f2; color: #96999f; border-color: #eff0f2; cursor: not-allowed; }
+.watch-navigation .watch-next { background: var(--watch-acid); border-color: var(--watch-acid); }
+.watch-navigation .watch-next:disabled { background: #eff0f2; border-color: #eff0f2; }
+.watch-complete[aria-pressed='true'] { background: #efffb5; border-color: #9abb00; }
+.watch-details { margin-top: 22px; }
+.watch-tabs { display: flex; align-items: stretch; justify-content: space-between; border-bottom: 1px solid #bbb; gap: 12px; }
+.watch-tabs button { padding: 14px 12px 12px; border-bottom: 5px solid transparent; font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 700; color: #62656b; cursor: pointer; }
+.watch-tabs button[aria-selected='true'] { border-color: var(--watch-acid); color: #000; }
+.watch-tab-panel { min-height: 140px; padding: 24px 14px 0; font-size: 18px; line-height: 1.5; }
+.watch-tab-panel ul { display: grid; gap: 14px; list-style: none; padding: 0; margin: 0; }
+.watch-tab-panel li { display: flex; align-items: flex-start; gap: 12px; font-size: 16px; }
+.watch-tab-panel li svg { flex-shrink: 0; color: #7d9600; margin-top: 3px; }
+.watch-template { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 15px 18px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; }
+.watch-template small { display: block; font-size: 12px; color: #666; margin-top: 5px; }
+.watch-curriculum { border: 1px solid #bcbfc5; border-radius: 10px; overflow: hidden; background: #fff; }
+.watch-curriculum-heading { padding: 21px 18px 23px; }
+.watch-curriculum-heading > div:first-child { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; }
+.watch-curriculum h2 { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 23px; }
+.watch-curriculum-heading > div > span { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; white-space: nowrap; }
+.watch-progress { height: 14px; border-radius: 4px; background: #e1e3e7; overflow: hidden; }
+.watch-progress > span { display: block; height: 100%; background: var(--watch-acid); transition: width .2s; }
+.watch-curriculum ol { list-style: none; padding: 0; margin: 0; }
+.watch-curriculum li { border-top: 1px solid #d3d5da; }
+.watch-curriculum li button { width: 100%; text-align: left; padding: 19px 18px 19px 15px; border-left: 5px solid transparent; display: flex; align-items: center; gap: 14px; cursor: pointer; }
+.watch-curriculum li button:hover { background: #f5f6f0; }
+.watch-curriculum li button.is-active { background: #efefed; border-left-color: var(--watch-acid); }
+.watch-module-number { flex-shrink: 0; border: 1px solid #222; border-radius: 50%; width: 29px; height: 29px; display: grid; place-items: center; font-family: 'Barlow Condensed', sans-serif; font-size: 17px; }
+.is-active .watch-module-number { background: var(--watch-acid); border-color: var(--watch-acid); }
+.watch-module-title { flex: 1; font-family: 'Barlow Condensed', sans-serif; font-size: 19px; line-height: 1.12; font-weight: 700; text-transform: uppercase; }
+.watch-module-duration { flex-shrink: 0; font-size: 11px; letter-spacing: .8px; }
+.watch-curriculum-footer { display: flex; align-items: center; justify-content: space-between; padding: 18px; gap: 10px; border-top: 1px solid #ddd; font-size: 12px; }
+.watch-curriculum-footer > span { display: inline-flex; gap: 7px; align-items: center; }
+.watch-curriculum-footer svg { color: #f00; }
+.watch-no-lessons { padding: 20px; }
+.watch-brand-cta { background: var(--watch-acid); color: #000; padding: 30px 0; }
+.watch-brand-cta > div { display: flex; justify-content: space-between; align-items: center; gap: 30px; }
+.watch-brand-cta h2 { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: clamp(28px, 3vw, 40px); line-height: 1; letter-spacing: -.02em; }
+.watch-brand-cta p { font-size: 15px; line-height: 1.5; margin-top: 12px; }
+.watch-brand-cta a { display: inline-flex; align-items: center; justify-content: center; gap: 16px; background: #000; color: #fff; border-radius: 99px; padding: 14px 28px; font-family: 'Barlow Condensed', sans-serif; font-size: 21px; font-weight: 700; white-space: nowrap; }
+.watch-brand-cta a:hover { background: #252525; }
+.course-watch :is(a, button):focus-visible { outline: 3px solid #9bb800; outline-offset: 4px; }
+.watch-status { padding: 160px 30px 100px; min-height: 60vh; text-align: center; }
+.watch-status a { display: inline-flex; align-items: center; gap: 10px; margin-top: 20px; color: #d4ff00; }
+@media (min-width: 1400px) { .watch-lesson-actions { flex-wrap: nowrap; }.watch-lesson-actions > div:first-child { flex-basis: 260px; } }
+@media (max-width: 1100px) {
+  .watch-container { width: calc(100% - 48px); }
+  .watch-heading .watch-container, .watch-breadcrumb .watch-container { width: calc(100% - 96px); }
+  .watch-layout { gap: 20px; grid-template-columns: minmax(0, 1.85fr) minmax(290px, 1fr); }
+  .watch-curriculum li button { gap: 11px; padding: 17px 14px 17px 12px; }
+  .watch-module-title { font-size: 18px; }
+  .watch-curriculum-heading { padding: 18px 15px 22px; }
+  .watch-curriculum h2 { font-size: 21px; }
+  .watch-curriculum-heading > div > span { font-size: 14px; }
+  .watch-poster-copy h2 { font-size: 34px; }
+  .watch-lesson-actions > div:first-child { flex-basis: 100%; }
+  .watch-navigation { width: 100%; justify-content: flex-end; }
+  .watch-navigation button { font-size: 14px; padding: 9px 12px; }
+  .watch-brand-cta > div { flex-wrap: wrap; gap: 24px; }
+}
+@media (max-width: 800px) {
+  .course-watch { padding-top: 64px; }
+  .watch-container, .watch-heading .watch-container, .watch-breadcrumb .watch-container { width: calc(100% - 40px); }
+  .watch-layout { grid-template-columns: 1fr; }
+  .watch-curriculum { grid-row: 2; }
+  .watch-poster-copy h2 { font-size: 42px; }
+  .watch-player { aspect-ratio: 1.6; }
+  .watch-lesson-actions > div:first-child { flex-basis: 220px; }
+  .watch-navigation { width: auto; }
+  .watch-heading h1 { font-size: clamp(32px, 5.8vw, 48px); }
+  .watch-breadcrumb > div > div { gap: 12px; }
+  .watch-breadcrumb > div > div:first-child { font-size: 10px; }
+  .watch-top-actions a span { display: none; }
+}
+@media (max-width: 480px) {
+  .watch-breadcrumb > div { gap: 12px; min-height: 58px; }
+  .watch-breadcrumb > div > div:first-child > span:last-child { display: none; }
+  .watch-breadcrumb > div > div:first-child > span:nth-child(2) { display: none; }
+  .watch-top-actions a, .watch-top-actions button { padding: 8px; }
+  .watch-top-actions a svg:last-child { display: none; }
+  .watch-heading { padding: 27px 0 30px; }
+  .watch-heading h1 { font-size: clamp(28px, 7.5vw, 36px); }
+  .watch-eyebrow { font-size: 10px; }
+  .watch-eyebrow > span { padding: 0 10px; }
+  .watch-course-meta { font-size: 11px; line-height: 1.6; }
+  .watch-content { padding: 26px 0 32px; }
+  .watch-player { aspect-ratio: 1.25; border-radius: 10px; }
+  .watch-poster-copy { padding: 9% 6%; }
+  .watch-poster-copy h2 { font-size: 29px; max-width: 75%; margin-bottom: 20px; }
+  .watch-poster-copy > p:first-child { font-size: 16px; }
+  .watch-poster-signature { font-size: 8px; }
+  .watch-unavailable { font-size: 12px; }
+  .watch-poster-button { font-size: 15px; padding: 8px 12px; }
+  .watch-lesson-actions { padding: 16px; }
+  .watch-navigation { width: 100%; gap: 7px; justify-content: flex-start; }
+  .watch-navigation button { font-size: 12px; padding: 8px; gap: 4px; }
+  .watch-navigation button:first-child span { display: none; }
+  .watch-tabs { gap: 5px; }
+  .watch-tabs button { font-size: 14px; padding: 14px 5px 10px; }
+  .watch-tab-panel { padding: 20px 4px 0; font-size: 16px; }
+  .watch-brand-cta { padding: 28px 0; }
+  .watch-brand-cta h2 { font-size: 30px; line-height: 1.08; }
+  .watch-brand-cta p { font-size: 14px; }
+  .watch-brand-cta a { font-size: 19px; padding: 12px 24px; }
+}
+@media (prefers-reduced-motion: reduce) { .watch-progress > span { transition: none; } }

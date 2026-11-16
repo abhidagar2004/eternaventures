@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, Clock, Play, Search, ShieldCheck, Share2, Youtube } from 'lucide-react';
 import { supabase } from '../lib/supabase';
@@ -25,7 +25,6 @@ export default function Courses() {
   const [filter, setFilter] = useState('ALL');
   const [query, setQuery] = useState('');
   useEffect(() => {
-    document.body.classList.add('academy-route');
     let cancelled = false;
     async function load() {
       const { data, error } = await supabase.from('courses').select('*').eq('is_published', true).order('order_index', { ascending: true });
@@ -36,7 +35,7 @@ export default function Courses() {
       }));
     }
     load().catch(error => console.error('Unable to load masterclasses', error));
-    return () => { cancelled = true; document.body.classList.remove('academy-route'); };
+    return () => { cancelled = true;  };
   }, []);
   const visibleCourses = courses.filter(course => (filter === 'ALL' || normalize(course.category) === normalize(filter)) && `${course.title} ${course.description} ${course.category}`.toLowerCase().includes(query.trim().toLowerCase()));
   return (
