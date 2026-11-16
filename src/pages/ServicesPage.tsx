@@ -1,350 +1,296 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  ArrowRight, 
-  Sparkles, 
-  CheckCircle2, 
   BarChart3, 
-  Compass, 
   Layers, 
-  Rocket, 
   Target, 
-  Shield, 
   Zap, 
-  Video, 
-  ChevronRight,
-  TrendingUp,
-  Award
+  ArrowRight,
+  TrendingUp
 } from 'lucide-react';
-import { supabase } from '../lib/supabase';
 
-// Fallback high-impact practices if database query is empty
-const FALLBACK_PRACTICES = [
+interface Practice {
+  number: string;
+  title: string;
+  slug: string;
+  description: string;
+  bullets: string[];
+  image_url: string;
+  category: 'BRAND' | 'GROWTH' | 'INFLUENCE' | 'PRODUCT' | 'INTELLIGENCE';
+}
+
+const PRACTICES: Practice[] = [
   {
-    id: '1',
+    number: '01',
+    title: 'BRAND ARCHITECTURE & IDENTITY SYSTEMS',
     slug: 'brand-architecture-identity-systems',
-    title: 'Brand Architecture & Identity Systems',
-    subtitle: 'Positioning • Identity • Messaging Systems • Brand Language',
-    description: 'We define who you are before the market defines it for you. From naming and category framing to visual identity and verbal systems — we build brand structures that hold authority across every touchpoint.',
-    deliverables: [
-      'Category Framing & Market Vector Document',
-      'Visual Identity System (Logo, Typography, Palette, Layouts)',
-      'Brand Language Guide & Core Messaging Matrix',
-      'Multi-Touchpoint Collateral & High-Conversion Templates'
+    description: 'Build distinctive, scalable brand systems that create clarity, credibility, and long-term category value.',
+    bullets: [
+      'Brand Strategy & Architecture',
+      'Visual Identity & Brand Systems'
     ],
-    image_url: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=1000',
-    category: 'Brand'
+    image_url: 'https://hcysdrryywfefpkknyyj.supabase.co/storage/v1/object/public/uploads/ChatGPT%20Image%20Nov%202,%202026,%2005_08_25%20PM-1.png',
+    category: 'BRAND'
   },
   {
-    id: '2',
-    slug: 'performance-marketing-media-buying',
-    title: 'Performance Marketing & Media Buying',
-    subtitle: 'Omni-Channel Ads • Algorithmic Bidding • CAC Optimization',
-    description: 'Direct-response advertising engineered for enterprise ROI. We deploy campaigns across Meta, Google, TikTok, and YouTube with precise data modeling to scale customer acquisition predictably.',
-    deliverables: [
-      'Multi-Platform Ad Account Architecture',
-      'High-Volume Native Creative Production Pipeline',
-      'Algorithmic CBO & Advantage+ Scaling Protocols',
-      'Real-Time Attribution & Contribution Margin Dashboard'
+    number: '02',
+    title: 'NARRATIVE ENGINEERING',
+    slug: 'narrative-engineering',
+    description: 'Craft compelling, high-impact narratives that shape perception, build demand, and drive cultural relevance.',
+    bullets: [
+      'Messaging & Story Architecture',
+      'Content Systems & Campaign Narratives'
     ],
-    image_url: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1000',
-    category: 'Growth'
+    image_url: 'https://hcysdrryywfefpkknyyj.supabase.co/storage/v1/object/public/uploads/ChatGPT%20Image%20Nov%202,%202026,%2005_08_26%20PM-2.png',
+    category: 'BRAND'
   },
   {
-    id: '3',
-    slug: 'digital-experience-design',
-    title: 'Digital Experience & Funnel Architecture',
-    subtitle: 'Web Design • UX Systems • Conversion Optimization • Storefronts',
-    description: 'Your digital presence is your highest-leverage asset. We design and build high-performance web experiences and conversion funnels that transform passive attention into high-ticket action.',
-    deliverables: [
-      'Frictionless Mobile-First User Flow Engineering',
-      'Next.js & Webflow Custom Interactive Development',
-      'High-Ticket Landing Page & Funnel Frameworks',
-      'Continuous A/B Testing & Conversion Rate Optimization'
+    number: '03',
+    title: 'PERFORMANCE & PAID INTELLIGENCE',
+    slug: 'performance-paid-intelligence',
+    description: 'Turn demand into predictable growth through data-led media, performance strategy, and continuous optimization.',
+    bullets: [
+      'Paid Media Strategy & Execution',
+      'Conversion & Performance Optimization'
     ],
-    image_url: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&q=80&w=1000',
-    category: 'Design'
+    image_url: 'https://hcysdrryywfefpkknyyj.supabase.co/storage/v1/object/public/uploads/ChatGPT%20Image%20Nov%202,%202026,%2005_08_28%20PM-4.png',
+    category: 'GROWTH'
   },
   {
-    id: '4',
+    number: '04',
+    title: 'INFLUENCE & CULTURAL CAPITAL',
     slug: 'influence-cultural-capital',
-    title: 'Influence Strategy & Cultural Capital',
-    subtitle: 'Advocacy Programs • Creator Networks • Community Engineering',
-    description: 'We don’t place ads in feeds — we place your brand in conversations. Our influence practice maps cultural networks, identifies genuine advocates, and builds trust at scale across niche and mass audiences.',
-    deliverables: [
-      'Tiered Creator & Ambassador Network Architecture',
-      'High-Converting Whitelisted Ad Integrations',
-      'Viral Seeding & Cultural Moment Hijacking',
-      'Private Community Infrastructure & Retention Loops'
+    description: 'Activate the right voices, communities, and cultural moments to build credibility, relevance, and lasting demand.',
+    bullets: [
+      'Creator & Influencer Strategy',
+      'Community & Cultural Programs'
     ],
-    image_url: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=1000',
-    category: 'Culture'
+    image_url: 'https://hcysdrryywfefpkknyyj.supabase.co/storage/v1/object/public/uploads/ChatGPT%20Image%20Nov%202,%202026,%2005_08_27%20PM-3.png',
+    category: 'INFLUENCE'
   },
   {
-    id: '5',
-    slug: 'content-production-creative-engine',
-    title: 'Creative Factory & Content Production',
-    subtitle: 'Short-Form Video • Cinematic Commercials • 3D Motion Graphics',
-    description: 'Ad fatigue kills campaigns faster than poor targeting. Our in-house creative factory produces high-volume, native platform assets that stop thumbs and hold viewers captive.',
-    deliverables: [
-      'High-Converting UGC & Direct-Response Video Hooks',
-      'Cinematic Commercials & Brand Storytelling Assets',
-      '3D Product Renders & Motion Graphics Sequences',
-      'Dynamic Asset Variants for Continuous Split-Testing'
+    number: '05',
+    title: 'DIGITAL EXPERIENCE DESIGN',
+    slug: 'digital-experience-design',
+    description: 'Design and build high-performance digital experiences that convert, engage, and scale with your growth.',
+    bullets: [
+      'Website & Product Experience Design',
+      'UX Optimization & Conversion Design'
     ],
-    image_url: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&q=80&w=1000',
-    category: 'Creative'
+    image_url: 'https://hcysdrryywfefpkknyyj.supabase.co/storage/v1/object/public/uploads/ChatGPT%20Image%20Nov%202,%202026,%2005_08_29%20PM-5.png',
+    category: 'PRODUCT'
   },
   {
-    id: '6',
+    number: '06',
+    title: 'MARKET INTELLIGENCE & GROWTH ADVISORY',
     slug: 'market-intelligence-growth-advisory',
-    title: 'Market Intelligence & Growth Advisory',
-    subtitle: 'Competitive Auditing • Unit Economics • Go-To-Market Playbooks',
-    description: 'Before deploying capital, we analyze the competitive landscape with forensic precision. We identify whitespace opportunities and build unit-economic models to de-risk growth investments.',
-    deliverables: [
-      'Deep Competitor Funnel & Ad Spend Forensic Audit',
-      'Unit Economics, Payback Window & LTV Modeling',
-      'Omni-Channel Go-To-Market Execution Blueprint',
-      'Fractional CMO & Executive Strategic Advisory'
+    description: 'Turn market insight into strategic advantage through research, opportunity mapping, and go-to-market guidance.',
+    bullets: [
+      'Market & Category Intelligence',
+      'GTM Strategy & Growth Advisory'
     ],
-    image_url: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=1000',
-    category: 'Growth'
+    image_url: 'https://hcysdrryywfefpkknyyj.supabase.co/storage/v1/object/public/uploads/ChatGPT%20Image%20Nov%202,%202026,%2005_08_31%20PM-6.png',
+    category: 'INTELLIGENCE'
   }
 ];
 
 export default function ServicesPage() {
-  const [practices, setPractices] = useState(FALLBACK_PRACTICES);
-  const [selectedFilter, setSelectedFilter] = useState('All');
-  const [loading, setLoading] = useState(true);
+  const [activeFilter, setActiveFilter] = useState<string>('ALL PRACTICES');
 
-  useEffect(() => {
-    async function fetchServices() {
-      try {
-        const { data, error } = await supabase
-          .from('services')
-          .select('*')
-          .eq('visibility', 'visible')
-          .order('created_at', { ascending: true });
-
-        if (!error && data && data.length > 0) {
-          // Merge with structured deliverables if missing
-          const merged = data.map((item, idx) => {
-            const fallback = FALLBACK_PRACTICES[idx] || FALLBACK_PRACTICES[0];
-            return {
-              ...item,
-              deliverables: item.features && item.features.length > 0
-                ? item.features.map((f: any) => typeof f === 'string' ? f : f.title || f.description)
-                : fallback.deliverables,
-              category: fallback.category
-            };
-          });
-          setPractices(merged);
-        }
-      } catch (err) {
-        console.error('Error fetching services:', err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchServices();
-  }, []);
-
-  const filterCategories = ['All', 'Brand', 'Growth', 'Design', 'Creative', 'Culture'];
-
-  const filteredPractices = practices.filter(p => {
-    if (selectedFilter === 'All') return true;
-    return p.category === selectedFilter || p.subtitle?.toLowerCase().includes(selectedFilter.toLowerCase());
+  const filteredPractices = PRACTICES.filter((p) => {
+    if (activeFilter === 'ALL PRACTICES') return true;
+    return p.category === activeFilter;
   });
 
   return (
-    <div className="bg-[#000000] text-white min-h-screen pt-28 pb-24 font-sans selection:bg-[#d4ff00] selection:text-black">
-      {/* Ambient background glow */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-24 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#d4ff00]/5 rounded-full blur-[160px]" />
-        <div className="absolute top-2/3 right-10 w-[500px] h-[350px] bg-white/[0.02] rounded-full blur-[140px]" />
+    <div className="bg-black text-white font-sans selection:bg-[#ceff00] selection:text-black min-h-screen">
+      
+      {/* ─── SECTION 1: HERO (Dark Background #000000) ─────────────────────────── */}
+      <section className="pt-32 pb-20 px-6 md:px-12 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          {/* Left Hero Text */}
+          <div className="lg:col-span-7">
+            <span className="text-[#ceff00] text-xs font-mono font-bold tracking-widest uppercase block mb-4">
+              SERVICES
+            </span>
+
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-display font-black tracking-tighter uppercase leading-[0.95] text-white mb-6">
+              WE DON’T SELL <br />
+              SERVICES. <br />
+              <span className="inline-block bg-[#ceff00] text-black px-3 py-0.5 mt-1">
+                WE CONSTRUCT
+              </span> <br />
+              <span className="inline-block bg-[#ceff00] text-black px-3 py-0.5 mt-1">
+                ECOSYSTEMS.
+              </span>
+            </h1>
+
+            <p className="text-gray-400 text-sm sm:text-base max-w-xl mb-8 leading-relaxed font-normal">
+              Six integrated practices engineered to build category-defining brands, drive measurable growth, and create lasting market advantage.
+            </p>
+
+            <a
+              href="#practices"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#ceff00] text-black text-xs font-bold uppercase tracking-wider hover:bg-[#d8ff33] transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_25px_rgba(206,255,0,0.3)]"
+            >
+              <span>EXPLORE OUR SERVICES</span>
+              <span className="text-sm font-bold">→</span>
+            </a>
+          </div>
+
+          {/* Right Hero 3D Sculpture */}
+          <div className="lg:col-span-5 flex items-center justify-center">
+            <div className="relative w-full max-w-[420px] aspect-square flex items-center justify-center">
+              <img
+                src="/images/hero-3d-loop.png"
+                alt="EternaVentures Ecosystem Loop"
+                className="w-full h-full object-contain filter drop-shadow-[0_20px_50px_rgba(206,255,0,0.2)] animate-pulse"
+                style={{ animationDuration: '6s' }}
+              />
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ─── STATS BAR ───────────────────────────────────────────────────────── */}
+      <div className="border-t border-b border-white/10 bg-black">
+        <div className="max-w-7xl mx-auto px-6 py-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/10">
+            <div className="py-4 md:py-0 md:px-8 text-center">
+              <div className="text-3xl md:text-4xl font-display font-black text-[#ceff00] mb-1">6</div>
+              <div className="text-[11px] font-mono font-bold tracking-wider text-gray-400 uppercase">INTEGRATED PRACTICES</div>
+            </div>
+            <div className="py-4 md:py-0 md:px-8 text-center">
+              <div className="text-3xl md:text-4xl font-display font-black text-[#ceff00] mb-1">$45M+</div>
+              <div className="text-[11px] font-mono font-bold tracking-wider text-gray-400 uppercase">CAPITAL ENABLED</div>
+            </div>
+            <div className="py-4 md:py-0 md:px-8 text-center">
+              <div className="text-3xl md:text-4xl font-display font-black text-[#ceff00] mb-1">8.4X</div>
+              <div className="text-[11px] font-mono font-bold tracking-wider text-gray-400 uppercase">AVERAGE ROAS</div>
+            </div>
+            <div className="py-4 md:py-0 md:px-8 text-center">
+              <div className="text-3xl md:text-4xl font-display font-black text-[#ceff00] mb-1">100%</div>
+              <div className="text-[11px] font-mono font-bold tracking-wider text-gray-400 uppercase">EXECUTION OWNERSHIP</div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
-        {/* Header Hero */}
-        <div className="text-center max-w-4xl mx-auto mb-20">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#d4ff00]/30 bg-[#d4ff00]/10 text-[#d4ff00] text-xs font-mono font-bold tracking-widest uppercase mb-6"
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>[PRACTICES & CAPABILITIES]</span>
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-black tracking-tighter uppercase leading-[0.92] mb-8"
-          >
-            We Don't Sell Services. <br />
-            <span className="text-[#d4ff00]">We Construct Ecosystems.</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-gray-400 text-base md:text-xl leading-relaxed max-w-3xl mx-auto font-normal"
-          >
-            Six integrated disciplines engineered to establish category dominance, capture high-intent attention,
-            and compound enterprise revenue across modern digital channels.
-          </motion.p>
-
-          {/* Stats Bar */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-12 p-6 rounded-2xl bg-[#0a0a0a] border border-white/10"
-          >
-            <div className="text-center">
-              <div className="text-2xl sm:text-3xl font-display font-black text-[#d4ff00]">6</div>
-              <div className="text-[11px] font-mono uppercase tracking-wider text-gray-400 mt-1">Core Practices</div>
+      {/* ─── SECTION 2: SIX PRACTICES (White Background #ffffff) ─────────────── */}
+      <section id="practices" className="bg-white text-black py-24 px-6 md:px-12">
+        <div className="max-w-7xl mx-auto">
+          
+          {/* Section Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
+            <div>
+              <h2 className="text-3xl sm:text-5xl md:text-6xl font-display font-black uppercase tracking-tighter leading-[0.95] text-black">
+                SIX PRACTICES. <br />
+                ONE INTEGRATED <br />
+                <span className="inline-block bg-[#ceff00] text-black px-3 py-0.5 mt-1">
+                  GROWTH ENGINE.
+                </span>
+              </h2>
             </div>
-            <div className="text-center">
-              <div className="text-2xl sm:text-3xl font-display font-black text-white">$45M+</div>
-              <div className="text-[11px] font-mono uppercase tracking-wider text-gray-400 mt-1">Client Revenue</div>
+            <div className="md:max-w-md md:border-l md:border-gray-200 md:pl-8">
+              <p className="text-gray-600 text-sm leading-relaxed font-normal">
+                A cohesive set of six practices that work together across brand, demand, influence, product, and market strategy to drive outsized, compounding growth.
+              </p>
             </div>
-            <div className="text-center">
-              <div className="text-2xl sm:text-3xl font-display font-black text-[#d4ff00]">8.4X</div>
-              <div className="text-[11px] font-mono uppercase tracking-wider text-gray-400 mt-1">Avg Media ROAS</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl sm:text-3xl font-display font-black text-white">100%</div>
-              <div className="text-[11px] font-mono uppercase tracking-wider text-gray-400 mt-1">In-House Execution</div>
-            </div>
-          </motion.div>
-        </div>
+          </div>
 
-        {/* Filter Tabs */}
-        <div className="flex items-center justify-center gap-2 mb-16 overflow-x-auto pb-4 scrollbar-none">
-          {filterCategories.map(cat => (
-            <button
-              key={cat}
-              onClick={() => setSelectedFilter(cat)}
-              className={`px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition-all duration-300 whitespace-nowrap ${
-                selectedFilter === cat
-                  ? 'bg-[#d4ff00] text-black shadow-[0_0_20px_rgba(212,255,0,0.3)]'
-                  : 'bg-[#0f0f0f] text-gray-400 hover:text-white hover:bg-[#161616] border border-white/5'
-              }`}
-            >
-              {cat === 'All' ? 'All Practices' : cat}
-            </button>
-          ))}
-        </div>
+          {/* Filter Pills */}
+          <div className="flex flex-wrap items-center gap-2.5 mb-14">
+            {['ALL PRACTICES', 'BRAND', 'GROWTH', 'INFLUENCE', 'PRODUCT', 'INTELLIGENCE'].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveFilter(tab)}
+                className={`px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition-all duration-200 ${
+                  activeFilter === tab
+                    ? 'bg-[#ceff00] text-black shadow-sm'
+                    : 'bg-white text-gray-800 border border-gray-300 hover:border-black'
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
 
-        {/* Practices Cards Grid (2-Column high-end cards) */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-28">
-          {filteredPractices.map((practice, index) => (
-            <motion.div
-              key={practice.id || index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group bg-[#0c0c0c] border border-white/10 rounded-3xl p-8 sm:p-10 hover:border-[#d4ff00]/60 transition-all duration-300 flex flex-col justify-between hover:shadow-[0_16px_50px_rgba(212,255,0,0.06)] relative overflow-hidden"
-            >
-              {/* Subtle card glow on hover */}
-              <div className="absolute -right-20 -top-20 w-48 h-48 bg-[#d4ff00]/5 rounded-full blur-[80px] group-hover:bg-[#d4ff00]/10 transition-colors pointer-events-none" />
-
-              <div>
-                {/* Header row: Index & Subtitle tag */}
-                <div className="flex items-center justify-between gap-4 mb-6">
-                  <span className="text-3xl font-display font-black text-[#d4ff00]">
-                    0{index + 1}
-                  </span>
-                  <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-white/5 text-gray-300 border border-white/10">
-                    {practice.subtitle ? practice.subtitle.split('•')[0].trim() : 'Core Practice'}
-                  </span>
-                </div>
-
-                {/* Media preview */}
-                <div className="aspect-[16/9] w-full rounded-2xl overflow-hidden mb-6 bg-[#181818] relative">
+          {/* 6 Practices Cards Grid (2 Columns, 3 Rows) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {filteredPractices.map((practice) => (
+              <div
+                key={practice.number}
+                className="border border-gray-200 rounded-2xl overflow-hidden bg-white shadow-[0_2px_15px_rgba(0,0,0,0.03)] hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+              >
+                {/* Top Image Frame with Black Number Badge */}
+                <div className="relative aspect-[16/9] w-full overflow-hidden bg-gray-100">
                   <img
-                    src={practice.image_url || 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=1000'}
+                    src={practice.image_url}
                     alt={practice.title}
-                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                    className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c0c] via-black/20 to-transparent" />
+                  <div className="absolute top-4 left-4 w-9 h-9 rounded-lg bg-black text-white font-mono font-bold text-sm flex items-center justify-center shadow-md">
+                    {practice.number}
+                  </div>
                 </div>
 
-                {/* Title */}
-                <Link to={`/services/${practice.slug}`} className="block">
-                  <h3 className="text-2xl sm:text-3xl font-display font-black uppercase tracking-tight text-white group-hover:text-[#d4ff00] transition-colors mb-3 leading-tight">
-                    {practice.title}
-                  </h3>
-                </Link>
+                {/* Card Body */}
+                <div className="p-7 sm:p-9 flex-1 flex flex-col justify-between">
+                  <div>
+                    <Link to={`/services/${practice.slug}`} className="block">
+                      <h3 className="text-xl sm:text-2xl font-display font-black uppercase tracking-tight text-black hover:text-gray-600 transition-colors mb-3 leading-snug">
+                        {practice.title}
+                      </h3>
+                    </Link>
 
-                {/* Subtitle list */}
-                {practice.subtitle && (
-                  <p className="text-xs font-mono font-bold uppercase tracking-wider text-[#d4ff00] mb-4 opacity-90">
-                    {practice.subtitle}
-                  </p>
-                )}
+                    <p className="text-gray-600 text-sm leading-relaxed mb-6 font-normal">
+                      {practice.description}
+                    </p>
 
-                {/* Description */}
-                <p className="text-gray-400 text-sm sm:text-base leading-relaxed mb-6 font-normal">
-                  {practice.description}
-                </p>
-
-                {/* Core Deliverables Checklist */}
-                {practice.deliverables && practice.deliverables.length > 0 && (
-                  <div className="pt-5 border-t border-white/5 mb-8">
-                    <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-gray-400 block mb-3">
-                      Key Deliverables & Systems:
-                    </span>
-                    <ul className="space-y-2.5">
-                      {practice.deliverables.slice(0, 4).map((deliv: string, dIdx: number) => (
-                        <li key={dIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-gray-300">
-                          <CheckCircle2 className="w-4 h-4 text-[#d4ff00] flex-shrink-0 mt-0.5" />
-                          <span>{deliv}</span>
-                        </li>
+                    {/* Bullet Points with neon dashes */}
+                    <div className="space-y-2 mb-8">
+                      {practice.bullets.map((bullet, idx) => (
+                        <div key={idx} className="flex items-center gap-2.5 text-xs sm:text-sm text-gray-800 font-medium">
+                          <span className="w-4 h-0.5 bg-[#ceff00] flex-shrink-0" />
+                          <span>{bullet}</span>
+                        </div>
                       ))}
-                    </ul>
+                    </div>
                   </div>
-                )}
-              </div>
 
-              {/* Bottom CTA Button */}
-              <div className="pt-6 border-t border-white/10 flex items-center justify-between">
-                <Link
-                  to={`/services/${practice.slug}`}
-                  className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold uppercase tracking-wider text-white group-hover:text-[#d4ff00] transition-colors"
-                >
-                  <span>Explore Practice Details</span>
-                  <ArrowRight className="w-4 h-4 text-[#d4ff00] group-hover:translate-x-1.5 transition-transform" />
-                </Link>
-
-                <Link
-                  to="/contact"
-                  className="px-4 py-2 rounded-full bg-white/5 hover:bg-[#d4ff00] hover:text-black text-xs font-bold uppercase tracking-wider border border-white/10 transition-all"
-                >
-                  Book Call
-                </Link>
+                  {/* Explore Link */}
+                  <div className="pt-4 border-t border-gray-100">
+                    <Link
+                      to={`/services/${practice.slug}`}
+                      className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-black hover:text-gray-500 transition-colors"
+                    >
+                      <span>EXPLORE PRACTICE</span>
+                      <span className="text-sm font-bold">↗</span>
+                    </Link>
+                  </div>
+                </div>
               </div>
-            </motion.div>
-          ))}
+            ))}
+          </div>
+
         </div>
+      </section>
 
-        {/* The Eterna Execution Method */}
-        <div className="mb-28 pt-16 border-t border-white/10">
+      {/* ─── SECTION 3: THE ETERNAVENTURES METHOD (Black Background #000000) ── */}
+      <section className="bg-black text-white py-24 px-6 md:px-12 border-t border-b border-white/10">
+        <div className="max-w-7xl mx-auto">
+          
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="px-3.5 py-1.5 rounded-full border border-[#d4ff00]/30 bg-[#d4ff00]/10 text-[#d4ff00] text-xs font-mono font-bold tracking-widest uppercase inline-block mb-4">
-              [OPERATIONAL BLUEPRINT]
-            </span>
             <h2 className="text-3xl sm:text-5xl font-display font-black uppercase tracking-tight text-white mb-4">
-              The EternaVentures Method
+              THE ETERNAVENTURES{' '}
+              <span className="inline-block bg-[#ceff00] text-black px-2.5 py-0.5">
+                METHOD
+              </span>
             </h2>
-            <p className="text-gray-400 text-sm sm:text-base leading-relaxed">
-              How we take brands from commodity status to category authority through a repeatable, 4-stage execution cycle.
+            <p className="text-gray-400 text-sm sm:text-base leading-relaxed font-normal">
+              A proven, integrated approach that turns insight into brand, demand, and durable market leverage.
             </p>
           </div>
 
@@ -352,156 +298,189 @@ export default function ServicesPage() {
             {[
               {
                 step: '01',
-                title: 'Diagnostic & Vectors',
-                desc: 'Forensic audit of your current unit economics, audience psychology, and competitive whitespace.'
+                title: 'DIAGNOSTIC & AUDIT',
+                desc: 'Uncover opportunity, assess position, and define the growth levers that matter.'
               },
               {
                 step: '02',
-                title: 'Architecture & Engine',
-                desc: 'Crafting the messaging matrix, high-converting digital storefront, and native creative pipeline.'
+                title: 'ARCHITECTURE & BLUEPRINT',
+                desc: 'Build the strategic foundation across brand, demand, and market execution.'
               },
               {
                 step: '03',
-                title: 'Omni-Channel Rollout',
-                desc: 'Deploying high-impact campaigns across paid social, search, and influencer advocacy networks.'
+                title: 'OMNICHANNEL ROLLOUT',
+                desc: 'Launch across the right channels with precision, creative, and speed.'
               },
               {
                 step: '04',
-                title: 'Compound Authority',
-                desc: 'Iterating on conversion data daily, eliminating low performers, and scaling category moats.'
+                title: 'COMPOUND AUTHORITY',
+                desc: 'Drive sustained advantage through optimization, expansion, and reputation building.'
               }
-            ].map((method, idx) => (
+            ].map((method) => (
               <div
-                key={idx}
-                className="p-8 rounded-2xl bg-[#0c0c0c] border border-white/10 hover:border-[#d4ff00]/50 transition-all flex flex-col justify-between"
+                key={method.step}
+                className="p-6 sm:p-7 rounded-2xl bg-[#0e0e0e] border border-[#222] hover:border-gray-700 transition-colors flex flex-col justify-between"
               >
                 <div>
-                  <div className="w-12 h-12 rounded-xl bg-[#d4ff00]/10 border border-[#d4ff00]/30 text-[#d4ff00] flex items-center justify-center font-display font-black text-lg mb-6">
+                  <span className="text-[#ceff00] text-sm font-mono font-bold block mb-4">
                     {method.step}
-                  </div>
-                  <h4 className="text-lg font-display font-bold uppercase tracking-tight text-white mb-3">
+                  </span>
+                  <h4 className="text-base font-display font-bold uppercase tracking-tight text-white mb-3">
                     {method.title}
                   </h4>
-                  <p className="text-sm text-gray-400 leading-relaxed font-normal">
+                  <p className="text-xs text-gray-400 leading-relaxed font-normal">
                     {method.desc}
                   </p>
                 </div>
               </div>
             ))}
           </div>
-        </div>
 
-        {/* The Strategic Advantage (Why Us) */}
-        <div className="mb-28 p-8 sm:p-14 bg-gradient-to-b from-[#0a0a0a] to-[#040404] border border-white/10 rounded-3xl">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="px-3.5 py-1.5 rounded-full border border-[#d4ff00]/30 bg-[#d4ff00]/10 text-[#d4ff00] text-xs font-mono font-bold tracking-widest uppercase inline-block mb-4">
-              [THE ADVANTAGE]
-            </span>
-            <h2 className="text-3xl sm:text-5xl font-display font-black uppercase tracking-tight text-white mb-4">
-              Why Category Leaders Partner With Us
+        </div>
+      </section>
+
+      {/* ─── SECTION 4: WHY CATEGORY LEADERS PARTNER WITH US (White Background) ─ */}
+      <section className="bg-white text-black py-24 px-6 md:px-12">
+        <div className="max-w-7xl mx-auto">
+          
+          <div className="max-w-3xl mb-16">
+            <h2 className="text-3xl sm:text-5xl font-display font-black uppercase tracking-tight text-black mb-3">
+              WHY CATEGORY LEADERS <br />
+              <span className="inline-block bg-[#ceff00] text-black px-2.5 py-0.5">
+                PARTNER WITH US.
+              </span>
             </h2>
-            <p className="text-gray-400 text-sm sm:text-base leading-relaxed">
-              We eliminate agency bureaucracy and replace it with ruthless accountability and senior-only execution.
+            <p className="text-gray-600 text-sm sm:text-base leading-relaxed font-normal">
+              A strategic, senior-led partner for brands that want more than execution — they want category leadership.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {[
-              {
-                icon: BarChart3,
-                title: 'Data-Driven Precision',
-                desc: 'Zero guesswork. Every campaign, creative, and channel decision is backed by hard unit economics and rigorous split testing.'
-              },
-              {
-                icon: Target,
-                title: 'Senior-Only Operators',
-                desc: 'No junior interns learning on your ad budget. Your account is spearheaded directly by operators who have scaled multi-million dollar brands.'
-              },
-              {
-                icon: Shield,
-                title: 'Transparent Attribution',
-                desc: 'Zero vanity metrics. You get real-time dashboards monitoring CPA, blended ROAS, customer LTV, and net profit margins.'
-              },
-              {
-                icon: Rocket,
-                title: 'Agile Creative Factory',
-                desc: 'We continuously produce native short-form hooks, product renders, and high-impact variations to permanently defeat ad fatigue.'
-              }
-            ].map((adv, idx) => {
-              const Icon = adv.icon;
-              return (
-                <div
-                  key={idx}
-                  className="p-8 rounded-2xl bg-[#0f0f0f] border border-white/5 hover:border-white/15 transition-all flex items-start gap-5"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-[#d4ff00]/10 text-[#d4ff00] border border-[#d4ff00]/20 flex items-center justify-center flex-shrink-0">
-                    <Icon className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-display font-bold uppercase tracking-tight text-white mb-2">
-                      {adv.title}
-                    </h4>
-                    <p className="text-sm text-gray-400 leading-relaxed font-normal">
-                      {adv.desc}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Masterclass Academy Callout Banner */}
-        <div className="mb-24 p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-[#121212] via-[#0d0d0d] to-[#141414] border border-[#d4ff00]/30 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="relative z-10 max-w-xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#d4ff00]/10 text-[#d4ff00] text-xs font-mono font-bold tracking-widest uppercase mb-4">
-              <Video className="w-3.5 h-3.5" />
-              <span>Free Founder Masterclasses</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 text-[#b3db00]">
+                <BarChart3 className="w-7 h-7 stroke-[2.5]" />
+              </div>
+              <div>
+                <h4 className="text-base font-display font-black uppercase tracking-tight text-black mb-1">
+                  DATA-DRIVEN PRECISION
+                </h4>
+                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed font-normal">
+                  Decisions grounded in insight, performance data, and clear business impact.
+                </p>
+              </div>
             </div>
-            <h3 className="text-2xl sm:text-4xl font-display font-black uppercase tracking-tight text-white mb-3">
-              Watch Our Complete Growth Playbooks.
-            </h3>
-            <p className="text-gray-400 text-sm sm:text-base leading-relaxed">
-              Explore our full curriculum on Brand Architecture, Omni-Channel Paid Growth, and Conversion UX streamed directly on our learning portal.
+
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 text-[#b3db00]">
+                <Layers className="w-7 h-7 stroke-[2.5]" />
+              </div>
+              <div>
+                <h4 className="text-base font-display font-black uppercase tracking-tight text-black mb-1">
+                  SENIOR-ONLY OPERATORS
+                </h4>
+                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed font-normal">
+                  A hands-on team of experienced strategists, creatives, and growth operators.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 text-[#b3db00]">
+                <Target className="w-7 h-7 stroke-[2.5]" />
+              </div>
+              <div>
+                <h4 className="text-base font-display font-black uppercase tracking-tight text-black mb-1">
+                  TRANSPARENT ATTRIBUTION
+                </h4>
+                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed font-normal">
+                  Clear measurement, real accountability, and visibility into what’s driving growth.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 text-[#b3db00]">
+                <Zap className="w-7 h-7 stroke-[2.5]" />
+              </div>
+              <div>
+                <h4 className="text-base font-display font-black uppercase tracking-tight text-black mb-1">
+                  A/B CREATIVE FACTORY
+                </h4>
+                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed font-normal">
+                  A continuous creative testing engine to identify what resonates, converts, and scales.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Watch Our Complete Growth Playbooks Card */}
+          <div className="mt-20 p-6 sm:p-8 rounded-2xl border border-gray-200 bg-white flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 shadow-sm">
+            <div className="flex-1">
+              <h4 className="text-xl sm:text-2xl font-display font-black uppercase tracking-tight text-black leading-tight">
+                WATCH OUR COMPLETE <br />
+                <span className="inline-block bg-[#ceff00] text-black px-2 py-0.5 mt-1">
+                  GROWTH PLAYBOOKS.
+                </span>
+              </h4>
+            </div>
+            <div className="lg:border-l lg:border-gray-200 lg:pl-8 flex-1">
+              <p className="text-gray-600 text-xs sm:text-sm leading-relaxed font-normal">
+                Deep dives on brand, demand, influence, and market strategy, built from real operator experience.
+              </p>
+            </div>
+            <div>
+              <Link
+                to="/courses"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-gray-300 hover:border-black text-black font-bold text-xs uppercase tracking-wider transition-colors whitespace-nowrap"
+              >
+                <span>VIEW THE PLAYBOOKS</span>
+                <span>→</span>
+              </Link>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ─── SECTION 5: READY TO OWN YOUR MARKET POSITION? (Neon Yellow #ceff00) ── */}
+      <section className="bg-[#ceff00] text-black py-20 px-6 md:px-12">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          
+          <div className="lg:col-span-7">
+            <h2 className="text-4xl sm:text-6xl md:text-7xl font-display font-black uppercase tracking-tighter leading-[0.92] text-black">
+              READY TO OWN YOUR <br />
+              <span className="inline-block border-4 border-black px-3 py-1 mt-2 shadow-[4px_4px_0px_#000000]">
+                MARKET POSITION?
+              </span>
+            </h2>
+          </div>
+
+          <div className="lg:col-span-5">
+            <p className="text-black text-sm sm:text-base font-medium leading-relaxed mb-8 max-w-lg">
+              Book a strategy call to explore how EternaVentures can build, grow, and defend your category position.
             </p>
+
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+              <Link
+                to="/contact"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-black text-white text-xs font-bold uppercase tracking-wider hover:bg-gray-900 transition-colors shadow-lg"
+              >
+                <span>BOOK A STRATEGY CALL</span>
+                <span>→</span>
+              </Link>
+
+              <Link
+                to="/projects"
+                className="text-xs font-black uppercase tracking-wider text-black hover:opacity-75 transition-opacity underline-offset-4 hover:underline"
+              >
+                VIEW CASE STUDIES
+              </Link>
+            </div>
           </div>
 
-          <div className="relative z-10 flex-shrink-0">
-            <Link
-              to="/courses"
-              className="px-8 py-4 rounded-full bg-[#d4ff00] text-black font-display font-black text-sm uppercase tracking-wider hover:bg-[#e0ff33] transition-all shadow-[0_0_30px_rgba(212,255,0,0.4)] inline-flex items-center gap-2"
-            >
-              <span>Explore Masterclasses</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
         </div>
+      </section>
 
-        {/* Bottom CTA Banner */}
-        <div className="text-center max-w-3xl mx-auto pt-12 pb-6">
-          <h2 className="text-4xl sm:text-6xl font-display font-black uppercase tracking-tighter text-white mb-6">
-            Ready to Own Your <br />
-            <span className="text-[#d4ff00]">Market Position?</span>
-          </h2>
-          <p className="text-gray-400 text-base sm:text-lg leading-relaxed mb-8">
-            Book a 30-minute growth strategy consultation with our partners. We'll audit your current positioning and map your scaling vectors.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              to="/contact"
-              className="w-full sm:w-auto px-9 py-4 rounded-full bg-[#d4ff00] text-black font-display font-black text-sm uppercase tracking-wider hover:bg-[#e0ff33] transition-all shadow-[0_0_30px_rgba(212,255,0,0.3)]"
-            >
-              Book Strategy Call
-            </Link>
-            <Link
-              to="/projects"
-              className="w-full sm:w-auto px-9 py-4 rounded-full bg-[#121212] hover:bg-[#1a1a1a] text-white border border-white/10 font-bold text-sm uppercase tracking-wider transition-all"
-            >
-              View Case Studies
-            </Link>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
