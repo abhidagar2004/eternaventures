@@ -75,32 +75,6 @@
 .projects-cta a { display: inline-flex; align-items: center; justify-content: center; gap: 16px; background: #000; color: #fff; border-radius: 99px; padding: 13px 25px; font-family: 'Barlow Condensed', sans-serif; font-size: 22px; line-height: 1.2; font-weight: 700; text-transform: uppercase; }
 .projects-cta a:hover { background: #292929; }
 .projects-page :is(a, button, input, select, textarea):focus-visible { outline: 3px solid #93ae00; outline-offset: 4px; }
-/* Native dialogs keep focus and Escape behavior contained within the active project. */
-.project-dialog { width: min(920px, calc(100vw - 40px)); max-height: calc(100dvh - 48px); margin: auto; padding: 0; border: 1px solid #bbb; border-radius: 16px; background: #fff; color: #111; overflow: auto; }
-.project-dialog::backdrop { background: #000c; backdrop-filter: blur(5px); }
-.project-dialog-content { position: relative; }
-.project-dialog-close { position: absolute; top: 14px; right: 14px; z-index: 1; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: #000; color: #fff; cursor: pointer; }
-.project-dialog-image { display: block; width: 100%; height: 280px; object-fit: cover; object-position: center 40%; }
-.project-dialog-body { padding: 28px 32px 32px; }
-.project-dialog-category { text-transform: uppercase; font-size: 11px; font-weight: 700; letter-spacing: 1px; margin-bottom: 10px !important; }
-.project-dialog-body h2 { font-size: 34px; margin: 0 0 15px; }
-.project-dialog-project-name { font-size: 15px; line-height: 1.5; margin-bottom: 22px !important; color: #555; }
-.project-dialog-description { font-size: 17px; line-height: 1.55; margin-bottom: 26px !important; }
-.project-brochure-form { display: grid; gap: 19px; }
-.project-brochure-form label { display: flex; flex-direction: column; gap: 8px; font-size: 13px; font-weight: 600; }
-.project-brochure-form label > span { font-size: 11px; color: #666; font-weight: 400; }
-.project-brochure-form input, .project-brochure-form select, .project-brochure-form textarea { background: #fafafa; border: 1px solid #aaa; border-radius: 5px; padding: 11px 12px; width: 100%; font: inherit; font-weight: 400; min-width: 0; }
-.project-brochure-form textarea { resize: vertical; }
-.project-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.project-phone-row { display: grid; grid-template-columns: 155px 1fr; gap: 12px; }
-.project-modal-button { display: inline-flex; align-items: center; justify-content: center; align-self: start; gap: 12px; border: 1px solid #000; border-radius: 6px; padding: 12px 24px; background: #d4ff00; color: #000; font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; text-transform: uppercase; cursor: pointer; }
-.project-modal-button:hover { background: #e3ff57; }
-.project-modal-button:disabled { opacity: .6; cursor: wait; }
-.project-form-error { color: #b51d1d; font-size: 14px; line-height: 1.5; }
-.project-brochure-ready { padding: 10px 0; }
-.project-brochure-ready > svg { color: #758d00; margin-bottom: 14px; }
-.project-brochure-ready h3 { font-size: 30px; margin-bottom: 10px; }
-.project-brochure-ready > p { font-size: 15px; margin-bottom: 22px; }
 @media (max-width: 1100px) {
   .projects-hero-content > div { max-width: 600px; }
   .projects-intro { max-width: 420px; font-size: 15px; }
@@ -181,12 +155,5 @@
   .projects-cta h2 { max-width: 350px; font-size: 45px; }
   .projects-cta > div > div { border-left: 0; border-top: 1px solid #222; padding: 23px 0 0; }
   .projects-cta p { font-size: 17px; }
-  .project-dialog { width: calc(100vw - 24px); max-height: calc(100dvh - 24px); border-radius: 12px; }
-  .project-dialog-image { height: 190px; }
-  .project-dialog-body { padding: 23px; }
-  .project-dialog-body h2 { font-size: 29px; }
-  .project-form-row { grid-template-columns: 1fr; gap: 18px; }
-  .project-phone-row { grid-template-columns: 125px 1fr; gap: 9px; }
-  .project-phone-row select { font-size: 11px; padding-left: 8px; }
 }
 @media (prefers-reduced-motion: reduce) { .project-card-image > img { transition: none; } }

@@ -1,0 +1,110 @@
+.project-dialog {
+  width: min(1600px, calc(100vw - 96px));
+  max-height: calc(100dvh - 64px);
+  margin: auto;
+  padding: 0;
+  border: 0;
+  background: #101010;
+  color: #fff;
+  overflow: auto;
+}
+.project-dialog::backdrop { background: #080808b8; backdrop-filter: blur(8px); }
+.project-dialog-content { position: relative; display: grid; }
+.project-dialog-detail .project-dialog-content { grid-template-columns: 1.65fr 1fr; min-height: min(720px, calc(100dvh - 96px)); }
+.project-dialog-close { position: absolute; top: 25px; right: 25px; z-index: 2; display: grid; place-items: center; width: 44px; height: 44px; border: 2px solid currentColor; border-radius: 50%; color: #fff; background: #101010; cursor: pointer; }
+.project-dialog-close:hover { color: #d4ff00; }
+.project-detail-visual { position: relative; background: #fbdece; clip-path: polygon(0 0, 100% 0, 89% 100%, 0 100%); margin-right: -35px; }
+.project-detail-visual > img { width: 100%; height: 100%; min-height: 520px; object-fit: contain; }
+.project-selected-label { position: absolute; left: 30px; top: 30px; background: #0002; color: #fff; padding: 9px 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 600; letter-spacing: 1px; }
+.project-detail-body { padding: 62px 40px 42px 48px; align-self: center; }
+.project-dialog-category { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 700; text-transform: uppercase; line-height: 1.2; color: #d4ff00; margin: 0 0 7px !important; }
+.project-detail-body h2 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(55px, 6vw, 94px); font-weight: 800; line-height: .95; text-transform: uppercase; letter-spacing: -.035em; margin: 0 0 10px; overflow-wrap: anywhere; }
+.project-detail-subtitle { font-family: 'Barlow Condensed', sans-serif; font-size: 29px; font-weight: 700; line-height: 1.15; margin: 0 0 18px !important; }
+.project-dialog-description { font-size: 17px; line-height: 1.5; padding-top: 22px; border-top: 1px solid #777; margin: 0 0 24px !important; }
+.project-detail-palette { display: flex; gap: 11px; position: relative; padding-top: 23px; margin: 0 0 28px; }
+.project-detail-palette::before { content: ''; width: 48px; height: 3px; background: #d4ff00; position: absolute; top: 0; left: 0; }
+.project-detail-palette > span { width: 30px; height: 30px; border-radius: 4px; }
+.project-modal-button { display: inline-flex; justify-content: center; align-items: center; gap: 14px; padding: 13px 22px; color: #000; background: #d4ff00; border: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 24px; line-height: 1.2; cursor: pointer; }
+.project-modal-button:hover { background: #e3ff57; }
+.project-modal-button:disabled { opacity: .65; cursor: wait; }
+.project-detail-body > .project-modal-button { width: 100%; clip-path: polygon(7% 0, 100% 0, 93% 100%, 0 100%); padding: 15px 22px; }
+.project-detail-download { display: flex; align-items: center; gap: 10px; width: fit-content; margin: 24px auto 0; padding-bottom: 4px; border-bottom: 1px solid #fff; color: #fff; font-size: 17px; font-weight: 500; cursor: pointer; }
+.project-detail-download:hover { color: #d4ff00; border-color: #d4ff00; }
+.project-dialog-brochure { width: min(1320px, calc(100vw - 96px)); border-radius: 22px; background: #fbf7f2; color: #111; }
+.project-dialog-brochure .project-dialog-content { grid-template-columns: .8fr 1.4fr; min-height: 620px; }
+.project-dialog-brochure .project-dialog-close { color: #111; background: transparent; border: 0; border-radius: 0; top: 18px; right: 18px; }
+.project-brochure-cover { background: var(--project-cover-color, #e1ded4); position: relative; padding: 36px 32px; overflow: hidden; }
+.project-brochure-cover-heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; border-bottom: 1px solid #444; padding-bottom: 13px; font-family: 'Barlow Condensed', sans-serif; font-size: 20px; letter-spacing: 1.3px; font-weight: 600; }
+.project-brochure-cover-heading > span:last-child { border: 1px solid #111; border-radius: 5px; letter-spacing: 0; padding: 0 6px; }
+.project-brochure-cover-name { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(52px, 5.8vw, 85px); font-weight: 800; line-height: .95; text-transform: uppercase; letter-spacing: -.04em; margin: 18px 0 !important; overflow-wrap: anywhere; }
+.project-brochure-cover-image { width: 100%; height: 330px; object-fit: contain; margin-top: 30px; }
+.project-brochure-fan { position: absolute; left: 8%; right: 8%; bottom: 13%; height: 45%; }
+.project-brochure-fan > div { position: absolute; width: 42%; aspect-ratio: 342 / 641; background-size: 532.16% 140.4%; background-position: 21.58% 44.79%; box-shadow: 5px 13px 20px #633c3547; transform: rotate(-13deg); left: 3%; bottom: -10%; z-index: 2; }
+.project-brochure-fan > div:nth-child(2) { background-position: 52.03% 44.79%; transform: rotate(-3deg); left: 31%; bottom: 0; z-index: 1; }
+.project-brochure-fan > div:nth-child(3) { background-position: 82.41% 44.79%; transform: rotate(10deg); left: 56%; bottom: 4%; z-index: 0; }
+.project-brochure-body { padding: 44px 40px 38px; }
+.project-dialog-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; line-height: 1.2; letter-spacing: 1px; font-weight: 700; margin: 0 0 12px !important; }
+.project-brochure-body h2 { display: flex; align-items: center; gap: 20px; font-family: 'Barlow Condensed', sans-serif; font-size: clamp(37px, 4.1vw, 60px); line-height: 1; font-weight: 800; letter-spacing: -.025em; text-transform: uppercase; margin: 0 0 12px; }
+.project-brochure-body h2::after { content: ''; display: block; height: 7px; width: 70px; background: #d4ff00; flex-shrink: 0; }
+.project-dialog-project-name { font-size: 17px; color: #555; line-height: 1.45; margin: 0 0 32px !important; }
+.project-brochure-form { display: grid; gap: 24px; }
+.project-brochure-form fieldset { display: grid; gap: 22px; border: 0; padding: 0; margin: 0; min-width: 0; }
+.project-brochure-form label { display: flex; flex-direction: column; gap: 9px; font-size: 14px; font-weight: 600; }
+.project-brochure-form input, .project-brochure-form select, .project-brochure-form textarea { width: 100%; min-width: 0; background: #ffffffb3; color: #111; border: 1px solid #999; border-radius: 7px; padding: 11px 12px; font: inherit; font-size: 15px; font-weight: 400; }
+.project-brochure-form textarea { min-height: 104px; resize: vertical; }
+.project-message-field > span > span { color: #666; font-weight: 400; }
+.project-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.project-phone-field > label { margin-bottom: 9px; }
+.project-phone-row { display: grid; grid-template-columns: 150px 1fr; gap: 16px; }
+.project-brochure-form > .project-modal-button { width: 100%; border-radius: 8px; min-height: 54px; text-transform: uppercase; font-size: 23px; }
+.project-form-error { color: #b51d1d; font-size: 14px; line-height: 1.5; }
+.project-brochure-ready { padding: 25px 0; }
+.project-brochure-ready > svg { color: #758d00; margin-bottom: 15px; }
+.project-brochure-ready h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 700; margin-bottom: 10px; }
+.project-brochure-ready > p { margin-bottom: 24px !important; }
+.project-dialog :is(a, button, input, select, textarea):focus-visible { outline: 3px solid #93ae00; outline-offset: 3px; }
+@media (max-width: 1100px) {
+  .project-dialog { width: calc(100vw - 48px); }
+  .project-dialog-detail .project-dialog-content { grid-template-columns: 1.25fr 1fr; }
+  .project-detail-body { padding: 65px 26px 35px 32px; }
+  .project-detail-body h2 { font-size: 66px; }
+  .project-dialog-description { font-size: 15px; }
+  .project-detail-subtitle { font-size: 26px; }
+  .project-modal-button { font-size: 21px; }
+  .project-brochure-body { padding: 45px 28px 30px; }
+  .project-brochure-body h2::after { width: 40px; }
+  .project-brochure-cover { padding: 38px 24px; }
+  .project-brochure-cover-heading { font-size: 16px; }
+}
+@media (max-width: 760px) {
+  .project-dialog { width: calc(100vw - 24px); max-height: calc(100dvh - 32px); border-radius: 14px; }
+  .project-dialog-detail .project-dialog-content, .project-dialog-brochure .project-dialog-content { grid-template-columns: 1fr; min-height: 0; }
+  .project-detail-visual { clip-path: none; margin: 0; }
+  .project-detail-visual > img { height: 290px; min-height: 0; }
+  .project-selected-label { top: 20px; left: 20px; font-size: 14px; }
+  .project-dialog-close { top: 15px; right: 15px; width: 36px; height: 36px; }
+  .project-detail-body { padding: 28px 24px 32px; }
+  .project-detail-body h2 { font-size: 58px; }
+  .project-dialog-category { font-size: 20px; }
+  .project-detail-subtitle { font-size: 25px; }
+  .project-detail-body > .project-modal-button { width: fit-content; padding: 14px 30px; }
+  .project-detail-download { margin: 22px 0 0; }
+  .project-brochure-cover { min-height: 240px; padding: 25px; }
+  .project-brochure-cover-heading { max-width: 48%; flex-wrap: wrap; font-size: 14px; gap: 6px; }
+  .project-brochure-cover-name { max-width: 47%; font-size: 49px; }
+  .project-brochure-fan { left: 52%; right: 9%; height: 65%; bottom: 18%; }
+  .project-brochure-cover-image { position: absolute; left: 52%; width: 45%; height: 190px; top: 22px; margin: 0; }
+  .project-dialog-brochure .project-dialog-close { top: 10px; right: 10px; }
+  .project-brochure-body { padding: 28px 24px; }
+  .project-brochure-body h2 { font-size: 39px; gap: 12px; }
+  .project-brochure-body h2::after { width: 32px; height: 5px; }
+  .project-dialog-eyebrow { font-size: 18px; }
+  .project-dialog-project-name { font-size: 15px; margin-bottom: 25px !important; }
+}
+@media (max-width: 430px) {
+  .project-form-row { grid-template-columns: 1fr; gap: 20px; }
+  .project-phone-row { grid-template-columns: 120px 1fr; gap: 10px; }
+  .project-phone-row select { font-size: 12px; padding-left: 8px; }
+  .project-brochure-form > .project-modal-button { font-size: 20px; padding: 13px 8px; gap: 8px; }
+  .project-detail-body > .project-modal-button { width: 100%; font-size: 22px; }
+}
