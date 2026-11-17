@@ -20,12 +20,41 @@ function loadModule(file, imports, globals = {}) {
 
 async function main() {
   const types = loadModule('src/studio/types.ts', {});
-  const theme = loadModule('src/studio/theme.ts', {});
+  const fonts = loadModule('src/studio/fonts.ts', {});
+  const theme = loadModule('src/studio/theme.ts', { './fonts': fonts });
   assert.equal(theme.studioThemeCss({}), '');
   const themeCss = theme.studioThemeCss({ buttonRadius: '0', sectionPadding: '0', h1Mobile: '38' });
   assert.match(themeCss, /border-radius:0px/);
   assert.match(themeCss, /padding-top:0px/);
   assert.match(themeCss, /font-size:38px/);
+  assert.ok(fonts.STUDIO_FONTS.length >= 70);
+  assert.equal(new Set(fonts.STUDIO_FONTS).size, fonts.STUDIO_FONTS.length);
+  assert.equal(theme.resolveTheme({ bodySize: '19', sectionPadding: '0', headingWeight: '900' }).paragraphMobile, '19');
+  assert.equal(theme.resolveTheme({ bodySize: '19', paragraphMobile: '15' }).paragraphMobile, '15');
+  assert.equal(theme.resolveTheme({ headingWeight: '900' }).h1Weight, '900');
+  assert.equal(theme.contrastRatio('#ffffff', '#000000'), 21);
+  assert.equal(theme.contrastRatio('#ffffff', '#ffffff'), 1);
+  const componentValues = { accent: '#f0ff00', textAccent: '#222222', 'component.primary.hover.useAccent': 'false', 'component.primary.hover.fill': '#112233', 'component.primary.default.radius': '12' };
+  const hover = theme.componentSettings(componentValues, 'primary', 'hover');
+  assert.equal(hover.fill, '#112233');
+  assert.equal(hover.radius, '12');
+  assert.equal(theme.componentSettings({ accent: '#f0ff00', buttonBackground: '#f0ff00', textAccent: '#222222' }, 'primary', 'default').text, '#222222');
+  assert.equal(theme.componentSettings({}, 'primary', 'disabled').opacity, '0.5');
+  const advancedCss = theme.studioThemeCss({ ...componentValues, 'component.primary.focus.focusColor': '#123abc', 'component.primary.pressed.fill': '#334455', 'component.primary.disabled.opacity': '.4', h3Mobile: '27', useDesktopMobile: 'true', gutterDesktop: '60', footerColumnsDesktop: '3', mobileMenu: 'drawer' });
+  assert.match(advancedCss, /:hover\{[^}]*background-color:#112233/);
+  assert.match(advancedCss, /main h3\{font-size:27px/);
+  assert.match(advancedCss, /width:calc\(100% - 120px\)/);
+  assert.match(advancedCss, /site-footer-columns\{grid-template-columns:repeat\(3/);
+  assert.match(advancedCss, /data-theme-mobile-menu/);
+  assert.match(advancedCss, /:focus-visible/);
+  assert.match(advancedCss, /:active/);
+  assert.match(advancedCss, /aria-disabled/);
+  assert.equal(theme.componentSettings({ accent: '#f0ff00' }, 'primary', 'default').fill, '#f0ff00');
+  assert.equal(theme.componentSettings({ buttonBackground: '#123456' }, 'primary', 'default').fill, '#123456');
+  const cardOnlyCss = theme.studioThemeCss({ cardRadius: '22' });
+  const cardRule = cardOnlyCss.match(/\.home-practice-card,\.project-card,\.home-review[^{}]*\{([^}]+)\}/)?.[1];
+  assert.match(cardRule, /border-radius:22px/);
+  assert.ok(!cardRule.includes('background-color'));
 
   const database = new Map();
   const client = { auth: { getSession: async () => ({ data: { session: { user: { id: 'admin-test' } } } }) }, from: () => ({
@@ -67,6 +96,12 @@ async function main() {
 
   const { window, document } = parseHTML('<html><head><title>Original title</title></head><body><main class="flex-grow"><div class="about-studio-page"><section class="about-studio-hero"><h1 id="hero-title">WE BUILD <span>BRANDS.</span></h1><a class="about-link" href="/projects">Explore <svg><path /></svg></a><img src="/original.jpg" alt="Original artwork"><input placeholder="Your name" value="Private form input"></section><section class="about-stats"><h2>Results</h2></section></div></main></body></html>');
   const messages = [];
+  const fontsWithDom = loadModule('src/studio/fonts.ts', {}, { document });
+  fontsWithDom.ensureStudioFont('Inter');
+  fontsWithDom.ensureStudioFont('Inter');
+  fontsWithDom.ensureStudioFont('Inter', true);
+  assert.equal(document.querySelectorAll('link[data-studio-font="Inter"]').length, 2);
+  assert.match(document.querySelector('link[data-studio-font-style="italic"]').href, /ital,wght/);
   const parent = { location: { pathname: '/admin/studio/about' }, postMessage: message => messages.push(message) };
   window.parent = parent;
   window.location = { origin: 'https://studio.example', search: '?studio-preview=1' };
@@ -81,6 +116,7 @@ async function main() {
     './store': { readStudioDocument: () => new Promise(resolve => pending.push(resolve)) },
     './types': types,
     './theme': theme,
+    './fonts': { ensureStudioFont() {} },
   }, { window, document, URL, URLSearchParams, Element: window.Element, Node: window.Node, MutationObserver: window.MutationObserver, getComputedStyle: window.getComputedStyle, CSS: { escape: value => value } });
   runtime.default();
   cleanup = effect();

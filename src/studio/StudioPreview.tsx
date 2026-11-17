@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Crosshair, ExternalLink, Monitor, Smartphone, Tablet } from 'lucide-react';
 import type { StudioDocument, StudioSection } from './types';
 
-export default function StudioPreview({ path, document, theme, selected = '', onSnapshot, onSelect, onDeviceChange }: {
+export default function StudioPreview({ path, document, theme, selected = '', onSnapshot, onSelect, onDeviceChange, fixedDevice, viewportWidth, guides }: {
   path: string;
   document: StudioDocument;
   theme: Record<string, string>;
@@ -10,9 +10,13 @@ export default function StudioPreview({ path, document, theme, selected = '', on
   onSnapshot?: (sections: StudioSection[]) => void;
   onSelect?: (selector: string) => void;
   onDeviceChange?: (device: string) => void;
+  fixedDevice?: string;
+  viewportWidth?: number;
+  guides?: { gutter: string; top: string; bottom: string; header: string };
 }) {
   const frame = useRef<HTMLIFrameElement>(null);
-  const [device, setDevice] = useState('Desktop');
+  const [selectedDevice, setDevice] = useState('Desktop');
+  const device = fixedDevice || selectedDevice;
   const [inspect, setInspect] = useState(false);
   const [ready, setReady] = useState(false);
   const [notice, setNotice] = useState('');
@@ -22,8 +26,10 @@ export default function StudioPreview({ path, document, theme, selected = '', on
   state.current = { document, theme, selected, inspect };
   const callbacks = useRef({ onSnapshot, onSelect });
   callbacks.current = { onSnapshot, onSelect };
-  const viewport = device === 'Desktop' ? 1440 : device === 'Tablet' ? 820 : 390;
-  const scale = Math.min(1, width / viewport);
+  const viewport = viewportWidth || (device === 'Desktop' ? 1440 : device === 'Tablet' ? 820 : 390);
+  const scale = Math.max(.01, Math.min(1, width / viewport));
+  const displayHeight = fixedDevice ? 500 : 860 * scale;
+  const frameHeight = displayHeight / scale;
   function send() {
     frame.current?.contentWindow?.postMessage({ type: 'eterna-studio-preview', ...state.current }, window.location.origin);
   }
@@ -51,12 +57,13 @@ export default function StudioPreview({ path, document, theme, selected = '', on
     if (selected && ready) frame.current?.contentWindow?.postMessage({ type: 'eterna-studio-scroll', selector: selected }, window.location.origin);
   }, [selected, ready]);
   return <section className="studio-preview studio-panel">
-    <div className="studio-preview-header"><div><h3>Live Preview</h3><span>{path}</span></div><div className="studio-device-tabs">{[{ label: 'Desktop', icon: Monitor }, { label: 'Tablet', icon: Tablet }, { label: 'Mobile', icon: Smartphone }].map(({ label, icon: Icon }) => <button type="button" key={label} aria-label={`${label} preview`} aria-pressed={device === label} onClick={() => { setDevice(label); onDeviceChange?.(label); }}><Icon size={16} /><span>{label}</span></button>)}</div></div>
-    <div className="studio-preview-tools">{onSelect ? <button type="button" aria-pressed={inspect} onClick={() => setInspect(!inspect)}><Crosshair size={15} />{inspect ? 'Select an element in the preview' : 'Select element'}</button> : <span>Responsive website preview</span>}<a href={path} target="_blank" rel="noopener noreferrer" aria-label="Open live page"><ExternalLink size={16} /></a></div>
+    <div className="studio-preview-header">{fixedDevice ? <div className="theme-fixed-device-label">{device === 'Mobile' ? <Smartphone size={16} /> : device === 'Tablet' ? <Tablet size={16} /> : <Monitor size={16} />}<h3>{device} ({viewport}px)</h3></div> : <><div><h3>Live Preview</h3><span>{path}</span></div><div className="studio-device-tabs">{[{ label: 'Desktop', icon: Monitor }, { label: 'Tablet', icon: Tablet }, { label: 'Mobile', icon: Smartphone }].map(({ label, icon: Icon }) => <button type="button" key={label} aria-label={`${label} preview`} aria-pressed={device === label} onClick={() => { setDevice(label); onDeviceChange?.(label); }}><Icon size={16} /><span>{label}</span></button>)}</div></>}</div>
+    {!fixedDevice && <div className="studio-preview-tools">{onSelect ? <button type="button" aria-pressed={inspect} onClick={() => setInspect(!inspect)}><Crosshair size={15} />{inspect ? 'Select an element in the preview' : 'Select element'}</button> : <span>Responsive website preview</span>}<a href={path} target="_blank" rel="noopener noreferrer" aria-label="Open live page"><ExternalLink size={16} /></a></div>}
     {notice && <p className="studio-note" role="status">{notice}</p>}
     <div className="studio-preview-stage" ref={container}>
-      <div className="studio-preview-device" style={{ width: viewport * scale, height: 860 * scale }}>
-        <iframe ref={frame} title={`Live ${device.toLowerCase()} preview of ${path}`} src={`${path}?studio-preview=1`} style={{ width: viewport, height: 860, transform: `scale(${scale})` }} onLoad={() => { send(); frame.current?.contentWindow?.postMessage({ type: 'eterna-studio-capture' }, window.location.origin); }} />
+      <div className="studio-preview-device" style={{ width: viewport * scale, height: displayHeight }}>
+        <iframe ref={frame} title={`Live ${device.toLowerCase()} preview of ${path}`} src={`${path}?studio-preview=1`} style={{ width: viewport, height: frameHeight, transform: `scale(${scale})` }} onLoad={() => { send(); frame.current?.contentWindow?.postMessage({ type: 'eterna-studio-capture' }, window.location.origin); }} />
+        {guides && <div className="studio-spacing-guides" aria-label="Layout spacing guides" style={{ left: Number(guides.gutter) * scale, right: Number(guides.gutter) * scale }}><span className="studio-guide-gutter">Page gutter {guides.gutter}px</span><div className="studio-guide-section" style={{ top: Number(guides.header) * scale, height: Math.max(60,(500 - Number(guides.header)) * scale) }}><span>Section padding top {guides.top}px</span><span>Section padding bottom {guides.bottom}px</span></div></div>}
       </div>
       {!ready && <p className="studio-preview-loading">Loading live page…</p>}
     </div>

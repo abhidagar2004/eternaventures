@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { readStudioDocument } from './store';
 import { emptyStudioDocument, type StudioDocument, type StudioElement, type StudioSection } from './types';
 import { studioThemeCss } from './theme';
+import { ensureStudioFont } from './fonts';
 
 const styleProperties = ['color', 'background-color', 'font-family', 'font-size', 'font-weight', 'line-height', 'letter-spacing', 'text-align', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right', 'border-radius', 'border-width', 'border-color', 'border-style', 'object-fit', 'object-position', 'gap', 'display', 'max-width', 'min-height', 'height'];
 const directText = (element: Element) => Array.from(element.childNodes).filter(node => node.nodeType === Node.TEXT_NODE && node.textContent?.trim());
@@ -76,6 +77,12 @@ export default function StudioRuntime() {
 
     function apply() {
       style.textContent = studioThemeCss(theme);
+      if (Object.keys(theme).length) {
+        ensureStudioFont(theme.headingFont || 'Barlow Condensed');
+        ensureStudioFont(theme.bodyFont || 'Inter');
+        if (theme.headingStyle === 'italic' || document.querySelector('.home-highlight,.practice-highlight,.project-highlight,.service-highlight,.academy-highlight,.insights-highlight')) ensureStudioFont(theme.headingFont || 'Barlow Condensed', true);
+        if (theme.bodyStyle === 'italic') ensureStudioFont(theme.bodyFont || 'Inter', true);
+      }
       for (const [selector, override] of Object.entries(documentValue.overrides)) {
         let element: HTMLElement | null;
         try { element = document.querySelector<HTMLElement>(selector); } catch { continue; }
@@ -117,6 +124,7 @@ export default function StudioRuntime() {
           if (!styleProperties.includes(property)) continue;
           if (!(property in original.styles)) original.styles[property] = element.style.getPropertyValue(property);
           if (element.style.getPropertyValue(property) !== value) element.style.setProperty(property, value, 'important');
+          if (property === 'font-family') ensureStudioFont(value);
         }
         if (typeof override.order === 'number') {
           const root = document.querySelector('main.flex-grow')?.firstElementChild as HTMLElement | null;

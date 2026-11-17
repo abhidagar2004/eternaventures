@@ -121,9 +121,9 @@ export default function Navbar() {
   }
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${config.styling.navbar_bg} backdrop-blur-md border-b border-white/5`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 md:h-20">
+    <nav data-theme-navbar className={`fixed w-full z-50 transition-all duration-300 ${config.styling.navbar_bg} backdrop-blur-md border-b border-white/5`}>
+      <div data-theme-header-container className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div data-theme-header-row className="flex justify-between items-center h-16 md:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center group">
             {config.logo.type === 'image' ? (
@@ -156,7 +156,8 @@ export default function Navbar() {
                 if (!link.name || !link.href) return null;
                 return (
                   <Link
-                    key={link.id}
+                    key={link.id} data-theme-component="nav-link"
+                    aria-current={isActive(link.href) ? 'page' : undefined}
                     to={link.href}
                     className="text-sm font-semibold transition-all duration-200 whitespace-nowrap"
                     style={{ 
@@ -247,11 +248,12 @@ export default function Navbar() {
       </div>
 
       {/* Mobile menu */}
-      <div className={`md:hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
+      <div data-theme-mobile-menu className={`md:hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
         <div className="px-4 pt-2 pb-6 space-y-1 bg-black/95 border-t border-white/5">
           {effectiveLinks.map((link) => (
             <Link
-              key={link.id}
+              key={link.id} data-theme-component="nav-link"
+              aria-current={isActive(link.href) ? 'page' : undefined}
               to={link.href}
               className="block px-3 py-4 text-base font-semibold"
               style={{ 
