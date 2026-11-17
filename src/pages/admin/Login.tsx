@@ -34,7 +34,7 @@ export default function Login() {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         toast.success('Logged in successfully');
-        navigate('/');
+        navigate('/admin/overview');
       } else if (isLogin === 'register') {
         const { data, error } = await supabase.auth.signUp({ email, password });
         if (error) throw error;

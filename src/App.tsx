@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
@@ -21,7 +21,6 @@ import CourseWatch from './pages/CourseWatch';
 import AdminLayout from './pages/admin/AdminLayout';
 import Login from './pages/admin/Login';
 import ResetPassword from './pages/admin/ResetPassword';
-import Dashboard from './pages/admin/Dashboard';
 import ManageCourses from './pages/admin/ManageCourses';
 import ManageBlogs from './pages/admin/ManageBlogs';
 import AddEditBlog from './pages/admin/AddEditBlog';
@@ -43,6 +42,11 @@ import ManageAdmins from './pages/admin/ManageAdmins';
 import ManageFooter from './pages/admin/ManageFooter';
 import ManageLegalPages from './pages/admin/ManageLegalPages';
 import LegalPage from './pages/LegalPage';
+import StudioOverview from './studio/StudioOverview';
+import StudioPageEditor from './studio/StudioPageEditor';
+import StudioTheme from './studio/StudioTheme';
+import StudioSettings from './studio/StudioSettings';
+import StudioRuntime from './studio/StudioRuntime';
 
 export default function App() {
   return (
@@ -55,8 +59,11 @@ export default function App() {
           <Route path="/admin/login" element={<Login />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<ManageLeads />} />
-            <Route path="overview" element={<Dashboard />} />
+            <Route index element={<Navigate to="/admin/overview" replace />} />
+            <Route path="overview" element={<StudioOverview />} />
+            <Route path="studio/:page" element={<StudioPageEditor />} />
+            <Route path="theme" element={<StudioTheme />} />
+            <Route path="settings" element={<StudioSettings />} />
             <Route path="courses" element={<ManageCourses />} />
             <Route path="blogs" element={<ManageBlogs />} />
             <Route path="blogs/new" element={<AddEditBlog />} />
@@ -83,6 +90,7 @@ export default function App() {
           {/* Public Routes */}
           <Route path="*" element={
             <>
+              <StudioRuntime />
               <Navbar />
               <main className="flex-grow">
                 <Routes>

@@ -14,6 +14,7 @@ const COURSES: Course[] = [
   { id: '3', title: 'DIGITAL EXPERIENCE & CONVERSION UX ENGINEERING', slug: 'digital-experience-conversion-ux', category: 'DESIGN & UX', meta: '4 MODULES · ALL LEVELS', description: 'Design digital storefronts and customer journeys that make it easier to convert.', image_url: '/images/academy-design-v2.png', duration: '1h 50m' },
 ];
 const FILTERS = ['ALL', 'BRAND STRATEGY', 'PAID GROWTH', 'DESIGN & UX'];
+const seededThumbnails = ['photo-1557804506-669a67965ba0', 'photo-1460925895917-afdab827c52f', 'photo-1507238691740-187a5b1d37b8'];
 const normalize = (value: string) => value.toUpperCase().replace(/&/g, 'AND').replace(/[^A-Z0-9]/g, '');
 const benefits = [
   { icon: ShieldCheck, title: 'BATTLE-TESTED MODELS', text: 'Every framework taught has been executed across 8-figure brand portfolios. Zero theory.' },
@@ -31,7 +32,8 @@ export default function Courses() {
       if (!cancelled && !error && data?.length) setCourses(data.map((item, index) => {
         const reference = COURSES.find(course => course.slug === item.slug) || COURSES.find(course => normalize(course.category) === normalize(item.category || ''));
         const fallback = reference || COURSES[index % COURSES.length];
-        return { id: item.id, title: item.title, slug: item.slug, category: (item.category || fallback.category).toUpperCase(), meta: `${item.lessons_count || 4} MODULES · ${(item.level || 'ALL LEVELS').toUpperCase()}`, description: item.description || fallback.description, image_url: reference?.image_url || item.thumbnail_url || fallback.image_url, duration: item.duration || fallback.duration };
+        const customThumbnail = item.thumbnail_url && !seededThumbnails.some(image => item.thumbnail_url.includes(image));
+        return { id: item.id, title: item.title, slug: item.slug, category: (item.category || fallback.category).toUpperCase(), meta: `${item.lessons_count || 4} MODULES · ${(item.level || 'ALL LEVELS').toUpperCase()}`, description: item.description || fallback.description, image_url: customThumbnail ? item.thumbnail_url : reference?.image_url || fallback.image_url, duration: item.duration || fallback.duration };
       }));
     }
     load().catch(error => console.error('Unable to load masterclasses', error));
@@ -64,7 +66,7 @@ export default function Courses() {
             <label className="academy-search"><Search size={18} aria-hidden="true" /><span className="sr-only">Search masterclasses</span><input type="search" placeholder="Search masterclasses..." value={query} onChange={event => setQuery(event.target.value)} /></label>
           </div>
           <div className="academy-grid" aria-live="polite">
-            {visibleCourses.map(course => <article className="academy-card" key={course.id}>
+            {visibleCourses.map(course => <article className="academy-card" key={course.id} data-studio-key={course.slug} data-studio-library="/admin/courses">
               <Link className="academy-card-image" to={`/courses/${course.slug}`} aria-label={`Watch ${course.title}`}>
                 <img src={course.image_url} alt={course.category === 'BRAND STRATEGY' ? 'Brand strategy playbook and identity sketches on a desk' : course.category === 'PAID GROWTH' ? 'Blue performance marketing analytics charts' : 'Laptop and phone showing website wireframes'} loading="lazy" />
                 <span className="academy-category">{course.category}</span><span className="academy-play"><Play fill="currentColor" size={19} aria-hidden="true" /></span><span className="academy-duration"><Clock size={14} aria-hidden="true" />{course.duration}</span>
