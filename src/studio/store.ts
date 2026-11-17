@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabase';
 import { emptyStudioDocument, type StudioDocument } from './types';
+import { cachePublishedTheme } from './publishedThemeCache';
 
 export function studioKey(path: string, draft = false) {
   return `studio:${draft ? 'draft' : 'published'}:${path}`;
@@ -43,6 +44,7 @@ export async function saveStudioDocument(path: string, value: StudioDocument, dr
     if (error) throw error;
   }
   if (!draft) {
+    if (path === 'theme') cachePublishedTheme(document.theme);
     try { localStorage.removeItem(await draftStorageKey(path)); } catch { /* Publishing succeeded even when browser storage is unavailable. */ }
   }
   return document;

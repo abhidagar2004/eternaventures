@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { readStudioDocument } from './store';
 import { emptyStudioDocument, type StudioDocument, type StudioElement, type StudioSection } from './types';
 import { studioThemeCss } from './theme';
 import { ensureStudioFont } from './fonts';
+import { cachedPublishedTheme, cachePublishedTheme } from './publishedThemeCache';
 
 const styleProperties = ['color', 'background-color', 'font-family', 'font-size', 'font-weight', 'line-height', 'letter-spacing', 'text-align', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right', 'border-radius', 'border-width', 'border-color', 'border-style', 'object-fit', 'object-position', 'gap', 'display', 'max-width', 'min-height', 'height'];
 const directText = (element: Element) => Array.from(element.childNodes).filter(node => node.nodeType === Node.TEXT_NODE && node.textContent?.trim());
@@ -56,19 +57,21 @@ function captureSections(overrides: Record<string, unknown> = {}): StudioSection
 
 export default function StudioRuntime() {
   const { pathname } = useLocation();
-  useEffect(() => {
+  // The shared theme stylesheet survives public route changes, but never styles Studio.
+  useLayoutEffect(() => () => { document.querySelector('style[data-studio-theme]')?.remove(); }, []);
+  useLayoutEffect(() => {
     let active = true;
     let documentValue = emptyStudioDocument();
-    let theme: Record<string, string> = {};
+    let theme: Record<string, string> = cachedPublishedTheme();
     let inspect = false;
     let selected = '';
     let preview = false;
     let receivedPreview = false;
     try { preview = window.parent !== window && window.parent.location.pathname.startsWith('/admin') && new URLSearchParams(window.location.search).has('studio-preview'); } catch { /* Cross-origin frames receive published content only. */ }
     const originals = new Map<Element, { text?: { node: ChildNode; value: string }[]; attributes: Record<string, string | null>; styles: Record<string, string> }>();
-    const style = document.createElement('style');
+    const style = document.querySelector<HTMLStyleElement>('style[data-studio-theme]') || document.createElement('style');
     style.dataset.studioTheme = 'true';
-    document.head.append(style);
+    if (!style.isConnected) document.head.append(style);
     const originalTitle = document.title;
     const originalMeta = document.querySelector<HTMLMetaElement>('meta[name="description"]');
     const originalDescription = originalMeta?.content || '';
@@ -240,13 +243,18 @@ export default function StudioRuntime() {
       style.dataset.selectionStyle = '';
       selectionStyle.dataset.studioSelection = 'true';
     }
-    Promise.allSettled([readStudioDocument(pathname), readStudioDocument('theme')]).then(results => {
+    // Apply before paint, then refresh page content and published theme independently.
+    apply();
+    readStudioDocument(pathname).then(value => {
+      if (!active || receivedPreview) return;
+      documentValue = value;
+      apply(); snapshot();
+    }).catch(() => { /* Preserve the current page while its request is unavailable. */ });
+    readStudioDocument('theme').then(value => {
       if (!active) return;
-      if (!receivedPreview && results[0].status === 'fulfilled') documentValue = results[0].value;
-      if (!receivedPreview && results[1].status === 'fulfilled') theme = results[1].value.theme;
-      apply();
-      snapshot();
-    });
+      cachePublishedTheme(value.theme);
+      if (!receivedPreview) { theme = value.theme; apply(); snapshot(); }
+    }).catch(() => { /* Keep the last published theme during a slow or failed request. */ });
     return () => {
       active = false;
       observer.disconnect();
@@ -256,7 +264,6 @@ export default function StudioRuntime() {
       document.removeEventListener('submit', submit, true);
       window.removeEventListener('resize', resize);
       restore();
-      style.remove();
       document.querySelector('[data-studio-selection]')?.remove();
     };
   }, [pathname]);

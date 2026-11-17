@@ -19,6 +19,14 @@ function loadModule(file, imports, globals = {}) {
 }
 
 async function main() {
+  const themeStorage = new Map();
+  const cache = loadModule('src/studio/publishedThemeCache.ts', {}, { localStorage: { getItem: key => themeStorage.get(key), setItem: (key, value) => themeStorage.set(key, value) } });
+  cache.cachePublishedTheme({ accent: '#ff0095' });
+  const freshCache = loadModule('src/studio/publishedThemeCache.ts', {}, { localStorage: { getItem: key => themeStorage.get(key) } });
+  assert.equal(freshCache.cachedPublishedTheme().accent, '#ff0095', 'Published colors must be available synchronously after reload');
+  const unavailableStorage = loadModule('src/studio/publishedThemeCache.ts', {}, { localStorage: { getItem() { throw new Error('blocked'); }, setItem() { throw new Error('blocked'); } } });
+  unavailableStorage.cachePublishedTheme({ accent: '#ff0095' });
+  assert.equal(unavailableStorage.cachedPublishedTheme().accent, '#ff0095');
   const types = loadModule('src/studio/types.ts', {});
   const fonts = loadModule('src/studio/fonts.ts', {});
   const theme = loadModule('src/studio/theme.ts', { './fonts': fonts });
@@ -106,7 +114,7 @@ async function main() {
   }) };
   let version = 0;
   const browserDrafts = new Map();
-  const store = loadModule('src/studio/store.ts', { '../lib/supabase': { supabase: client }, './types': types }, { crypto: { randomUUID: () => `version-${++version}` }, localStorage: { getItem: key => browserDrafts.get(key), setItem: (key, value) => browserDrafts.set(key, value), removeItem: key => browserDrafts.delete(key) } });
+  const store = loadModule('src/studio/store.ts', { '../lib/supabase': { supabase: client }, './types': types, './publishedThemeCache': cache }, { crypto: { randomUUID: () => `version-${++version}` }, localStorage: { getItem: key => browserDrafts.get(key), setItem: (key, value) => browserDrafts.set(key, value), removeItem: key => browserDrafts.delete(key) } });
   const draft = types.emptyStudioDocument();
   draft.seo.title = 'Draft heading';
   await store.saveStudioDocument('/about', draft, true);
@@ -117,6 +125,12 @@ async function main() {
   const next = await store.saveStudioDocument('/about', draft, false, first.version);
   await assert.rejects(store.saveStudioDocument('/about', draft, false, first.version), /another session/);
   assert.equal((await store.readStudioDocument('/about')).version, next.version);
+  const themeDraft = { ...types.emptyStudioDocument(), theme: { accent: '#123456' } };
+  await store.saveStudioDocument('theme', themeDraft, true);
+  assert.equal(cache.cachedPublishedTheme().accent, '#ff0095', 'Saving a theme draft must not change public colors');
+  await store.saveStudioDocument('theme', themeDraft, false);
+  assert.equal(cache.cachedPublishedTheme().accent, '#123456', 'A successful publish must refresh the public cache');
+  cache.cachePublishedTheme({ accent: '#ff0095' });
 
   const { window, document } = parseHTML('<html><head><title>Original title</title></head><body><main class="flex-grow"><div class="about-studio-page"><section class="about-studio-hero"><h1 id="hero-title">WE BUILD <span>BRANDS.</span></h1><a class="about-link" href="/projects">Explore <svg><path /></svg></a><img src="/original.jpg" alt="Original artwork"><input placeholder="Your name" value="Private form input"></section><section class="about-stats"><h2>Results</h2></section></div></main></body></html>');
   const messages = [];
@@ -131,19 +145,23 @@ async function main() {
   window.location = { origin: 'https://studio.example', search: '?studio-preview=1' };
   window.innerWidth = 1440;
   window.getComputedStyle = () => ({ getPropertyValue: property => property === 'display' ? 'block' : '' });
-  let effect;
+  const effects = [];
+  let runtimePath = '/about';
   let cleanup;
   const pending = [];
   const runtime = loadModule('src/studio/StudioRuntime.tsx', {
-    react: { useEffect: callback => { effect = callback; } },
-    'react-router-dom': { useLocation: () => ({ pathname: '/about' }) },
-    './store': { readStudioDocument: () => new Promise(resolve => pending.push(resolve)) },
+    react: { useLayoutEffect: callback => { effects.push(callback); } },
+    'react-router-dom': { useLocation: () => ({ pathname: runtimePath }) },
+    './store': { readStudioDocument: path => new Promise((resolve, reject) => pending.push({ path, resolve, reject })) },
+    './publishedThemeCache': cache,
     './types': types,
     './theme': theme,
     './fonts': { ensureStudioFont() {} },
   }, { window, document, URL, URLSearchParams, Element: window.Element, Node: window.Node, MutationObserver: window.MutationObserver, getComputedStyle: window.getComputedStyle, CSS: { escape: value => value } });
   runtime.default();
-  cleanup = effect();
+  const unmount = effects[0]();
+  cleanup = effects[1]();
+  assert.match(document.querySelector('style[data-studio-theme]').textContent, /--studio-accent:#ff0095/, 'Theme must apply before network responses');
   function send(data) {
     const event = new window.Event('message');
     Object.assign(event, { data, origin: window.location.origin, source: parent });
@@ -154,7 +172,7 @@ async function main() {
   preview.overrides['.about-link'] = { href: 'javascript:alert(1)' };
   preview.overrides['img'] = { src: '/replacement.jpg' };
   send({ type: 'eterna-studio-preview', document: preview, theme: {}, inspect: false });
-  pending.forEach(resolve => resolve(types.emptyStudioDocument()));
+  pending.forEach(({ path, resolve }) => resolve({ ...types.emptyStudioDocument(), theme: path === 'theme' ? { accent: '#ff0095' } : {} }));
   await new Promise(resolve => setTimeout(resolve, 20));
   assert.equal(document.querySelector('h1').textContent, 'DRAFT TITLE BRANDS.');
   assert.equal(document.querySelectorAll('h1 span').length, 1);
@@ -186,6 +204,30 @@ async function main() {
   assert.equal(document.querySelector('.about-studio-page').style.display, '');
   cleanup();
   assert.equal(document.title, 'Original title');
+  assert.equal(cache.cachedPublishedTheme().accent, '#ff0095', 'Preview edits must never overwrite the published theme cache');
+  window.parent = window;
+  window.location.search = '';
+  runtimePath = '/projects';
+  runtime.default();
+  cleanup = effects.at(-1)();
+  const persistentStyle = document.querySelector('style[data-studio-theme]');
+  assert.match(persistentStyle.textContent, /--studio-accent:#ff0095/);
+  const staleTheme = pending.at(-1);
+  cleanup();
+  assert.equal(document.querySelector('style[data-studio-theme]'), persistentStyle, 'Navigation cleanup must retain shared styles');
+  runtimePath = '/services';
+  runtime.default();
+  cleanup = effects.at(-1)();
+  assert.equal(document.querySelectorAll('style[data-studio-theme]').length, 1);
+  assert.equal(document.querySelector('style[data-studio-theme]'), persistentStyle);
+  staleTheme.resolve({ ...types.emptyStudioDocument(), theme: { accent: '#123456' } });
+  pending.at(-1).reject(new Error('Theme request unavailable'));
+  pending.at(-2).resolve(types.emptyStudioDocument());
+  await new Promise(resolve => setTimeout(resolve, 20));
+  assert.match(persistentStyle.textContent, /--studio-accent:#ff0095/, 'Slow, failed, or stale requests must not flash default colors');
+  cleanup();
+  unmount();
+  assert.equal(document.querySelectorAll('style[data-studio-theme]').length, 0, 'Public styles must be removed when entering Studio');
   console.log('Studio checks passed — draft isolation, publish conflicts, theme values, live overrides, responsive styles, markup preservation, private form values, and reset.');
 }
 
