@@ -27,6 +27,30 @@ async function main() {
   assert.match(themeCss, /border-radius:0px/);
   assert.match(themeCss, /padding-top:0px/);
   assert.match(themeCss, /font-size:38px/);
+  // Regression: About must inherit the same palette as the hero, including nested tokens.
+  const postcss = require('postcss');
+  function aboutPalette(values) {
+    const css = postcss.parse(fs.readFileSync('src/pages/AboutPage.css', 'utf8') + theme.studioThemeCss(values));
+    const variables = {};
+    css.walkRules(rule => { if ([':root', '.about-studio-page'].includes(rule.selector)) rule.walkDecls(/^--/, declaration => { variables[declaration.prop] = declaration.value; }); });
+    function resolve(value) {
+      for (let i = 0; i < 10 && value.includes('var('); i++) value = value.replace(/var\((--[\w-]+)(?:,\s*([^()]+))?\)/g, (_, name, fallback) => variables[name] ?? fallback ?? '');
+      return value;
+    }
+    return (selector, property) => { let value = ''; css.walkRules(rule => { if (rule.selector === selector) rule.walkDecls(property, declaration => { value = declaration.value; }); }); return resolve(value); };
+  }
+  const pinkAbout = aboutPalette({ accent: '#ff0095', textAccent: '#121212' });
+  assert.equal(pinkAbout('.about-growth-statement', 'background'), '#ff0095');
+  assert.equal(pinkAbout('.about-clarity-details h3', 'background'), '#ff0095');
+  assert.equal(pinkAbout('.about-discipline-number', 'background'), '#ff0095');
+  assert.equal(pinkAbout('.about-discipline-number', 'color'), '#121212');
+  assert.equal(pinkAbout('.about-belief-steps > svg', 'color'), '#ff0095');
+  assert.equal(pinkAbout('.about-position-card', 'border-bottom'), '5px solid #ff0095');
+  assert.equal(pinkAbout('.about-studio-mission', 'background'), '#ff0095');
+  const customAbout = aboutPalette({ accent: '#ff0095', highlightUseAccent: 'false', highlightBackground: '#123456', highlightText: '#ffffff' });
+  assert.equal(customAbout('.about-growth-statement', 'background'), '#123456');
+  assert.equal(customAbout('.about-growth-statement', 'color'), '#ffffff');
+  assert.equal(customAbout('.about-studio-mission', 'background'), '#ff0095');
   assert.ok(fonts.STUDIO_FONTS.length >= 70);
   assert.equal(new Set(fonts.STUDIO_FONTS).size, fonts.STUDIO_FONTS.length);
   assert.equal(theme.resolveTheme({ bodySize: '19', sectionPadding: '0', headingWeight: '900' }).paragraphMobile, '19');

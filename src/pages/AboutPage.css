@@ -1,4 +1,4 @@
-.about-studio-page { --about-acid: #d4ff00; background: #f7f5ef; color: #080808; }
+.about-studio-page { --about-acid: var(--studio-accent, #d4ff00); --about-on-acid: var(--studio-text-accent, #101010); background: #f7f5ef; color: #080808; }
 .about-container { width: calc(100% - 96px); max-width: 1280px; margin: 0 auto; }
 .about-studio-page h1, .about-studio-page h2, .about-studio-page h3, .about-studio-page p { margin: 0; }
 .about-studio-page h1, .about-studio-page h2, .about-studio-page h3 { font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif; font-weight: 800; line-height: .98; letter-spacing: -.025em; text-transform: uppercase; }
@@ -30,7 +30,7 @@
 .about-belief-flow .about-section-eyebrow { margin-bottom: 22px; }
 .about-belief-steps { display: flex; align-items: center; justify-content: space-between; gap: 25px; font-size: clamp(45px, 5.5vw, 78px); }
 .about-belief-steps > svg { color: var(--about-acid); width: 47px; height: 47px; flex-shrink: 0; }
-.about-growth-statement { width: fit-content; max-width: 100%; margin: 26px auto 0 !important; transform: skew(-12deg); background: var(--about-acid); color: #000; padding: 5px 27px 11px; font-family: 'Barlow Condensed', sans-serif; font-size: clamp(44px, 5.3vw, 74px); font-weight: 800; font-style: italic; line-height: 1; letter-spacing: -.025em; text-align: center; }
+.about-growth-statement { width: fit-content; max-width: 100%; margin: 26px auto 0 !important; transform: skew(-12deg); background: var(--studio-highlight-background, var(--about-acid)); color: var(--studio-highlight-text, var(--about-on-acid)); padding: 5px 27px 11px; font-family: 'Barlow Condensed', sans-serif; font-size: clamp(44px, 5.3vw, 74px); font-weight: 800; font-style: italic; line-height: 1; letter-spacing: -.025em; text-align: center; }
 .about-growth-statement > span { display: inline-block; transform: skew(12deg); }
 .about-belief-note { font-size: 18px; text-align: center; line-height: 1.4; margin-top: 19px !important; }
 .about-disciplines-section { padding: 49px 0 50px; }
@@ -40,7 +40,7 @@
 .about-discipline-card > img { display: block; width: 100%; aspect-ratio: 1.25; object-fit: cover; }
 .about-discipline-copy { position: relative; padding: 18px 8px 0; }
 .about-discipline-card + .about-discipline-card .about-discipline-copy:before { content: ''; position: absolute; left: -12px; top: 46px; bottom: 0; width: 1px; background: #888; }
-.about-discipline-number { display: inline-block; padding: 2px 5px; background: var(--about-acid); font-size: 11px; font-weight: 700; line-height: 1.2; margin-bottom: 9px; }
+.about-discipline-number { display: inline-block; padding: 2px 5px; background: var(--about-acid); color: var(--about-on-acid); font-size: 11px; font-weight: 700; line-height: 1.2; margin-bottom: 9px; }
 .about-discipline-card h3 { font-size: 33px; margin-bottom: 12px; }
 .about-discipline-card p { font-size: 16px; line-height: 1.4; max-width: 240px; }
 .about-studio-clarity { padding: 45px 0 50px; background: #efede5; }
@@ -50,9 +50,9 @@
 .about-clarity-description { font-size: 18px; line-height: 1.4; margin-top: 20px !important; max-width: 390px; }
 .about-clarity-details { border-left: 1px solid #777; padding-left: 62px; display: flex; flex-direction: column; justify-content: center; }
 .about-clarity-details > div + div { margin-top: 33px; padding-top: 33px; border-top: 1px solid #888; }
-.about-clarity-details h3 { display: inline-block; background: var(--about-acid); padding: 4px 10px 6px; font-size: 25px; margin-bottom: 15px; }
+.about-clarity-details h3 { display: inline-block; background: var(--studio-highlight-background, var(--about-acid)); color: var(--studio-highlight-text, var(--about-on-acid)); padding: 4px 10px 6px; font-size: 25px; margin-bottom: 15px; }
 .about-clarity-details p { font-size: 18px; line-height: 1.45; max-width: 520px; }
-.about-studio-mission { background: #d4ff00; padding: 33px 0; }
+.about-studio-mission { background: var(--about-acid); color: var(--about-on-acid); padding: 33px 0; }
 .about-studio-mission > div { display: grid; grid-template-columns: .75fr 1.25fr; align-items: center; gap: 52px; }
 .about-studio-mission h2 { max-width: 355px; font-size: clamp(52px, 5.3vw, 74px); line-height: .9; }
 .about-mission-copy { border-left: 1px solid #333; padding: 4px 0 4px 52px; }
@@ -61,7 +61,7 @@
 .about-mission-actions > a:first-child { display: inline-flex; align-items: center; justify-content: center; gap: 13px; background: #000; color: #fff; padding: 12px 24px; border-radius: 99px; font-size: 13px; font-weight: 600; line-height: 1.4; }
 .about-mission-actions > a:first-child:hover { background: #292929; }
 .about-mission-email { display: inline-flex; align-items: center; font-size: 14px; font-weight: 600; padding-left: 25px; border-left: 1px solid #444; min-height: 35px; }
-.about-studio-page a:focus-visible { outline: 3px solid #6c8300; outline-offset: 5px; }
+.about-studio-page a:focus-visible { outline: 3px solid var(--about-acid); outline-offset: 5px; }
 @media (max-width: 1100px) {
   .about-studio-eyebrow { font-size: 10px; gap: 12px; }
   .about-studio-introduction { font-size: 16px; }

@@ -151,7 +151,7 @@ export function studioThemeCss(values: Record<string, string>) {
   const highlightBg = t.highlightUseAccent === 'true' ? accent : themeColor(t.highlightBackground, accent);
   const highlightFg = themeColor(t.highlightUseAccent === 'true' ? t.textAccent : t.highlightText, '#101010');
   let css = `
-    :root { --studio-accent:${accent}; --studio-text-accent:${themeColor(t.textAccent,'#101010')}; --studio-footer-bg:${themeColor(t.dark,'#080808')}; --studio-footer-text:${themeColor(t.textDark,'#ffffff')}; }
+    :root { --studio-accent:${accent}; --studio-text-accent:${themeColor(t.textAccent,'#101010')}; --studio-highlight-background:${highlightBg}; --studio-highlight-text:${highlightFg}; --studio-footer-bg:${themeColor(t.dark,'#080808')}; --studio-footer-text:${themeColor(t.textDark,'#ffffff')}; }
     body { font-family:'${body}',sans-serif !important; }
     #root > div,main > div,.site-footer { font-family:'${body}',sans-serif !important; }
     [data-theme-header-container] { padding-left:0 !important;padding-right:0 !important; }
