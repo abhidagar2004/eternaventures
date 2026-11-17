@@ -1,263 +1,338 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { motion, AnimatePresence } from 'motion/react';
-import { Loader2, Plus, Minus, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, ArrowDown, Plus, Minus } from 'lucide-react';
+import { servicesData, ServiceDetailData } from '../data/servicesData';
 
 export default function ServiceDetail() {
-  const { slug } = useParams();
-  const [service, setService] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const { slug } = useParams<{ slug: string }>();
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
+  // Scroll to top on slug change
   useEffect(() => {
-    fetchService();
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }, [slug]);
 
-  const fetchService = async () => {
-    try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('services')
-        .select('*')
-        .eq('slug', slug)
-        .single();
+  // Lookup service from dataset
+  const activeSlug = slug || 'brand-architecture-identity-systems';
+  const service: ServiceDetailData = servicesData[activeSlug] || servicesData['brand-architecture-identity-systems'];
 
-      if (error) throw error;
-      setService(data);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+  const toggleFaq = (index: number) => {
+    setOpenFaq(openFaq === index ? null : index);
+  };
+
+  const scrollToCapabilities = () => {
+    const el = document.getElementById('capabilities');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center pt-20">
-        <Loader2 className="w-12 h-12 animate-spin text-blue-600" />
-      </div>
-    );
-  }
-
-  if (error || !service) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center pt-20 text-center px-6">
-        <h1 className="text-4xl font-display font-bold mb-4">Service Not Found</h1>
-        <p className="text-gray-400 mb-8">The service you are looking for might have been moved or doesn't exist.</p>
-        <Link to="/services" className="bg-blue-600 px-6 py-3 rounded-full font-bold">
-          Back to Services
-        </Link>
-      </div>
-    );
-  }
-
-  const features = service.features || [];
-  const faqs = service.faqs || [];
-
   return (
-    <div className="bg-black text-white">
-      {/* Banner */}
-      <section className={`relative flex items-center justify-center overflow-hidden ${service.banner_padding_top || 'pt-32'} ${service.banner_padding_bottom || 'pb-12'}`}>
-        <div className="absolute inset-0 z-0">
-          {service.image_url && (
-            <img 
-              src={service.image_url} 
-              className="w-full h-full object-cover opacity-40 blur-[2px] scale-110"
-              alt=""
-            />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
-        </div>
-        
-        <div className="relative z-10 max-w-7xl mx-auto px-6 text-center pt-32 pb-12 lg:pt-0 lg:pb-0">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            {service.show_banner_tag !== false && service.subtitle && (
-              <span className="font-bold uppercase tracking-widest text-sm mb-4 lg:mb-6 block" style={{ color: service.subtitle_color || '#c2ff00' }}>
-                {service.subtitle}
+    <div className="bg-black text-white min-h-screen">
+      {/* 1. Hero Section (Dark Luxury Aesthetic) */}
+      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 border-b border-neutral-900 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          {/* Breadcrumb / Back Link */}
+          <div className="mb-10">
+            <Link 
+              to="/services" 
+              className="inline-flex items-center gap-2 text-sm font-bold tracking-wider text-neutral-400 hover:text-[#d4ff00] transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>All Services</span>
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+            {/* Left Column */}
+            <div className="lg:col-span-7 flex flex-col items-start z-10">
+              <span className="text-xs font-black tracking-[0.25em] text-[#d4ff00] uppercase mb-4">
+                {service.number} / {service.category}
               </span>
-            )}
-            <h1 className="text-5xl md:text-9xl font-display font-black leading-[0.9] lg:leading-[0.8] tracking-tighter mb-6 lg:mb-10 max-w-5xl mx-auto" style={{ color: service.title_color || '#ffffff' }}>
-              {service.detail_heading || service.title}
-            </h1>
-            {service.detail_subheading && (
-              <p className="text-lg md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed font-medium">
-                {service.detail_subheading}
+
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black font-display tracking-tight leading-[0.95] mb-6">
+                {service.heroHeading}<br />
+                <span className="inline-block bg-[#d4ff00] text-black px-4 py-1.5 -rotate-1 mt-2 font-black shadow-lg">
+                  {service.heroHighlight}
+                </span>
+              </h1>
+
+              <p className="text-lg md:text-xl text-neutral-400 font-medium max-w-xl mb-10 leading-relaxed">
+                {service.heroDescription}
               </p>
-            )}
-          </motion.div>
+
+              <div className="flex flex-wrap items-center gap-6">
+                <Link
+                  to="/contact"
+                  className="bg-[#d4ff00] hover:bg-[#c6f000] active:scale-[0.98] text-black font-black uppercase text-xs sm:text-sm tracking-wider px-8 py-4 rounded-full shadow-lg transition-all flex items-center gap-2 group"
+                >
+                  <span>{service.ctaButtonText}</span>
+                  <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </Link>
+
+                <button
+                  onClick={scrollToCapabilities}
+                  className="inline-flex items-center gap-2 text-sm font-bold tracking-wide text-neutral-300 hover:text-white transition-colors cursor-pointer group"
+                >
+                  <span>Explore Capabilities</span>
+                  <ArrowDown className="w-4 h-4 group-hover:translate-y-1 transition-transform text-[#d4ff00]" />
+                </button>
+              </div>
+            </div>
+
+            {/* Right Column (Hero Visual Mockup) */}
+            <div className="lg:col-span-5 flex justify-center lg:justify-end">
+              <div className="relative w-full max-w-md lg:max-w-none h-[300px] sm:h-[380px] md:h-[440px] rounded-3xl overflow-hidden border border-neutral-800 shadow-2xl bg-neutral-950">
+                <img 
+                  src={service.heroImage} 
+                  alt={service.heroHeading} 
+                  className="w-full h-full object-cover scale-105"
+                  style={{ objectPosition: service.heroImageObjectPos || 'center' }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      {features.length > 0 && (
-        <section 
-          className="pb-32 relative" 
-          ref={containerRef}
-          style={{ backgroundColor: service.features_bg_color || '#000000' }}
-        >
-          <div className="max-w-7xl mx-auto px-6 lg:px-12">
-            {features.filter((f: any) => f.title && f.description).map((feature: any, idx: number) => (
-              <div key={idx} className="flex flex-col lg:flex-row gap-10 lg:gap-20 min-h-[50vh] lg:min-h-screen py-20 lg:py-0 items-center">
-                {/* Left Side: Content */}
-                <div className="lg:w-1/2 flex flex-col justify-center">
-                  <div className="flex items-center gap-6 mb-8 lg:mb-10">
-                    <span 
-                      className="text-3xl lg:text-4xl font-display font-black"
-                      style={{ color: service.features_number_color || 'rgba(255,255,255,0.1)' }}
-                    >
-                      0{idx + 1}
-                    </span>
-                    <div 
-                      className="h-[2px] flex-grow"
-                      style={{ backgroundColor: service.features_line_color || 'rgba(255,255,255,0.05)' }}
-                    ></div>
-                  </div>
-                  
-                  <h3 className="text-4xl lg:text-6xl font-display font-black text-white mb-6 lg:mb-8 leading-tight tracking-tighter">
-                    {feature.title}
-                  </h3>
-                  
-                  <p 
-                    className={`leading-relaxed font-medium mb-12 ${service.features_font_size || 'text-lg lg:text-2xl'}`}
-                    style={{ color: service.features_content_color || '#9ca3af' }}
-                  >
-                    {feature.description}
-                  </p>
-                </div>
+      {/* 2. What We Design / Offerings Section (Light Off-White Background) */}
+      <section id="capabilities" className="py-24 md:py-32 bg-[#f7f7f5] text-neutral-900">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          {/* Section Header */}
+          <div className="mb-16">
+            <span className="text-xs font-black tracking-[0.25em] text-neutral-500 uppercase block mb-3">
+              {service.whatWeDesignEyebrow}
+            </span>
 
-                {/* Right Side: Sticky Image Context */}
-                <div className="lg:w-1/2 lg:sticky lg:top-[20vh] lg:h-[60vh] flex items-center">
-                  <div className="relative w-full h-[400px] lg:h-full rounded-2xl lg:rounded-[3rem] overflow-hidden shadow-2xl bg-gray-900 border border-white/5 ring-1 ring-white/10">
-                    {feature.image_url && (
-                      <img 
-                        src={feature.image_url} 
-                        className="w-full h-full object-cover" 
-                        alt={feature.title}
-                        referrerPolicy="no-referrer"
-                      />
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                    
-                    <div className="absolute bottom-8 left-8 right-8 lg:bottom-12 lg:left-12 lg:right-12 flex items-center justify-between">
-                      <div className="h-1 flex-grow bg-white/20 rounded-full overflow-hidden mr-6" style={{ backgroundColor: `${service.features_line_color}33` }}>
-                        <div 
-                          className="h-full w-full"
-                          style={{ backgroundColor: service.subtitle_color || '#c2ff00' }}
-                        />
-                      </div>
-                      <span className="font-black text-xl lg:text-2xl tracking-tighter opacity-50" style={{ color: service.features_number_color || '#ffffff' }}>
-                        0{idx + 1}
-                      </span>
-                    </div>
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black font-display tracking-tight leading-[0.95] text-black">
+              {service.whatWeDesignHeading}{' '}
+              <span className="inline-block bg-[#d4ff00] text-black px-3.5 py-1 -rotate-1 font-black">
+                {service.whatWeDesignHighlight}
+              </span>
+            </h2>
+          </div>
+
+          {/* Feature Grid: 1 Big Top Card + 2 Equal Columns Below */}
+          <div className="space-y-8">
+            {/* Top Card (Feature 01) */}
+            {service.features[0] && (
+              <div className="bg-white border border-neutral-200/80 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
+                  <div className="lg:col-span-7 h-[280px] sm:h-[340px] md:h-[400px] overflow-hidden bg-neutral-100">
+                    <img 
+                      src={service.features[0].image} 
+                      alt={service.features[0].title}
+                      className="w-full h-full object-cover scale-105 hover:scale-110 transition-transform duration-700"
+                      style={{ objectPosition: service.features[0].imageObjectPos || 'center' }}
+                    />
+                  </div>
+                  <div className="lg:col-span-5 p-8 sm:p-12">
+                    <span className="text-xs font-black tracking-widest text-[#6c8100] uppercase block mb-2">
+                      {service.features[0].number}
+                    </span>
+                    <h3 className="text-2xl sm:text-3xl font-black font-display tracking-tight text-black mb-4">
+                      {service.features[0].title}
+                    </h3>
+                    <p className="text-neutral-600 text-base md:text-lg font-medium leading-relaxed">
+                      {service.features[0].description}
+                    </p>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </section>
-      )}
+            )}
 
-      {/* FAQ Section */}
-      {faqs.filter((f: any) => f.question && f.answer).length > 0 && (
-        <section className="py-32 bg-[#0a0a0a] border-y border-gray-900">
-          <div className="max-w-4xl mx-auto px-6">
-            <div className="text-center mb-20 text-balance">
-              <h2 className="text-5xl md:text-7xl font-display font-black text-white mb-6 tracking-tighter">COMMON QUESTIONS</h2>
-              <p className="text-gray-400 text-lg">Everything you need to know about our {service.title} process.</p>
-            </div>
-            <div className="space-y-4">
-              {faqs.filter((f: any) => f.question && f.answer).map((faq: any, idx: number) => (
-                <FAQItem key={idx} faq={faq} hoverColor={service.faq_hover_color || '#c2ff00'} />
+            {/* Bottom 2 Cards (Feature 02 and Feature 03) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {service.features.slice(1, 3).map((feat, idx) => (
+                <div key={idx} className="bg-white border border-neutral-200/80 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col">
+                  <div className="h-[240px] sm:h-[280px] overflow-hidden bg-neutral-100">
+                    <img 
+                      src={feat.image} 
+                      alt={feat.title}
+                      className="w-full h-full object-cover scale-105 hover:scale-110 transition-transform duration-700"
+                      style={{ objectPosition: feat.imageObjectPos || 'center' }}
+                    />
+                  </div>
+                  <div className="p-8 sm:p-10 flex-1 flex flex-col justify-start">
+                    <span className="text-xs font-black tracking-widest text-[#6c8100] uppercase block mb-2">
+                      {feat.number}
+                    </span>
+                    <h3 className="text-xl sm:text-2xl font-black font-display tracking-tight text-black mb-3">
+                      {feat.title}
+                    </h3>
+                    <p className="text-neutral-600 text-sm sm:text-base font-medium leading-relaxed">
+                      {feat.description}
+                    </p>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
-        </section>
-      )}
-
-      {/* Footer CTA */}
-      <section 
-        className="py-40 text-center relative overflow-hidden"
-        style={{ backgroundColor: service.cta_bg_color || '#000000' }}
-      >
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/10 rounded-full blur-[120px] -z-10"></div>
-        <div className="max-w-5xl mx-auto px-6">
-          {service.cta_title && (
-            <h2 
-              className="text-6xl md:text-9xl font-display font-black mb-12 leading-[0.85] tracking-tighter text-balance"
-              style={{ color: service.cta_text_color || '#ffffff' }}
-            >
-              {service.cta_title}
-            </h2>
-          )}
-          {service.cta_button_text && (
-            <Link 
-              to="/contact" 
-              className="inline-flex items-center gap-4 px-16 py-6 font-black tracking-widest hover:scale-105 transition-all duration-300 shadow-xl group"
-              style={{ 
-                backgroundColor: service.cta_button_color || '#c2ff00',
-                color: service.cta_button_text_color || '#000000',
-                borderRadius: service.cta_button_radius || '9999px'
-              }}
-            >
-              {service.cta_button_text}
-              <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
-            </Link>
-          )}
         </div>
       </section>
-    </div>
-  );
-}
 
+      {/* 3. The Deliverables Section (Dark Black Background) */}
+      <section className="py-24 md:py-32 bg-black text-white border-t border-neutral-900">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          {/* Header */}
+          <div className="mb-16">
+            <span className="text-xs font-black tracking-[0.25em] text-[#d4ff00] uppercase block mb-3">
+              {service.deliverablesEyebrow}
+            </span>
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black font-display tracking-tight leading-[0.95]">
+              {service.deliverablesHeading}{' '}
+              <span className="inline-block bg-[#d4ff00] text-black px-3.5 py-1 -rotate-1 font-black">
+                {service.deliverablesHighlight}
+              </span>
+            </h2>
+          </div>
 
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            {/* Left Mockup Image */}
+            <div className="lg:col-span-6">
+              <div className="relative w-full h-[320px] sm:h-[400px] md:h-[480px] rounded-3xl overflow-hidden border border-neutral-800 shadow-2xl bg-neutral-950">
+                <img 
+                  src={service.deliverablesImage} 
+                  alt={service.deliverablesHeading}
+                  className="w-full h-full object-cover scale-105"
+                  style={{ objectPosition: service.deliverablesImageObjectPos || 'center' }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+              </div>
+            </div>
 
-function FAQItem({ faq, hoverColor }: any) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <div 
-      className="bg-[#111111] border border-white/5 rounded-[2rem] overflow-hidden transition-all duration-300"
-      style={{ 
-        borderColor: isOpen ? `${hoverColor}33` : undefined,
-      }}
-      onMouseEnter={(e) => {
-        if (!isOpen) e.currentTarget.style.borderColor = `${hoverColor}33`;
-      }}
-      onMouseLeave={(e) => {
-        if (!isOpen) e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)';
-      }}
-    >
-      <button 
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between p-8 text-left"
-      >
-        <span className="text-xl md:text-2xl font-bold text-white tracking-tight">{faq.question}</span>
-        <div 
-          className="p-2 rounded-full transition-all duration-300"
-          style={{ 
-            backgroundColor: isOpen ? hoverColor : 'rgba(255,255,255,0.05)',
-            color: isOpen ? '#000000' : '#ffffff'
-          }}
-        >
-          {isOpen ? <Minus size={20} /> : <Plus size={20} />}
+            {/* Right Numbered Deliverables List */}
+            <div className="lg:col-span-6 space-y-8 divide-y divide-neutral-900">
+              {service.deliverablesList.map((deliv, idx) => (
+                <div key={idx} className="pt-8 first:pt-0">
+                  <div className="flex items-start gap-4">
+                    <span className="text-lg font-black text-[#d4ff00] tracking-wider shrink-0 mt-0.5">
+                      {deliv.number}
+                    </span>
+                    <div>
+                      <h4 className="text-xl sm:text-2xl font-black font-display tracking-tight text-white mb-2">
+                        {deliv.title}
+                      </h4>
+                      <p className="text-neutral-400 text-sm sm:text-base font-medium leading-relaxed">
+                        {deliv.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-      </button>
-      <motion.div
-        initial={false}
-        animate={{ height: isOpen ? 'auto' : 0, opacity: isOpen ? 1 : 0 }}
-        className="overflow-hidden"
-        transition={{ duration: 0.4, ease: [0.19, 1, 0.22, 1] }}
-      >
-        <div className="px-8 pb-8 text-xl text-gray-500 leading-relaxed font-medium">
-          {faq.answer}
+      </section>
+
+      {/* 4. Process Timeline (Light Off-White Background) */}
+      <section className="py-24 md:py-32 bg-[#f7f7f5] text-neutral-900 border-t border-neutral-200">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-black font-display tracking-tight uppercase text-black mb-16">
+            {service.processHeading}
+          </h2>
+
+          {/* 4-Step Process Timeline */}
+          <div className="relative">
+            {/* Connecting horizontal line on desktop */}
+            <div className="hidden lg:block absolute top-6 left-6 right-6 h-0.5 bg-neutral-300 -z-0" />
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8 relative z-10">
+              {service.processSteps.map((step, idx) => (
+                <div key={idx} className="flex flex-col items-start">
+                  <div className="w-12 h-12 rounded-full bg-[#d4ff00] border-2 border-black flex items-center justify-center font-black text-black text-sm mb-6 shadow-sm">
+                    {step.number}
+                  </div>
+                  <h4 className="text-xl font-black font-display tracking-tight uppercase text-black mb-2">
+                    {step.title}
+                  </h4>
+                  <p className="text-neutral-600 text-sm font-medium leading-relaxed">
+                    {step.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-      </motion.div>
+      </section>
+
+      {/* 5. Common Questions / FAQ Accordion (Light Background) */}
+      <section className="py-24 md:py-32 bg-[#f7f7f5] text-neutral-900 border-t border-neutral-200">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+            {/* Left FAQ Title */}
+            <div className="lg:col-span-5">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl font-black font-display tracking-tight uppercase leading-[0.95] text-black mb-6">
+                COMMON<br />QUESTIONS
+              </h2>
+              <div className="h-1.5 w-20 bg-[#d4ff00] mb-6 rounded-full" />
+              <p className="text-neutral-600 text-lg font-medium max-w-sm">
+                {service.faqSubtitle}
+              </p>
+            </div>
+
+            {/* Right FAQ List */}
+            <div className="lg:col-span-7 divide-y divide-neutral-300">
+              {service.faqs.map((faq, idx) => (
+                <div key={idx} className="py-6 first:pt-0 last:pb-0">
+                  <button
+                    onClick={() => toggleFaq(idx)}
+                    className="w-full flex items-center justify-between text-left py-2 group cursor-pointer"
+                  >
+                    <span className="text-lg md:text-xl font-bold tracking-tight text-neutral-900 group-hover:text-black transition-colors pr-6">
+                      {idx + 1}. {faq.question}
+                    </span>
+                    <div className="p-2 rounded-full bg-neutral-200 group-hover:bg-[#d4ff00] transition-colors shrink-0">
+                      {openFaq === idx ? (
+                        <Minus className="w-4 h-4 text-black" />
+                      ) : (
+                        <Plus className="w-4 h-4 text-black" />
+                      )}
+                    </div>
+                  </button>
+
+                  {openFaq === idx && (
+                    <div className="pt-3 pb-2 text-neutral-600 text-base md:text-lg leading-relaxed font-medium">
+                      {faq.answer}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. High-Impact Lime CTA Banner */}
+      <section className="bg-[#d4ff00] text-black py-16 md:py-24 border-t border-black">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            {/* Left Big Text */}
+            <div className="lg:col-span-7">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl font-black font-display tracking-tight uppercase leading-[0.95]">
+                {service.ctaHeading}
+              </h2>
+            </div>
+
+            {/* Right Subtext & Action Button */}
+            <div className="lg:col-span-5 flex flex-col lg:items-end justify-center">
+              <p className="text-lg sm:text-xl font-bold text-black mb-6 max-w-md lg:text-right">
+                {service.ctaDescription}
+              </p>
+
+              <Link
+                to="/contact"
+                className="bg-black text-white hover:bg-neutral-800 active:scale-[0.98] font-black uppercase text-xs sm:text-sm tracking-wider px-8 py-4 rounded-full shadow-xl transition-all inline-flex items-center gap-2 group w-fit"
+              >
+                <span>{service.ctaButtonText}</span>
+                <ArrowUpRight className="w-4 h-4 text-[#d4ff00] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
