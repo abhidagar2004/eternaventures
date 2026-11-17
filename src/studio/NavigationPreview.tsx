@@ -1,0 +1,12 @@
+import { useState } from 'react';
+import { Menu, X } from 'lucide-react';
+import { settingColor, type NavbarConfig } from './sharedSettings';
+export default function NavigationPreview({ config, mobile = false }: { config: NavbarConfig; mobile?: boolean }) {
+  const [open, setOpen] = useState(false);
+  return <div className={`settings-nav-preview${mobile ? ' is-mobile' : ''}`} style={{ background: `color-mix(in srgb, ${settingColor(config.styling.navbar_bg)} ${config.styling.opacity ?? 100}%, transparent)`, color: config.styling.link_color, borderBottom: config.styling.showBorder ? `${config.styling.borderWidth ?? 1}px solid #ffffff22` : 'none' }}>
+    <div className="settings-nav-preview-row"><div className="settings-preview-logo" style={{ fontSize: mobile ? config.logo.mobileSize : config.logo.desktopSize }}>{config.logo.type === 'image' ? config.logo.imageUrl ? <img src={config.logo.imageUrl} alt="Brand logo" style={{ height: config.logo.height, maxWidth: config.logo.width }} /> : <span>Logo image</span> : <><span style={{ color: config.logo.color1 }}>{config.logo.text1}</span><span style={{ color: config.logo.color2 }}>{config.logo.text2}</span></>}</div>
+      {mobile ? <button aria-label="Toggle preview menu" aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X size={20} /> : <Menu size={20} />}</button> : <div className="settings-preview-links">{config.links.filter(link => link.visible !== false).map(link => <span key={link.id}>{link.name}</span>)}{config.buttons.filter(button => button.visible !== false).map(button => <span className="settings-preview-cta" key={button.id} style={{ background: button.useGlobal ? 'var(--studio-acid)' : settingColor(button.bgColor, '#ffffff'), color: button.useGlobal ? '#101010' : settingColor(button.textColor) }}>{button.name}</span>)}</div>}
+    </div>
+    {mobile && open && <div className={`settings-preview-mobile-menu ${config.mobile?.style}`} style={{ marginLeft: config.mobile?.position === 'right' ? 'auto' : 0 }}>{config.links.filter(link => link.visible !== false).map(link => <span key={link.id}>{link.name}</span>)}{config.buttons.filter(button => button.visible !== false && button.mobileVisible !== false).map(button => <span className="settings-preview-cta" key={button.id} style={{ background: button.useGlobal ? 'var(--studio-acid)' : settingColor(button.bgColor, '#fff'), color: button.useGlobal ? '#101010' : settingColor(button.textColor) }}>{button.name}</span>)}</div>}
+  </div>;
+}

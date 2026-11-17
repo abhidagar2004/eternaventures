@@ -99,7 +99,7 @@ export function componentCssProperties(settings: Record<string, string>, state: 
 }
 
 const componentSelectors: Record<ComponentId, string> = {
-  primary: '.home-pill:not(.home-pill-outline),.hero-banner-button,.academy-button-neon,.contact-submit,.service-pill,.project-modal-button,.insights-growth-cta > a',
+  primary: '.home-pill:not(.home-pill-outline),.hero-banner-button,.academy-button-neon,.contact-submit,.service-pill,.project-modal-button,.insights-growth-cta > a,[data-navbar-cta="global"]',
   secondary: '.home-pill-outline,.practice-button-outline,.insights-explore',
   link: '.home-text-link,.practice-card-link,.project-card-action,.insight-read,.project-detail-download',
   card: '.home-practice-card,.project-card,.home-review,.service-feature,.project-review,.home-blog-grid article',
@@ -151,6 +151,7 @@ export function studioThemeCss(values: Record<string, string>) {
   const highlightBg = t.highlightUseAccent === 'true' ? accent : themeColor(t.highlightBackground, accent);
   const highlightFg = themeColor(t.highlightUseAccent === 'true' ? t.textAccent : t.highlightText, '#101010');
   let css = `
+    :root { --studio-accent:${accent}; --studio-text-accent:${themeColor(t.textAccent,'#101010')}; --studio-footer-bg:${themeColor(t.dark,'#080808')}; --studio-footer-text:${themeColor(t.textDark,'#ffffff')}; }
     body { font-family:'${body}',sans-serif !important; }
     #root > div,main > div,.site-footer { font-family:'${body}',sans-serif !important; }
     [data-theme-header-container] { padding-left:0 !important;padding-right:0 !important; }

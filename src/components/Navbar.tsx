@@ -4,44 +4,8 @@ import { Menu, X, User } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import AuthPopup from './AuthPopup';
 
-interface NavLink {
-  id: string;
-  name: string;
-  href: string;
-}
-
-interface NavButton {
-  id: string;
-  name: string;
-  href: string;
-  bgColor: string;
-  textColor: string;
-}
-
-interface LogoConfig {
-  type: 'text' | 'image';
-  text1?: string;
-  color1?: string;
-  text2?: string;
-  color2?: string;
-  imageUrl?: string;
-  height?: number;
-  width?: number;
-}
-
-interface StylingConfig {
-  navbar_bg: string;
-  link_color: string;
-  link_hover_color: string;
-  link_active_color: string;
-}
-
-interface NavbarConfig {
-  logo: LogoConfig;
-  styling: StylingConfig;
-  links: NavLink[];
-  buttons: NavButton[];
-}
+import { mergeNavbar, settingColor, safeSettingHref, type NavbarConfig } from '../studio/sharedSettings';
+import './Navbar.css';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,33 +13,9 @@ export default function Navbar() {
   const location = useLocation();
   const desktopProfileRef = useRef<HTMLDivElement>(null);
   const mobileProfileRef = useRef<HTMLDivElement>(null);
-  const [config, setConfig] = useState<NavbarConfig>({
-    logo: {
-      type: 'text',
-      text1: 'Eterna',
-      color1: '#ffffff',
-      text2: 'Ventures',
-      color2: '#d4ff00',
-      height: 40,
-      width: 150
-    },
-    styling: {
-      navbar_bg: 'bg-black/95',
-      link_color: '#d1d5db',
-      link_hover_color: '#ffffff',
-      link_active_color: '#d4ff00'
-    },
-    links: [
-      { id: '1', name: 'Services', href: '/services' },
-      { id: 'c1', name: 'Courses', href: '/courses' },
-      { id: '2', name: 'Projects', href: '/projects' },
-      { id: '3', name: 'About', href: '/about' },
-      { id: '4', name: 'Blogs', href: '/blogs' }
-    ],
-    buttons: [
-      { id: 'b1', name: 'Book a Call', href: '/contact', bgColor: 'bg-[#d4ff00]', textColor: 'text-black' }
-    ]
-  });
+  const [config, setConfig] = useState<NavbarConfig>(() => mergeNavbar());
+  useEffect(() => { setIsOpen(false); setIsProfileOpen(false); }, [location.pathname]);
+  useEffect(() => { function escape(event: KeyboardEvent) { if (event.key === 'Escape') { setIsOpen(false); setIsProfileOpen(false); } } document.addEventListener('keydown', escape); return () => document.removeEventListener('keydown', escape); }, []);
 
   useEffect(() => {
     const fetchConfig = async () => {
@@ -86,7 +26,7 @@ export default function Navbar() {
         .single();
       
       if (data?.setting_value) {
-        setConfig(data.setting_value as NavbarConfig);
+        setConfig(mergeNavbar(data.setting_value));
       }
     };
     fetchConfig();
@@ -109,23 +49,15 @@ export default function Navbar() {
 
   const isActive = (path: string) => location.pathname === path || (path !== '/' && location.pathname.startsWith(path));
 
-  // Ensure Courses is always present in nav links
-  const effectiveLinks = [...(config.links || [])];
-  if (!effectiveLinks.some(l => l.href === '/courses')) {
-    const servicesIndex = effectiveLinks.findIndex(l => l.href === '/services');
-    if (servicesIndex !== -1) {
-      effectiveLinks.splice(servicesIndex + 1, 0, { id: 'nav-courses', name: 'Courses', href: '/courses' });
-    } else {
-      effectiveLinks.unshift({ id: 'nav-courses', name: 'Courses', href: '/courses' });
-    }
-  }
+  const effectiveLinks = config.links.filter(link => link.visible !== false);
+  const visibleButtons = config.buttons.filter(button => button.visible !== false);
 
   return (
-    <nav data-theme-navbar className={`fixed w-full z-50 transition-all duration-300 ${config.styling.navbar_bg} backdrop-blur-md border-b border-white/5`}>
+    <nav data-theme-navbar className="site-navbar fixed w-full z-50 transition-all duration-300 backdrop-blur-md" style={{ "--nav-background": settingColor(config.styling.navbar_bg), "--nav-link": config.styling.link_color, "--nav-hover": config.styling.link_hover_color, "--nav-active": config.styling.link_active_color, "--nav-opacity": (config.styling.opacity ?? 100) / 100, "--nav-logo-desktop": `${config.logo.desktopSize}px`, "--nav-logo-mobile": `${config.logo.mobileSize}px`, borderBottom: config.styling.showBorder === false ? "none" : `${config.styling.borderWidth ?? 1}px solid #ffffff16` } as React.CSSProperties}>
       <div data-theme-header-container className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div data-theme-header-row className="flex justify-between items-center h-16 md:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center group">
+          <Link to="/" className="site-navbar-logo flex items-center group">
             {config.logo.type === 'image' ? (
               <img 
                 src={config.logo.imageUrl || 'https://via.placeholder.com/150x40?text=Logo'} 
@@ -158,7 +90,7 @@ export default function Navbar() {
                   <Link
                     key={link.id} data-theme-component="nav-link"
                     aria-current={isActive(link.href) ? 'page' : undefined}
-                    to={link.href}
+                    to={safeSettingHref(link.href)}
                     className="text-sm font-semibold transition-all duration-200 whitespace-nowrap"
                     style={{ 
                       color: isActive(link.href) ? (config.styling.link_active_color || '#d4ff00') : config.styling.link_color 
@@ -177,25 +109,18 @@ export default function Navbar() {
             </div>
             
             <div className="flex items-center space-x-4">
-              {config.buttons.map((btn) => {
+              {visibleButtons.map((btn) => {
                 if (!btn.name || !btn.href) return null;
                 const isHexBg = btn.bgColor.startsWith('#') || (btn.bgColor.startsWith('bg-[') && btn.bgColor.endsWith(']'));
                 const isHexText = btn.textColor.startsWith('#') || (btn.textColor.startsWith('text-[') && btn.textColor.endsWith(']'));
-                
-                const getHex = (val: string, type: 'bg' | 'text') => {
-                  if (val.startsWith('#')) return val;
-                  if (type === 'bg' && val.startsWith('bg-[')) return val.slice(4, -1);
-                  if (type === 'text' && val.startsWith('text-[')) return val.slice(6, -1);
-                  return undefined;
-                };
 
                 return (
                   <Link
                     key={btn.id}
-                    to={btn.href}
+                    data-navbar-cta={btn.useGlobal ? "global" : "custom"} to={safeSettingHref(btn.href)}
                     style={{ 
-                      backgroundColor: getHex(btn.bgColor, 'bg'),
-                      color: getHex(btn.textColor, 'text')
+                      backgroundColor: btn.useGlobal ? 'var(--studio-accent, #d4ff00)' : settingColor(btn.bgColor, '#ffffff'),
+                      color: btn.useGlobal ? 'var(--studio-text-accent, #101010)' : settingColor(btn.textColor)
                     }}
                     className={`${!isHexBg ? btn.bgColor : ''} ${!isHexText ? btn.textColor : ''} px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg shadow-white/5 hover:shadow-white/10 whitespace-nowrap`}
                   >
@@ -207,7 +132,7 @@ export default function Navbar() {
               {/* Profile Icon & Popup */}
               <div className="relative" ref={desktopProfileRef}>
                 <button
-                  onClick={() => setIsProfileOpen(!isProfileOpen)}
+                  aria-label="Account menu" onClick={() => setIsProfileOpen(!isProfileOpen)}
                   className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-all active:scale-90"
                   style={{ color: config.styling.link_color }}
                 >
@@ -226,7 +151,7 @@ export default function Navbar() {
           <div className="md:hidden flex items-center gap-2">
             <div className="relative" ref={mobileProfileRef}>
               <button
-                onClick={() => setIsProfileOpen(!isProfileOpen)}
+                aria-label="Account menu" onClick={() => setIsProfileOpen(!isProfileOpen)}
                 className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white bg-white/5 active:scale-90 transition-all"
               >
                 <User size={18} />
@@ -238,7 +163,7 @@ export default function Navbar() {
               />
             </div>
             <button
-              onClick={() => setIsOpen(!isOpen)}
+              aria-label="Toggle navigation" aria-expanded={isOpen} onClick={() => setIsOpen(!isOpen)}
               className="w-10 h-10 flex items-center justify-center text-white hover:text-[#d4ff00] transition-colors bg-white/5 rounded-full border border-white/10 active:scale-90"
             >
               {isOpen ? <X size={20} /> : <Menu size={20} />}
@@ -248,13 +173,13 @@ export default function Navbar() {
       </div>
 
       {/* Mobile menu */}
-      <div data-theme-mobile-menu className={`md:hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
+      <div data-theme-mobile-menu data-menu-style={config.mobile?.style} data-menu-position={config.mobile?.position} inert={!isOpen} aria-hidden={!isOpen} className={`md:hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
         <div className="px-4 pt-2 pb-6 space-y-1 bg-black/95 border-t border-white/5">
           {effectiveLinks.map((link) => (
             <Link
               key={link.id} data-theme-component="nav-link"
               aria-current={isActive(link.href) ? 'page' : undefined}
-              to={link.href}
+              to={safeSettingHref(link.href)}
               className="block px-3 py-4 text-base font-semibold"
               style={{ 
                 color: isActive(link.href) ? (config.styling.link_active_color || '#d4ff00') : config.styling.link_color 
@@ -265,23 +190,17 @@ export default function Navbar() {
             </Link>
           ))}
           <div className="pt-4 space-y-2">
-            {config.buttons.map((btn) => {
+            {visibleButtons.filter(btn => btn.mobileVisible !== false).map((btn) => {
               const isHexBg = btn.bgColor.startsWith('#') || (btn.bgColor.startsWith('bg-[') && btn.bgColor.endsWith(']'));
               const isHexText = btn.textColor.startsWith('#') || (btn.textColor.startsWith('text-[') && btn.textColor.endsWith(']'));
-              const getHex = (val: string, type: 'bg' | 'text') => {
-                if (val.startsWith('#')) return val;
-                if (type === 'bg' && val.startsWith('bg-[')) return val.slice(4, -1);
-                if (type === 'text' && val.startsWith('text-[')) return val.slice(6, -1);
-                return undefined;
-              };
               return (
                 <Link
                   key={btn.id}
-                  to={btn.href}
+                  data-navbar-cta={btn.useGlobal ? "global" : "custom"} to={safeSettingHref(btn.href)}
                   className={`block w-full text-center ${!isHexBg ? btn.bgColor : ''} ${!isHexText ? btn.textColor : ''} px-6 py-3 rounded-xl text-base font-bold`}
                   style={{ 
-                    backgroundColor: getHex(btn.bgColor, 'bg'),
-                    color: getHex(btn.textColor, 'text')
+                    backgroundColor: btn.useGlobal ? 'var(--studio-accent, #d4ff00)' : settingColor(btn.bgColor, '#ffffff'),
+                    color: btn.useGlobal ? 'var(--studio-text-accent, #101010)' : settingColor(btn.textColor)
                   }}
                   onClick={() => setIsOpen(false)}
                 >

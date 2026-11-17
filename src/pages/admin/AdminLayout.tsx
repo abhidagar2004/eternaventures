@@ -55,13 +55,14 @@ export default function AdminLayout() {
   if (!session) return <Navigate to="/admin/login" replace />;
   if (accessError) return <div className="studio-loading" role="alert">{accessError}</div>;
   if (!adminEmails.includes(session.user.email?.toLowerCase() || '')) return <div className="studio-loading"><p>This account does not have Studio administrator access.</p><Link to="/">Return to website</Link></div>;
-  const studioRoute = location.pathname.includes('/studio/') || ['/admin/theme', '/admin/settings', '/admin/overview'].includes(location.pathname);
+  const settingsRoute = ['/admin/navbar', '/admin/footer'].includes(location.pathname);
+  const studioRoute = location.pathname.includes('/studio/') || ['/admin/theme', '/admin/settings', '/admin/overview'].includes(location.pathname) || settingsRoute;
   return <div className="studio-shell">
     <button className="studio-mobile-toggle" onClick={() => setOpen(!open)} aria-label="Toggle Studio navigation">{open ? <X /> : <Menu />}</button>
     {open && <button className="studio-sidebar-backdrop" aria-label="Close navigation" onClick={() => setOpen(false)} />}
     <aside className={`studio-sidebar${open ? ' is-open' : ''}`}>
       <Link className="studio-brand" to="/admin/overview"><strong>Eterna<span>Ventures</span></strong><span>Studio</span></Link>
-      <nav aria-label="Studio navigation">{[primary, secondary].map((group, index) => <div className="studio-nav-group" key={index}>{group.map(({ name, path, icon: Icon }) => <NavLink key={path} to={path} className={({ isActive }) => isActive ? 'is-active' : ''}><Icon size={21} /><span>{name}</span></NavLink>)}</div>)}</nav>
+      <nav aria-label="Studio navigation">{[primary, secondary].map((group, index) => <div className="studio-nav-group" key={index}>{group.map(({ name, path, icon: Icon }) => <NavLink key={path} to={path} className={({ isActive }) => isActive || (path === '/admin/settings' && settingsRoute) ? 'is-active' : ''}><Icon size={21} /><span>{name}</span></NavLink>)}</div>)}</nav>
       <div className="studio-account"><button onClick={() => setAccountOpen(!accountOpen)} aria-expanded={accountOpen}><UserRound size={23} /><span><strong>Admin</strong><small>{session.user.email}</small></span><ChevronDown size={16} /></button>{accountOpen && <div><a href="/" target="_blank" rel="noopener noreferrer"><ExternalLink size={15} />View website</a><button onClick={logout}><LogOut size={15} />Sign out</button></div>}</div>
     </aside>
     <main className="studio-main"><div className={studioRoute ? 'studio-workspace' : 'studio-workspace studio-legacy'}>{!studioRoute && <div className="studio-legacy-heading"><Link to="/admin/overview">Studio</Link><span>›</span><Link to="/admin/settings">Manage website</Link><a href="/" target="_blank" rel="noopener noreferrer">View website <ExternalLink size={14} /></a></div>}<Outlet /></div></main>

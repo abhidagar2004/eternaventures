@@ -1,0 +1,13 @@
+.site-navbar { isolation:isolate; }
+.site-navbar::before { content:''; position:absolute; inset:0; background:var(--nav-background,#000); opacity:var(--nav-opacity,1); z-index:-1; }
+.site-navbar-logo > span { font-size:var(--nav-logo-desktop,28px); }
+.site-navbar [data-theme-component='nav-link'] { color:var(--nav-link,#d1d5db)!important; }
+.site-navbar [data-theme-component='nav-link']:hover { color:var(--nav-hover,#fff)!important; }
+.site-navbar [data-theme-component='nav-link'][aria-current='page'] { color:var(--nav-active,#d4ff00)!important; }
+@media(max-width:767px) {
+  .site-navbar-logo > span { font-size:var(--nav-logo-mobile,24px); }
+  .site-navbar [data-theme-mobile-menu][data-menu-style='drawer'] { position:absolute; top:100%; width:min(88vw,360px); box-shadow:0 14px 30px #0008; }
+  .site-navbar [data-theme-mobile-menu]:not([inert]) { max-height:calc(100dvh - var(--studio-header-height,64px)); overflow-y:auto; }
+  .site-navbar [data-theme-mobile-menu][data-menu-style='drawer'][data-menu-position='right'] { right:0; }
+  .site-navbar [data-theme-mobile-menu][data-menu-style='drawer'][data-menu-position='left'] { left:0; }
+}
