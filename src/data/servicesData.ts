@@ -51,8 +51,8 @@ export const servicesData: Record<string, ServiceDetailData> = {
     heroHeading: 'BRAND ARCHITECTURE &',
     heroHighlight: 'IDENTITY SYSTEMS.',
     heroDescription: 'Define what your brand stands for and build a visual system that makes it recognizable everywhere.',
-    heroImage: '/images/service-detail-reference.jpg',
-    heroImageObjectPos: '85% 10%',
+    heroImage: '/images/brand-hero-hd.jpg',
+    heroImageObjectPos: 'right center',
     whatWeDesignEyebrow: 'WHAT WE DESIGN',
     whatWeDesignHeading: 'ONE IDENTITY.',
     whatWeDesignHighlight: 'EVERY TOUCHPOINT.',
@@ -61,29 +61,29 @@ export const servicesData: Record<string, ServiceDetailData> = {
         number: '01',
         title: 'SOCIAL MEDIA & AD CREATIVES',
         description: 'Platform-specific creative that captures attention and communicates clearly, tailored to your audience and goals.',
-        image: '/images/service-detail-reference.jpg',
-        imageObjectPos: '25% 35%'
+        image: '/images/brand-social-hd.jpg',
+        imageObjectPos: 'center'
       },
       {
         number: '02',
         title: 'BRAND VISUAL IDENTITY',
         description: "A consistent visual identity built on color, type, and design systems that reflect your brand's personality and stay consistent everywhere.",
-        image: '/images/service-detail-reference.jpg',
-        imageObjectPos: '20% 46%'
+        image: '/images/brand-identity-hd.jpg',
+        imageObjectPos: 'center'
       },
       {
         number: '03',
         title: 'CAMPAIGN & PROMOTIONAL DESIGN',
         description: 'Clear, memorable visuals for product launches, campaigns, and promotions that communicate your message and convert effectively.',
-        image: '/images/service-detail-reference.jpg',
-        imageObjectPos: '80% 46%'
+        image: '/images/brand-campaign-hd.jpg',
+        imageObjectPos: 'center'
       }
     ],
     deliverablesEyebrow: 'THE DELIVERABLES',
     deliverablesHeading: 'WHAT YOU ',
     deliverablesHighlight: 'WALK AWAY WITH.',
-    deliverablesImage: '/images/service-detail-reference.jpg',
-    deliverablesImageObjectPos: '25% 65%',
+    deliverablesImage: '/images/brand-deliverables-hd.jpg',
+    deliverablesImageObjectPos: 'center',
     deliverablesList: [
       {
         number: '01',

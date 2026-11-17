@@ -1,0 +1,105 @@
+.service-detail { --service-acid: #d4ff00; background: #f8f5f0; color: #101010; }
+.service-container { width: calc(100% - 96px); max-width: 1280px; margin: auto; }
+.service-detail h1, .service-detail h2, .service-detail h3, .service-detail p { margin: 0; }
+.service-detail h1, .service-detail h2, .service-detail h3 { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; line-height: .98; letter-spacing: -.025em; }
+.service-detail h2 { font-size: clamp(38px, 4.5vw, 62px); }
+.service-highlight { display: inline-block; background: var(--service-acid); color: #000; padding: 3px 12px 6px; transform: skew(-10deg); margin-top: 4px; }
+.service-highlight > span { display: inline-block; transform: skew(10deg); }
+.service-highlight-inverse { color: var(--service-acid); background: #000; }
+.service-eyebrow { font-size: 13px; font-weight: 800; letter-spacing: .8px; margin-bottom: 12px !important; }
+.service-hero { height: 500px; padding-top: 80px; color: #fff; background: #080808; position: relative; overflow: hidden; }
+.service-hero-art { position: absolute; inset: 80px 0 0 auto; width: 64%; height: calc(100% - 80px); object-fit: cover; }
+.service-hero-panoramic .service-hero-art { width: 100%; }
+.service-hero-shade { position: absolute; inset: 80px 0 0; background: linear-gradient(90deg, #080808 0%, #080808 33%, transparent 70%); }
+.service-hero-content { position: relative; height: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
+.service-back { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; margin-bottom: 18px; }
+.service-hero .service-eyebrow span { color: var(--service-acid); }
+.service-hero h1 { font-size: clamp(40px, 4.1vw, 58px); max-width: 580px; }
+.service-hero-description { font-size: 16px; line-height: 1.5; max-width: 440px; margin: 18px 0 22px !important; }
+.service-hero-actions { display: flex; align-items: center; gap: 26px; }
+.service-pill { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: var(--service-acid); color: #000; border-radius: 99px; padding: 14px 24px; font-size: 12px; font-weight: 800; text-transform: uppercase; }
+.service-hero-actions > a:last-child { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; }
+.service-capabilities { padding: 58px 0 40px; scroll-margin-top: 100px; }
+.service-feature-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; margin-top: 40px; }
+.service-feature { border: 1px solid #bcbab5; border-radius: 14px; overflow: hidden; }
+.service-feature > img { width: 100%; height: 285px; object-fit: cover; display: block; }
+.service-feature > div { padding: 23px; }
+.service-feature-number { background: var(--service-acid); font-size: 20px; font-weight: 700; }
+.service-feature h3 { font-size: 35px; margin: 10px 0 14px; }
+.service-feature p { font-size: 16px; line-height: 1.45; }
+.service-feature-wide { grid-column: 1 / -1; display: grid; grid-template-columns: 1.65fr 1fr; align-items: stretch; }
+.service-feature-wide > img { height: 355px; }
+.service-feature-wide > div { align-self: center; padding: 30px; }
+.service-deliverables { background: #080808; color: #fff; padding: 35px 0 25px; }
+.service-deliverables h2 { font-size: clamp(36px, 3.7vw, 54px); }
+.service-deliverables-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: center; margin-top: 18px; }
+.service-deliverables-grid > img { width: 100%; height: 300px; object-fit: cover; }
+.service-deliverables ol { list-style: none; margin: 0; padding: 0; }
+.service-deliverables li { display: flex; gap: 18px; padding: 14px 0; border-bottom: 1px solid #555; }
+.service-deliverables li:last-child { border: 0; }
+.service-deliverables li > span { color: var(--service-acid); font-size: 20px; font-weight: 800; }
+.service-deliverables h3 { font-family: Inter, sans-serif; font-size: 17px; font-weight: 700; line-height: 1.25; }
+.service-deliverables li p { font-size: 12px; line-height: 1.5; color: #ddd; margin-top: 5px; }
+.service-process { padding: 44px 0 30px; }
+.service-process > div > h2::before, .service-faq h2::before { content: ''; display: block; height: 2px; width: 80px; background: var(--service-acid); margin-bottom: 16px; }
+.service-process > div > h2 { font-size: 46px; }
+.service-process-steps { list-style: none; padding: 0; margin: 28px 0 62px; display: grid; grid-template-columns: repeat(4, 1fr); }
+.service-process-steps li { position: relative; padding: 0 22px 0 16px; }
+.service-process-steps li::before { content: ''; position: absolute; top: 16px; left: 0; right: 0; height: 2px; background: #111; }
+.service-process-steps li > span { position: relative; display: grid; place-items: center; background: var(--service-acid); border-radius: 50%; width: 34px; height: 34px; font-weight: 800; }
+.service-process-steps h3 { font-size: 27px; margin: 12px 0 8px; }
+.service-process-steps p { font-size: 14px; line-height: 1.4; max-width: 220px; }
+.service-faq { display: grid; grid-template-columns: .75fr 1.5fr; gap: 60px; }
+.service-faq h2 { font-size: 49px; }
+.service-faq > div > p { font-size: 14px; line-height: 1.4; margin-top: 12px; max-width: 290px; }
+.service-faq-item { border-bottom: 1px solid #bbb; }
+.service-faq-item button { display: flex; align-items: center; justify-content: space-between; gap: 20px; width: 100%; padding: 12px 0; text-align: left; font-weight: 700; font-size: 14px; cursor: pointer; }
+.service-faq-item button svg { flex-shrink: 0; }
+.service-faq-item > p { font-size: 14px; line-height: 1.6; padding-bottom: 18px; }
+.service-cta { padding: 25px 0; background: var(--service-acid); }
+.service-cta > div { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; }
+.service-cta h2 { max-width: 500px; font-size: 52px; }
+.service-cta p { font-size: 20px; line-height: 1.25; max-width: 430px; margin-bottom: 16px; }
+.service-cta .service-pill { background: #000; color: #fff; }
+.service-not-found { padding: 160px 30px; text-align: center; }
+@media (max-width: 1000px) {
+  .service-container { width: calc(100% - 48px); }
+  .service-hero { padding-top: 64px; }
+  .service-hero-art, .service-hero-shade { top: 64px; }
+  .service-hero-art { height: calc(100% - 64px); }
+  .service-hero h1 { font-size: 44px; max-width: 450px; }
+  .service-hero-description { max-width: 360px; font-size: 14px; }
+  .service-feature h3 { font-size: 29px; }
+  .service-feature-wide > img { height: 330px; }
+  .service-deliverables-grid { gap: 25px; }
+}
+@media (max-width: 600px) {
+  .service-container { width: calc(100% - 40px); }
+  .service-hero { height: 690px; }
+  .service-hero-art { inset: auto 0 0; width: 100%; height: 290px; }
+  .service-hero-panoramic .service-hero-art { width: 180%; max-width: none; left: auto; }
+  .service-hero-shade { inset: auto 0 220px; height: 80px; background: linear-gradient(#080808, transparent); }
+  .service-hero-content { justify-content: flex-start; padding-top: 22px; }
+  .service-back { margin-bottom: 14px; }
+  .service-hero h1 { font-size: clamp(34px, 9.8vw, 48px); }
+  .service-hero-description { margin: 14px 0 18px !important; }
+  .service-hero-actions { gap: 14px; flex-wrap: wrap; }
+  .service-pill { font-size: 10px; padding: 12px 17px; }
+  .service-hero-actions > a:last-child { font-size: 11px; }
+  .service-capabilities { padding: 36px 0; }
+  .service-detail h2 { font-size: 37px; }
+  .service-feature-grid { grid-template-columns: 1fr; gap: 20px; margin-top: 26px; }
+  .service-feature-wide { grid-column: auto; display: block; }
+  .service-feature > img, .service-feature-wide > img { height: 230px; }
+  .service-feature > div, .service-feature-wide > div { padding: 22px; }
+  .service-feature h3 { font-size: 30px; }
+  .service-feature p { font-size: 15px; }
+  .service-deliverables-grid { grid-template-columns: 1fr; gap: 12px; }
+  .service-deliverables-grid > img { height: 240px; }
+  .service-process-steps { grid-template-columns: 1fr 1fr; gap: 28px 12px; margin-bottom: 45px; }
+  .service-process-steps li { padding: 0 8px; }
+  .service-faq { grid-template-columns: 1fr; gap: 20px; }
+  .service-cta > div { grid-template-columns: 1fr; gap: 22px; }
+  .service-cta h2 { font-size: 44px; }
+  .service-cta p { font-size: 18px; }
+}

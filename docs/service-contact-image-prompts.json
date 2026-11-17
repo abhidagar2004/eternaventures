@@ -1,0 +1,35 @@
+{
+  "mode": "Built-in ImageGen",
+  "assets": [
+    {
+      "name": "brand-hero",
+      "prompt": "Photorealistic premium brand identity stationery still life, panoramic website background 3:1 ratio 2400x800 or higher. Matte black textured book upper right embossed BRAND IDENTITY SYSTEM, underneath cream BRAND GUIDELINES book, cream EV monogram card lower right, charcoal stone surface, warm directional studio light. LEFT 48 PERCENT almost empty seamless matte black for HTML title overlay. All objects right half, visible complete book edges, sophisticated black cream electric chartreuse detail. No website interface, no heading overlay. Match brand books in first supplied reference.",
+      "output": "public/images/brand-hero-hd.jpg"
+    },
+    {
+      "name": "brand-social",
+      "prompt": "High resolution 1800x1100 photorealistic brand creative mockup on dark charcoal desk. Angled modern black phone showing graphic blue and cream social campaign with bold words BRAND BUILDS DEMAND. Small EV monogram and minimal social interface. Black embossed EV notebook upper left, blue cream printed abstract campaign cards lower left. Rich tactile premium materials, cinematic light, full bleed close-up. Match social media creative image in service reference. No website layout.",
+      "output": "public/images/brand-social-hd.jpg"
+    },
+    {
+      "name": "brand-identity",
+      "prompt": "High resolution 1800x1100 photorealistic premium ivory brand identity stationery arranged on warm stone desk. Large cream EV monogram letterhead, typography specimen card with Aa, refined grid construction sketches, small brand palette cream charcoal taupe and electric chartreuse. Warm natural shadows, editorial flat lay, crisp tactile paper. Match visual identity card image in supplied service reference. No website layout.",
+      "output": "public/images/brand-identity-hd.jpg"
+    },
+    {
+      "name": "brand-campaign",
+      "prompt": "High resolution 1800x1100 photorealistic three campaign posters pasted on warm textured concrete wall under leafy afternoon shadows. Burnt orange abstract poster LAUNCH WEEK, central ivory EV monogram poster, orange ivory poster NEW COLLECTION. Bold typographic minimalist brand campaign, sophisticated paper texture. Match campaign promotional image in supplied reference. No website UI.",
+      "output": "public/images/brand-campaign-hd.jpg"
+    },
+    {
+      "name": "brand-deliverables",
+      "prompt": "High resolution 1800x1100 photorealistic premium open brand identity presentation box on black stone desk. Black textured EV monogram lid leaning behind, ivory typography Aa specimen sheet and cream charcoal taupe chartreuse swatches inside, chartreuse pull ribbon. All objects centered with room around edges. Cinematic warm light, deep matte black background, luxe tactile print finish. Match deliverables brand kit in supplied service reference. No website UI.",
+      "output": "public/images/brand-deliverables-hd.jpg"
+    },
+    {
+      "name": "contact-hero",
+      "prompt": "High resolution panoramic 3:1 ratio website hero background 2400x800. Photorealistic overhead oblique view two people's hands in black sleeves planning a strategy flowchart with pencil on large ivory paper on dark textured desk. Right hand drawing outlined boxes and arrows, left hand resting near lower middle, small electric chartreuse sticky note right. Warm sunlight across paper, premium cinematic dark studio. LEFT 44 percent dark empty black space for HTML headline, objects confined to right 60 percent. Match contact banner in supplied reference. No website UI or headline.",
+      "output": "public/images/contact-hero-hd.jpg"
+    }
+  ]
+}

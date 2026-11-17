@@ -1,323 +1,86 @@
-import React, { useState } from 'react';
-import { Mail, Phone, MapPin, ArrowDown, ArrowRight, Plus, Minus, Loader2 } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { ArrowDown, ArrowUpRight, Loader2, Mail, MapPin, Minus, Phone, Plus } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import toast from 'react-hot-toast';
+import './ContactPage.css';
 
 const contactFaqs = [
-  {
-    question: "What makes EternaVentures different from other agencies?",
-    answer: "We operate as an integrated growth engine rather than a siloed agency. Senior-only operators handle your strategy, creative, and performance marketing with zero junior delegation and full transparent attribution."
-  },
-  {
-    question: "Do you work with startups or just established brands?",
-    answer: "We partner with ambitious, funded startups looking to claim market share as well as established industry leaders aiming to reinvent their categories."
-  },
-  {
-    question: "What is your minimum engagement size?",
-    answer: "Our typical strategic advisory or full-service engagements start from focused sprint commitments or quarterly retainers customized to your growth stage."
-  },
-  {
-    question: "How do you price your services?",
-    answer: "We offer transparent, value-aligned pricing based on scope—ranging from fixed strategic deliverables to performance-driven retainer partnerships."
-  }
+  { question: 'What makes EternaVentures different from other agencies?', answer: 'We bring brand strategy, creative, digital experience, and performance together. Your team works with experienced operators who connect execution to your business goals.' },
+  { question: 'Do you work with startups or just established brands?', answer: 'We partner with ambitious startups and established brands. The session helps us understand your stage, priorities, and the support you need.' },
+  { question: 'What is your minimum engagement size?', answer: 'Engagements depend on your goals and the scope of work. We will discuss the right starting point during your strategy session.' },
+  { question: 'How do you price your services?', answer: 'Pricing follows the agreed scope, deliverables, and timeline. We share a clear proposal after understanding your requirements.' },
 ];
+const nextSteps = [
+  { title: 'Share your goals', text: 'Tell us what you want to achieve.' },
+  { title: 'Find the right fit', text: 'We’ll review your request and ask a few focused questions.' },
+  { title: 'Map your next move', text: 'Discuss what to prioritize and agree on next steps.' },
+];
+const emptyForm = { name: '', email: '', phone: '', message: '' };
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: ''
-  });
+  const [formData, setFormData] = useState(emptyForm);
+  const [topics, setTopics] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const submitting = useRef(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.name || !formData.email) {
-      toast.error('Please provide your name and email.');
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (submitting.current) return;
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      setStatus({ type: 'error', message: 'Please enter your name, work email, and message.' });
       return;
     }
+    submitting.current = true;
     setLoading(true);
-
+    setStatus(null);
     try {
-      const { error } = await supabase.from('leads').insert([
-        {
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          message: formData.message,
-        }
-      ]);
-
-      if (error) {
-        console.warn('Lead insert notice:', error);
-      }
-
-      toast.success('Strategy request submitted successfully! We will get in touch shortly.');
-      setFormData({ name: '', email: '', phone: '', message: '' });
-    } catch (err: any) {
-      toast.success('Thank you! Your strategy session request has been received.');
-      setFormData({ name: '', email: '', phone: '', message: '' });
+      const selectedTopics = topics.length ? `Interested in ${topics.join(', ')}\n\n` : '';
+      const { error } = await supabase.from('leads').insert({
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        message: selectedTopics + formData.message.trim(),
+      });
+      if (error) throw error;
+      setStatus({ type: 'success', message: 'Your project inquiry has been sent. Our team will get in touch shortly.' });
+      setFormData(emptyForm);
+      setTopics([]);
+    } catch {
+      setStatus({ type: 'error', message: 'Your inquiry could not be sent. Please try again or email hello@eternaventures.in.' });
     } finally {
+      submitting.current = false;
       setLoading(false);
     }
   };
 
-  const toggleFaq = (index: number) => {
-    setOpenFaq(openFaq === index ? null : index);
-  };
+  return <div className="contact-page">
+    <section className="contact-hero">
+      <img src="/images/contact-hero-hd.jpg" alt="Hands mapping a strategy flowchart on paper" className="contact-hero-art" fetchPriority="high" />
+      <div className="contact-hero-shade" />
+      <div className="contact-container contact-hero-content"><p className="contact-eyebrow"><span>CONTACT</span> / STRATEGY SESSION</p><h1>LET’S BUILD<br /><span className="contact-highlight"><span>WHAT’S NEXT.</span></span></h1><p className="contact-hero-description">Tell us about your goals. We’ll map out a clear path to growth.</p><a href="#project-form">Request a Strategy Session <ArrowDown size={21} /></a></div>
+    </section>
 
-  const scrollToForm = () => {
-    const el = document.getElementById('project-form');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+    <section id="project-form" className="contact-project"><div className="contact-container contact-project-grid">
+      <div className="contact-project-intro"><p className="contact-eyebrow">LET’S TALK</p><h2>READY TO SCALE<br /><span className="contact-highlight contact-highlight-dark"><span>YOUR BRAND?</span></span></h2><p>Request a free growth audit and strategy session.</p><p>Tell us what you’re working on and where you want to go.</p></div>
+      <form className="contact-form" onSubmit={handleSubmit} aria-busy={loading}>
+        <h3>TELL US ABOUT YOUR PROJECT</h3>
+        <fieldset disabled={loading}><legend>What can we help with? (Optional)</legend><div className="contact-topics">{['Branding', 'Social Media', 'Performance', 'Other'].map(topic => <button type="button" key={topic} aria-pressed={topics.includes(topic)} onClick={() => setTopics(current => current.includes(topic) ? current.filter(item => item !== topic) : [...current, topic])}>{topic}</button>)}</div></fieldset>
+        <fieldset disabled={loading} className="contact-fields">
+          <div><label htmlFor="contact-name">NAME</label><input id="contact-name" name="name" autoComplete="name" required maxLength={150} placeholder="Your Full Name" value={formData.name} onChange={event => setFormData({ ...formData, name: event.target.value })} /></div>
+          <div><label htmlFor="contact-email">WORK EMAIL</label><input id="contact-email" name="email" autoComplete="email" type="email" required maxLength={254} placeholder="you@company.com" value={formData.email} onChange={event => setFormData({ ...formData, email: event.target.value })} /></div>
+          <div className="contact-full-field"><label htmlFor="contact-phone">PHONE (OPTIONAL)</label><input id="contact-phone" name="phone" autoComplete="tel" type="tel" maxLength={40} placeholder="+91 00000 00000" value={formData.phone} onChange={event => setFormData({ ...formData, phone: event.target.value })} /></div>
+          <div className="contact-full-field"><label htmlFor="contact-message">MESSAGE</label><textarea id="contact-message" name="message" rows={3} required maxLength={10000} placeholder="Tell us about your brand, goals, or current challenges..." value={formData.message} onChange={event => setFormData({ ...formData, message: event.target.value })} /></div>
+        </fieldset>
+        <button className="contact-submit" disabled={loading} type="submit">{loading ? <><Loader2 className="animate-spin" size={20} /> SENDING INQUIRY</> : <>SEND PROJECT INQUIRY <ArrowUpRight size={22} /></>}</button>
+        {status && <p className={`contact-form-status contact-form-${status.type}`} role={status.type === 'error' ? 'alert' : 'status'}>{status.message}</p>}
+      </form>
+    </div></section>
 
-  return (
-    <div className="bg-black text-white min-h-screen">
-      {/* 1. Hero Section */}
-      <section className="relative pt-36 pb-20 md:pt-44 md:pb-28 overflow-hidden border-b border-neutral-900">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-            {/* Left Hero Content */}
-            <div className="lg:col-span-6 flex flex-col items-start z-10">
-              <span className="text-xs font-black tracking-[0.25em] text-[#d4ff00] uppercase mb-4">
-                CONTACT / STRATEGY SESSION
-              </span>
+    <section className="contact-details"><div className="contact-container"><a href="mailto:hello@eternaventures.in"><Mail /><div><span>EMAIL</span><strong>hello@eternaventures.in</strong></div></a><a href="tel:+917976307052"><Phone /><div><span>PHONE</span><strong>+91 7976307052</strong></div></a><div><MapPin /><div><span>BASED IN</span><strong>Jaipur, Rajasthan, India</strong></div></div></div></section>
 
-              <h1 className="text-5xl sm:text-6xl md:text-7xl font-black font-display tracking-tight leading-[0.95] mb-6">
-                LET'S BUILD<br />
-                <span className="inline-block bg-[#d4ff00] text-black px-4 py-1.5 -rotate-1 mt-2 font-black shadow-lg">
-                  WHAT'S NEXT.
-                </span>
-              </h1>
+    <section className="contact-next"><div className="contact-container"><h2>WHAT<br /> HAPPENS<br /> NEXT <span>/</span></h2>{nextSteps.map((step, index) => <div key={step.title}><span className="contact-step-number">0{index + 1}</span><h3>{step.title}</h3><p>{step.text}</p></div>)}</div></section>
 
-              <p className="text-lg md:text-xl text-neutral-400 font-medium max-w-lg mb-8 leading-relaxed">
-                Tell us about your goals. We'll map out a clear path to growth.
-              </p>
-
-              <button 
-                onClick={scrollToForm}
-                className="group inline-flex items-center gap-2 text-sm md:text-base font-bold tracking-wide text-white hover:text-[#d4ff00] transition-colors"
-              >
-                <span>Request a Strategy Session</span>
-                <ArrowDown className="w-4 h-4 group-hover:translate-y-1 transition-transform text-[#d4ff00]" />
-              </button>
-            </div>
-
-            {/* Right Hero Image */}
-            <div className="lg:col-span-6 flex justify-center lg:justify-end">
-              <div className="relative w-full max-w-lg lg:max-w-none h-[280px] sm:h-[340px] md:h-[400px] rounded-3xl overflow-hidden border border-neutral-800 shadow-2xl bg-neutral-950">
-                <img 
-                  src="/images/contact-reference.jpg" 
-                  alt="Strategy Session Diagram and Planning" 
-                  className="w-full h-full object-cover object-[85%_12%] scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 2. Contact & Form Section (Light Off-White Background) */}
-      <section id="project-form" className="py-24 md:py-32 bg-[#f7f7f5] text-neutral-900">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 items-start">
-            {/* Left Column: Let's Talk */}
-            <div className="lg:col-span-5 flex flex-col justify-between pt-2">
-              <div>
-                <span className="text-xs font-black tracking-[0.25em] text-neutral-500 uppercase block mb-3">
-                  LET'S TALK
-                </span>
-
-                <h2 className="text-4xl sm:text-5xl md:text-6xl font-black font-display tracking-tight leading-[0.95] text-black mb-6">
-                  READY TO SCALE<br />
-                  <span className="inline-block bg-[#d4ff00] text-black px-3.5 py-1 -rotate-1 mt-2 font-black">
-                    YOUR BRAND?
-                  </span>
-                </h2>
-
-                <p className="text-neutral-600 text-lg md:text-xl font-medium mb-12 max-w-md">
-                  Request a free growth audit and strategy session.
-                </p>
-              </div>
-
-              {/* Contact Information Rows */}
-              <div className="space-y-6 pt-4 border-t border-neutral-300/80">
-                <a 
-                  href="mailto:hello@eternaventures.in" 
-                  className="flex items-center gap-4 group text-neutral-800 hover:text-black transition-colors"
-                >
-                  <div className="w-10 h-10 rounded-full bg-white border border-neutral-200 flex items-center justify-center group-hover:border-[#d4ff00] group-hover:bg-[#d4ff00] transition-colors">
-                    <Mail className="w-4 h-4 text-neutral-800" />
-                  </div>
-                  <span className="font-bold text-base md:text-lg tracking-tight">
-                    hello@eternaventures.in
-                  </span>
-                </a>
-
-                <div className="h-px bg-neutral-200/80 w-full" />
-
-                <a 
-                  href="tel:+917976307052" 
-                  className="flex items-center gap-4 group text-neutral-800 hover:text-black transition-colors"
-                >
-                  <div className="w-10 h-10 rounded-full bg-white border border-neutral-200 flex items-center justify-center group-hover:border-[#d4ff00] group-hover:bg-[#d4ff00] transition-colors">
-                    <Phone className="w-4 h-4 text-neutral-800" />
-                  </div>
-                  <span className="font-bold text-base md:text-lg tracking-tight">
-                    +91 7976307052
-                  </span>
-                </a>
-
-                <div className="h-px bg-neutral-200/80 w-full" />
-
-                <div className="flex items-center gap-4 text-neutral-800">
-                  <div className="w-10 h-10 rounded-full bg-white border border-neutral-200 flex items-center justify-center">
-                    <MapPin className="w-4 h-4 text-neutral-800" />
-                  </div>
-                  <span className="font-bold text-base md:text-lg tracking-tight">
-                    Jaipur, Rajasthan, India
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column: Project Form Card */}
-            <div className="lg:col-span-7">
-              <div className="bg-white rounded-3xl p-8 sm:p-12 border border-neutral-200/90 shadow-xl">
-                <h3 className="text-xl sm:text-2xl font-black font-display tracking-tight uppercase text-black mb-8">
-                  TELL US ABOUT YOUR PROJECT
-                </h3>
-
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-xs font-black tracking-wider uppercase text-neutral-900 mb-2">
-                        NAME
-                      </label>
-                      <input 
-                        type="text" 
-                        required
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="Your Full Name"
-                        className="w-full bg-[#fbfbfa] border border-neutral-200 rounded-xl px-4 py-3.5 text-neutral-900 placeholder-neutral-400 font-medium text-sm focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-black tracking-wider uppercase text-neutral-900 mb-2">
-                        EMAIL
-                      </label>
-                      <input 
-                        type="email" 
-                        required
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="john@example.com"
-                        className="w-full bg-[#fbfbfa] border border-neutral-200 rounded-xl px-4 py-3.5 text-neutral-900 placeholder-neutral-400 font-medium text-sm focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-black tracking-wider uppercase text-neutral-900 mb-2">
-                      PHONE (OPTIONAL)
-                    </label>
-                    <input 
-                      type="tel" 
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      placeholder="+1 (555) 000-0000"
-                      className="w-full bg-[#fbfbfa] border border-neutral-200 rounded-xl px-4 py-3.5 text-neutral-900 placeholder-neutral-400 font-medium text-sm focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-black tracking-wider uppercase text-neutral-900 mb-2">
-                      MESSAGE
-                    </label>
-                    <textarea 
-                      rows={4}
-                      required
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Tell us about your brand, goals, or current challenges..."
-                      className="w-full bg-[#fbfbfa] border border-neutral-200 rounded-xl px-4 py-3.5 text-neutral-900 placeholder-neutral-400 font-medium text-sm focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all resize-none"
-                    />
-                  </div>
-
-                  <button 
-                    type="submit" 
-                    disabled={loading}
-                    className="w-full bg-[#d4ff00] hover:bg-[#c6f000] active:scale-[0.99] text-black font-black uppercase text-sm tracking-widest py-4 px-8 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 group cursor-pointer disabled:opacity-60"
-                  >
-                    {loading ? (
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                    ) : (
-                      <>
-                        <span>SUBMIT REQUEST</span>
-                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                      </>
-                    )}
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. FAQ Section (Dark Background) */}
-      <section className="py-24 md:py-32 bg-black text-white border-t border-neutral-900">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-            {/* Left FAQ Heading */}
-            <div className="lg:col-span-5">
-              <h2 className="text-4xl sm:text-5xl md:text-6xl font-black font-display tracking-tight uppercase leading-[0.95]">
-                COMMON<br />QUESTIONS
-              </h2>
-              <div className="h-1.5 w-24 bg-[#d4ff00] my-6 rounded-full" />
-              <p className="text-neutral-400 text-lg md:text-xl font-medium max-w-sm">
-                Quick answers to help you get started with EternaVentures.
-              </p>
-            </div>
-
-            {/* Right FAQ List */}
-            <div className="lg:col-span-7 divide-y divide-neutral-800">
-              {contactFaqs.map((faq, idx) => (
-                <div key={idx} className="py-6 first:pt-0 last:pb-0">
-                  <button 
-                    onClick={() => toggleFaq(idx)}
-                    className="w-full flex items-center justify-between text-left py-2 group cursor-pointer"
-                  >
-                    <span className="text-lg md:text-xl font-bold tracking-tight text-white group-hover:text-[#d4ff00] transition-colors pr-6">
-                      {faq.question}
-                    </span>
-                    <div className="p-2 rounded-full bg-neutral-900 group-hover:bg-[#d4ff00] group-hover:text-black transition-colors shrink-0">
-                      {openFaq === idx ? (
-                        <Minus className="w-4 h-4 text-white group-hover:text-black" />
-                      ) : (
-                        <Plus className="w-4 h-4 text-neutral-400 group-hover:text-black" />
-                      )}
-                    </div>
-                  </button>
-
-                  {openFaq === idx && (
-                    <div className="pt-3 pb-2 text-neutral-400 text-base md:text-lg leading-relaxed font-medium">
-                      {faq.answer}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
+    <section className="contact-faq"><div className="contact-container"><div className="contact-faq-intro"><p className="contact-eyebrow">FAQ</p><h2>GOOD TO<br />KNOW<span>.</span></h2><p>Quick answers to help you<br />get started with EternaVentures.</p></div><div>{contactFaqs.map((faq, index) => <div className="contact-faq-item" key={faq.question}><button aria-expanded={openFaq === index} aria-controls={`contact-answer-${index}`} onClick={() => setOpenFaq(openFaq === index ? null : index)}><span>{faq.question}</span>{openFaq === index ? <Minus /> : <Plus />}</button><p id={`contact-answer-${index}`} hidden={openFaq !== index}>{faq.answer}</p></div>)}</div></div></section>
+  </div>;
 }
